@@ -1,24 +1,45 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// 260204_code
+// 260204_documentation
 
-namespace TingenTransmorger
+using System.Windows;
+using TingenTransmorger.Core;
+
+namespace TingenTransmorger;
+
+/// <summary>Entry class for Tingen Transmorger.</summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    /// <summary>Entry method for Tingen Transmorger.</summary>
+    public MainWindow()
     {
-        public MainWindow()
+        InitializeComponent();
+
+        StartApp();
+    }
+
+    /// <summary>Performs application startup tasks.</summary>
+    private static void StartApp()
+    {
+        var config = Configuration.Load();
+
+        Framework.Verify(config);
+    }
+
+    /// <summary>Stops the Tingen Muno application.</summary>
+    /// <remarks>
+    ///     If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox before
+    ///     the application exits.<br/>
+    ///     <br/>
+    ///     This method is public because it is called from other methods outside the <see cref="MainWindow"/> class.
+    /// </remarks>
+    /// <param name="msgExit">An optional exit message to display to the user.</param>
+    public static void StopApp(string msgExit = "")
+    {
+        if (!string.IsNullOrEmpty(msgExit))
         {
-            InitializeComponent();
+            MessageBox.Show(msgExit, "Exiting Tingen Transmorger", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        Environment.Exit(0);
     }
 }
