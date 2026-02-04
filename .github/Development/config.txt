@@ -1,0 +1,11 @@
+{
+  "Mode": "standard",
+  "ConfigDirName": "C:\\IT\\csb\\dev\\github\\spectrum\\TingenMuno\\src\\bin\\Debug\\net10.0-windows\\AppData\\Config",
+  "CheckForDatabaseUpdateOnStartup": true,
+  "ShowNullIdsInSearchResults": false,
+  "AppDataDirName": "C:\\IT\\csb\\dev\\github\\spectrum\\TingenMuno\\src\\bin\\Debug\\net10.0-windows\\AppData",
+  "ImportDirName": "Z:\\Muno\\Import",
+  "LocalDbDirName": "C:\\IT\\csb\\dev\\github\\spectrum\\TingenMuno\\src\\bin\\Debug\\net10.0-windows\\AppData\\Database",
+  "MasterDbDirName": "Z:\\Muno\\Database",
+  "TmpDirName": "C:\\IT\\csb\\dev\\github\\spectrum\\TingenMuno\\src\\bin\\Debug\\net10.0-windows\\AppData\\Temporary"
+}
