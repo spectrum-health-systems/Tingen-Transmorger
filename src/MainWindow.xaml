@@ -8,6 +8,60 @@
     Title="Tingen Transmorger"
     Width="1200"
     Height="700"
+    ResizeMode="NoResize"
     mc:Ignorable="d">
-    <Grid />
+    <Grid>
+        <StackPanel x:Name="spnlTop" Orientation="Horizontal">
+            <TextBlock
+                x:Name="txblTingenTransmorgerTitle"
+                Margin="20,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="28"
+                FontWeight="Bold"
+                Text="Tingen Transmorger" />
+            <Button
+                x:Name="txblDatabase"
+                Width="420"
+                Margin="120,8,0,0"
+                Padding="0,0,0,0"
+                Height="44"
+                VerticalAlignment="Top"
+                FontSize="24"
+                FontWeight="SemiBold"
+                Content="Database 00/00/0000 - 00/00/0000">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="6" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button
+                x:Name="btnSettings"
+                Width="32"
+                Height="32"
+                Margin="310,15,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="S"
+                FontSize="16"
+                FontWeight="SemiBold">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+        <Border
+            x:Name="brdrMain"
+            Margin="10,60,10,10"
+            Background="SteelBlue">
+            <Border.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10" />
+                </Style>
+            </Border.Resources>
+        </Border>
+    </Grid>
 </Window>
