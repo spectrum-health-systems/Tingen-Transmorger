@@ -244,10 +244,9 @@ internal static class TransmorgerDatabase
             debugInfo.Add($"Raw Provider Names: [{providerNames}]");
             debugInfo.Add($"Raw Provider IDs: [{providerIds}]");
 
-            // Split provider names - use semicolon if present, otherwise assume single provider with comma in name
-            var namesList = providerNames.Contains(';') 
-                ? providerNames.Split(';').Select(n => n.Trim()).Where(n => !string.IsNullOrWhiteSpace(n)).ToArray()
-                : new[] { providerNames.Trim() };
+            // Split provider names - use semicolon first, then comma as fallback delimiter
+            char delimiter = providerNames.Contains(';') ? ';' : ',';
+            var namesList = providerNames.Split(delimiter).Select(n => n.Trim()).Where(n => !string.IsNullOrWhiteSpace(n)).ToArray();
                 
             var idsList = providerIds.Split(',').Select(i => i.Trim()).Where(i => !string.IsNullOrWhiteSpace(i)).ToArray();
 
@@ -260,14 +259,40 @@ internal static class TransmorgerDatabase
                 var providerName = namesList[i];
                 var providerId = (i < idsList.Length) ? idsList[i] : null;
 
-                // Convert "Last, First" to "First Last" format to match Participant Details format
-                var normalizedName = NormalizeProviderName(providerName);
+                // Try to match provider name in different formats
+                Dictionary<string, object?>? provider = null;
+                string? matchedName = null;
 
-                debugInfo.Add($"Original: [{providerName}] -> Normalized: [{normalizedName}] -> ID: [{providerId}]");
-
-                if (providersByName.TryGetValue(normalizedName, out var provider))
+                // Try 1: As-is
+                if (providersByName.TryGetValue(providerName, out provider))
                 {
-                    debugInfo.Add($"  MATCHED! Setting ID for [{normalizedName}]");
+                    matchedName = providerName;
+                    debugInfo.Add($"Original: [{providerName}] -> Matched as-is -> ID: [{providerId}]");
+                }
+                // Try 2: Reverse "LAST FIRST" to "FIRST LAST" format
+                else
+                {
+                    var reversedName = ReverseNameParts(providerName);
+                    if (providersByName.TryGetValue(reversedName, out provider))
+                    {
+                        matchedName = reversedName;
+                        debugInfo.Add($"Original: [{providerName}] -> Reversed: [{reversedName}] -> ID: [{providerId}]");
+                    }
+                    // Try 3: Normalize "LAST, FIRST" format
+                    else
+                    {
+                        var normalizedName = NormalizeProviderName(providerName);
+                        if (providersByName.TryGetValue(normalizedName, out provider))
+                        {
+                            matchedName = normalizedName;
+                            debugInfo.Add($"Original: [{providerName}] -> Normalized: [{normalizedName}] -> ID: [{providerId}]");
+                        }
+                    }
+                }
+
+                if (provider != null && matchedName != null)
+                {
+                    debugInfo.Add($"  MATCHED! Setting ID for [{matchedName}]");
                     // Only set if not already set, or if this one is not null
                     if (provider["ProviderId"] == null && !string.IsNullOrWhiteSpace(providerId))
                     {
@@ -278,9 +303,9 @@ internal static class TransmorgerDatabase
                 {
                     debugInfo.Add($"  NOT MATCHED. Available providers: [{string.Join(", ", providersByName.Keys.Take(5))}...]");
                     // Provider from meeting details doesn't exist in participant details
-                    if (!unmatchedProviders.Contains(normalizedName))
+                    if (!unmatchedProviders.Contains(providerName))
                     {
-                        unmatchedProviders.Add($"{normalizedName} (original: {providerName})");
+                        unmatchedProviders.Add($"{providerName} (tried all formats)");
                     }
                 }
             }
@@ -308,8 +333,8 @@ internal static class TransmorgerDatabase
             return name;
         }
 
-        // Check if name contains a comma (indicating "Last, First" format)
-        if (name.Contains(','))
+        // Check if name contains ", " (comma followed by space - indicating "Last, First" format)
+        if (name.Contains(", "))
         {
             var parts = name.Split(',').Select(p => p.Trim()).ToArray();
             if (parts.Length == 2)
@@ -319,7 +344,28 @@ internal static class TransmorgerDatabase
             }
         }
 
-        // Return as-is if no comma found
+        // Return as-is if no comma-space pattern found
+        return name;
+    }
+
+    /// <summary>Reverses space-separated name parts to handle "LAST FIRST" to "FIRST LAST" conversion.</summary>
+    /// <param name="name">Provider name in "LAST FIRST" format.</param>
+    /// <returns>Reversed name in "FIRST LAST" format.</returns>
+    private static string ReverseNameParts(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return name;
+        }
+
+        // Split on space and reverse the parts
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 2)
+        {
+            return $"{parts[1]} {parts[0]}";
+        }
+
+        // Return as-is if not exactly two parts
         return name;
     }
 
