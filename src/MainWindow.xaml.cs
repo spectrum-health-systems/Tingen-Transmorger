@@ -1,6 +1,7 @@
 ﻿// 260205_code
 // 260205_documentation
 
+using System.IO;
 using System.Windows;
 using TingenTransmorger.Core;
 using TingenTransmorger.Database;
@@ -10,6 +11,8 @@ namespace TingenTransmorger;
 /// <summary>Entry class for Tingen Transmorger.</summary>
 public partial class MainWindow : Window
 {
+    public TransmorgerDatabase TransMorgDb { get; set; }
+
     /// <summary>Entry method for Tingen Transmorger.</summary>
     public MainWindow()
     {
@@ -19,7 +22,7 @@ public partial class MainWindow : Window
     }
 
     /// <summary>Performs application startup tasks.</summary>
-    private static void StartApp()
+    private void StartApp()
     {
         var config = Configuration.Load();
 
@@ -31,6 +34,10 @@ public partial class MainWindow : Window
             TransmorgerDatabase.Build(config.AdminDirectories["Tmp"], config.StandardDirectories["MasterDb"]);
         }
 
+        var localDbPath = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
+        TransMorgDb = TransmorgerDatabase.Load(localDbPath);
+
+        var test =0;
     }
 
     /// <summary>Stops the Tingen Muno application.</summary>

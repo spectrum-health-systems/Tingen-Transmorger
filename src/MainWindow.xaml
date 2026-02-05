@@ -11,6 +11,7 @@
     ResizeMode="NoResize"
     mc:Ignorable="d">
     <Grid>
+        <!--  TOP BAR  -->
         <StackPanel x:Name="spnlTop" Orientation="Horizontal">
             <TextBlock
                 x:Name="txblTingenTransmorgerTitle"
@@ -21,7 +22,7 @@
                 FontWeight="Bold"
                 Text="Tingen Transmorger" />
             <Button
-                x:Name="txblDatabase"
+                x:Name="btnDatabaseSummary"
                 Width="420"
                 Height="44"
                 Margin="120,8,0,0"
@@ -53,6 +54,8 @@
                 </Button.Resources>
             </Button>
         </StackPanel>
+
+        <!--  MAIN AREA  -->
         <Border
             x:Name="brdrMain"
             Margin="10,60,10,10"
@@ -62,6 +65,114 @@
                     <Setter Property="CornerRadius" Value="10" />
                 </Style>
             </Border.Resources>
+
+            <!--  Two-column layout: left = search, right = details  -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="360" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  LEFT COLUMN  -->
+                <Border
+                    Grid.Column="0"
+                    Margin="12,12,4,12"
+                    Padding="8"
+                    Background="White"
+                    CornerRadius="6,0,0,6">
+                    <StackPanel x:Name="spnlSearch" Orientation="Vertical">
+                        <StackPanel
+                            x:Name="spnlSearchOptions"
+                            Grid.Column="0"
+                            Background="White"
+                            Orientation="Horizontal">
+                            <Button
+                                x:Name="btnSearchToggle"
+                                Width="200"
+                                Height="42"
+                                Margin="10,10,0,8"
+                                HorizontalAlignment="left"
+                                Content="Patient Search"
+                                FontSize="18"
+                                FontWeight="SemiBold">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="7" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <StackPanel x:Name="spnlSearchByNameOrId" Orientation="Vertical">
+                                <RadioButton
+                                    x:Name="rbtnByName"
+                                    Margin="5,12,0,0"
+                                    FontSize="14"
+                                    VerticalContentAlignment="Center"
+                                    Width="116"
+                                    Content="By name" />
+                                <RadioButton
+                                    x:Name="rbtnById"
+                                    VerticalContentAlignment="Center"
+                                    Margin="5,5,0,0"
+                                    FontSize="14"
+                                    Width="116"
+                                    Content="By ID" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="spnlSearchBar" Margin="0,0,0,6" Orientation="Horizontal">
+                            <TextBox
+                                x:Name="txbxSearch"
+                                Width="260"
+                                Height="32"
+                                Margin="10,0,8,0">
+                                <TextBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="7" />
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                            <Button
+                                x:Name="btnGoSearch"
+                                Width="32"
+                                Height="32"
+                                Content="&gt;">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                        <ListBox x:Name="lstbxSearchResults" Height="450">
+                            <ListBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="7" />
+                                </Style>
+                            </ListBox.Resources>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+                <!--  Right: Details panel  -->
+                <Border
+                    Grid.Column="1"
+                    Margin="4,12,12,12"
+                    Padding="8"
+                    Background="White"
+                    CornerRadius="0,6,6,0">
+                    <ScrollViewer>
+                        <StackPanel x:Name="spnlDetails">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Text="Details" />
+                            <TextBlock
+                                x:Name="txtDetailsPlaceholder"
+                                Text="Select a result on the left to view details."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </Window>
