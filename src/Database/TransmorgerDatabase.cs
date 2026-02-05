@@ -24,15 +24,20 @@ internal static class TransmorgerDatabase
     /// <param name="tmpDir">Directory containing processed JSON files.</param>
     internal static void Build(string tmpDir)
     {
-        var patients = BuildPatientsComponent(tmpDir);
-        var providers = BuildProvidersComponent(tmpDir);
+        // Cache all file reads at the top level to avoid redundant I/O operations
+        var participantDetails = ReadJsonFile(tmpDir, "Visit_Details-Participant_Details.json") as List<Dictionary<string, object?>>;
+        var meetingDetails = ReadJsonFile(tmpDir, "Visit_Details-Meeting_Details.json") as List<Dictionary<string, object?>>;
+        var messageDeliveryStats = ReadJsonFile(tmpDir, "Message_Delivery-Message_Delivery_Stats.json") as List<Dictionary<string, object?>>;
+        
+        var patients = BuildPatientsComponent(tmpDir, participantDetails, messageDeliveryStats);
+        var providers = BuildProvidersComponent(tmpDir, participantDetails, meetingDetails);
         
         var database = new Dictionary<string, object?>
         {
             ["Summary"] = BuildSummaryComponent(tmpDir),
             ["Patients"] = patients,
             ["Providers"] = providers,
-            ["MeetingDetail"] = BuildMeetingDetailComponent(tmpDir, patients, providers),
+            ["MeetingDetail"] = BuildMeetingDetailComponent(tmpDir, meetingDetails, patients, providers),
             ["MeetingError"] = BuildMeetingErrorComponent(tmpDir, patients, providers),
             ["Messaging"] = new List<object>(), // Placeholder for component 4
             ["Meetings"] = new List<object>() // Placeholder for component 5
@@ -58,11 +63,11 @@ internal static class TransmorgerDatabase
 
     /// <summary>Builds the Patients component from Visit Details participant data.</summary>
     /// <param name="tmpDir">Directory containing source JSON files.</param>
+    /// <param name="participantDetails">Cached participant details data.</param>
+    /// <param name="messageDeliveryStats">Cached message delivery stats data.</param>
     /// <returns>List of unique patient records.</returns>
-    private static List<Dictionary<string, object?>> BuildPatientsComponent(string tmpDir)
+    private static List<Dictionary<string, object?>> BuildPatientsComponent(string tmpDir, List<Dictionary<string, object?>>? participantDetails, List<Dictionary<string, object?>>? messageDeliveryStats)
     {
-        var participantDetails = ReadJsonFile(tmpDir, "Visit_Details-Participant_Details.json") as List<Dictionary<string, object?>>;
-
         if (participantDetails == null)
         {
             return new List<Dictionary<string, object?>>();
@@ -107,13 +112,13 @@ internal static class TransmorgerDatabase
         AddEmailAddressesFromEmailStats(tmpDir, patientsByName);
 
         // Step 4: Add delivery success data from Message Delivery stats
-        AddDeliverySuccessFromMessageDeliveryStats(tmpDir, patientsByName);
+        AddDeliverySuccessFromMessageDeliveryStats(tmpDir, patientsByName, messageDeliveryStats);
 
         // Step 5: Add email delivery success data from Message Delivery stats
-        AddEmailDeliverySuccessFromMessageDeliveryStats(tmpDir, patientsByName);
+        AddEmailDeliverySuccessFromMessageDeliveryStats(tmpDir, patientsByName, messageDeliveryStats);
 
         // Step 6: Add meetings from Participant Details
-        AddMeetingsFromParticipantDetails(tmpDir, patientsByName);
+        AddMeetingsFromParticipantDetails(tmpDir, patientsByName, participantDetails);
 
         // Step 7: Convert phone number dictionary and email address dictionary to proper format
         return patientsByName.Values.Select(patient =>
@@ -154,20 +159,19 @@ internal static class TransmorgerDatabase
     }
 
     /// <summary>Builds the Providers component from Visit Details participant and meeting data.</summary>
-    /// <param name="tmpDir">Directory containing source JSON files.</param>
+    /// <param name="tmpDir">Directory for error file output.</param>
+    /// <param name="participantDetails">Cached participant details data.</param>
+    /// <param name="meetingDetails">Cached meeting details data.</param>
     /// <returns>List of unique provider records.</returns>
-    private static List<Dictionary<string, object?>> BuildProvidersComponent(string tmpDir)
+    private static List<Dictionary<string, object?>> BuildProvidersComponent(string tmpDir, List<Dictionary<string, object?>>? participantDetails, List<Dictionary<string, object?>>? meetingDetails)
     {
         var providersByName = new Dictionary<string, Dictionary<string, object?>>(StringComparer.OrdinalIgnoreCase);
 
         // Step 1: Build base provider records from participant details
-        AddProvidersFromParticipantDetails(tmpDir, providersByName);
+        AddProvidersFromParticipantDetails(providersByName, participantDetails);
 
-        // Step 2: Add provider IDs from meeting details
-        AddProviderIdsFromMeetingDetails(tmpDir, providersByName);
-
-        // Step 3: Add meeting IDs from meeting details
-        AddMeetingsFromMeetingDetails(tmpDir, providersByName);
+        // Step 2 & 3: Add provider IDs and meeting IDs from meeting details in one pass
+        AddProviderDataFromMeetingDetails(tmpDir, providersByName, meetingDetails);
 
         // Step 4: Convert to list and return
         return providersByName.Values.Select(provider => new Dictionary<string, object?>
@@ -179,14 +183,13 @@ internal static class TransmorgerDatabase
     }
 
     /// <summary>Builds the MeetingDetail component from Visit Details Meeting Details.</summary>
-    /// <param name="tmpDir">Directory containing source JSON files.</param>
+    /// <param name="tmpDir">Directory for error file output.</param>
+    /// <param name="meetingDetails">Cached meeting details data.</param>
     /// <param name="patients">List of patient records for validation.</param>
     /// <param name="providers">List of provider records for validation.</param>
     /// <returns>Dictionary of meeting details indexed by MeetingId.</returns>
-    private static Dictionary<string, object?> BuildMeetingDetailComponent(string tmpDir, List<Dictionary<string, object?>> patients, List<Dictionary<string, object?>> providers)
+    private static Dictionary<string, object?> BuildMeetingDetailComponent(string tmpDir, List<Dictionary<string, object?>>? meetingDetails, List<Dictionary<string, object?>> patients, List<Dictionary<string, object?>> providers)
     {
-        var meetingDetails = ReadJsonFile(tmpDir, "Visit_Details-Meeting_Details.json") as List<Dictionary<string, object?>>;
-
         if (meetingDetails == null)
         {
             return new Dictionary<string, object?>();
@@ -224,12 +227,7 @@ internal static class TransmorgerDatabase
                 
                 foreach (var providerName in providerNamesList)
                 {
-                    // Try different name format variations
-                    var matched = providerNames.Contains(providerName) ||
-                                providerNames.Contains(ReverseNameParts(providerName)) ||
-                                providerNames.Contains(NormalizeProviderName(providerName));
-                    
-                    if (!matched)
+                    if (!TryMatchProviderName(providerName, providerNames, out _))
                     {
                         validationErrors.Add($"MeetingId: {meetingId} | Provider not found: {providerName}");
                     }
@@ -362,12 +360,7 @@ internal static class TransmorgerDatabase
                 
                 foreach (var providerName in providerNamesList)
                 {
-                    // Try different name format variations
-                    var matched = providerNames.Contains(providerName) ||
-                                providerNames.Contains(ReverseNameParts(providerName)) ||
-                                providerNames.Contains(NormalizeProviderName(providerName));
-                    
-                    if (!matched)
+                    if (!TryMatchProviderName(providerName, providerNames, out _))
                     {
                         validationErrors.Add($"MeetingId: {meetingId} | ProviderName not found: {providerName}");
                     }
@@ -426,12 +419,10 @@ internal static class TransmorgerDatabase
     }
 
     /// <summary>Adds provider names from Visit Details Participant Details.</summary>
-    /// <param name="tmpDir">Directory containing JSON files.</param>
     /// <param name="providersByName">Dictionary of providers keyed by name.</param>
-    private static void AddProvidersFromParticipantDetails(string tmpDir, Dictionary<string, Dictionary<string, object?>> providersByName)
+    /// <param name="participantDetails">Cached participant details data.</param>
+    private static void AddProvidersFromParticipantDetails(Dictionary<string, Dictionary<string, object?>> providersByName, List<Dictionary<string, object?>>? participantDetails)
     {
-        var participantDetails = ReadJsonFile(tmpDir, "Visit_Details-Participant_Details.json") as List<Dictionary<string, object?>>;
-
         if (participantDetails == null)
         {
             return;
@@ -466,19 +457,19 @@ internal static class TransmorgerDatabase
         }
     }
 
-    /// <summary>Adds provider IDs to provider records from Visit Details Meeting Details.</summary>
-    /// <param name="tmpDir">Directory containing JSON files.</param>
+    /// <summary>Consolidates provider IDs and meeting IDs from Visit Details Meeting Details in a single pass.</summary>
+    /// <param name="tmpDir">Directory for error file output.</param>
     /// <param name="providersByName">Dictionary of providers keyed by name.</param>
-    private static void AddProviderIdsFromMeetingDetails(string tmpDir, Dictionary<string, Dictionary<string, object?>> providersByName)
+    /// <param name="meetingDetails">Cached meeting details data.</param>
+    private static void AddProviderDataFromMeetingDetails(string tmpDir, Dictionary<string, Dictionary<string, object?>> providersByName, List<Dictionary<string, object?>>? meetingDetails)
     {
-        var meetingDetails = ReadJsonFile(tmpDir, "Visit_Details-Meeting_Details.json") as List<Dictionary<string, object?>>;
-
         if (meetingDetails == null)
         {
             return;
         }
 
         var unmatchedProviders = new HashSet<string>();
+        var unmatchedMeetingIds = new HashSet<string>();
         var debugInfo = new List<string>();
 
         foreach (var meeting in meetingDetails)
@@ -510,62 +501,53 @@ internal static class TransmorgerDatabase
             debugInfo.Add($"Split Names: [{string.Join(" | ", namesList)}]");
             debugInfo.Add($"Split IDs: [{string.Join(" | ", idsList)}]");
 
+            var meetingId = GetStringValue(meeting, "Meeting ID") ?? GetStringValue(meeting, "MeetingId");
+            bool meetingMatched = false;
+
             // Match names with IDs (assuming they're in the same order)
             for (int i = 0; i < namesList.Length; i++)
             {
                 var providerName = namesList[i];
                 var providerId = (i < idsList.Length) ? idsList[i] : null;
 
-                // Try to match provider name in different formats
-                Dictionary<string, object?>? provider = null;
-                string? matchedName = null;
-
-                // Try 1: As-is
-                if (providersByName.TryGetValue(providerName, out provider))
+                if (TryMatchProviderInDictionary(providerName, providersByName, out var provider, out var matchedName))
                 {
-                    matchedName = providerName;
-                    debugInfo.Add($"Original: [{providerName}] -> Matched as-is -> ID: [{providerId}]");
-                }
-                // Try 2: Reverse "LAST FIRST" to "FIRST LAST" format
-                else
-                {
-                    var reversedName = ReverseNameParts(providerName);
-                    if (providersByName.TryGetValue(reversedName, out provider))
-                    {
-                        matchedName = reversedName;
-                        debugInfo.Add($"Original: [{providerName}] -> Reversed: [{reversedName}] -> ID: [{providerId}]");
-                    }
-                    // Try 3: Normalize "LAST, FIRST" format
-                    else
-                    {
-                        var normalizedName = NormalizeProviderName(providerName);
-                        if (providersByName.TryGetValue(normalizedName, out provider))
-                        {
-                            matchedName = normalizedName;
-                            debugInfo.Add($"Original: [{providerName}] -> Normalized: [{normalizedName}] -> ID: [{providerId}]");
-                        }
-                    }
-                }
-
-                if (provider != null && matchedName != null)
-                {
+                    debugInfo.Add($"Original: [{providerName}] -> Matched: [{matchedName}] -> ID: [{providerId}]");
                     debugInfo.Add($"  MATCHED! Setting ID for [{matchedName}]");
-                    // Only set if not already set, or if this one is not null
+                    
+                    // Set provider ID if not already set
                     if (provider["ProviderId"] == null && !string.IsNullOrWhiteSpace(providerId))
                     {
                         provider["ProviderId"] = providerId;
+                    }
+
+                    // Add meeting ID if present and not already added
+                    if (!string.IsNullOrWhiteSpace(meetingId))
+                    {
+                        var meetings = (List<string>)provider["Meetings"]!;
+                        if (!meetings.Contains(meetingId))
+                        {
+                            meetings.Add(meetingId);
+                        }
+                        meetingMatched = true;
                     }
                 }
                 else
                 {
                     debugInfo.Add($"  NOT MATCHED. Available providers: [{string.Join(", ", providersByName.Keys.Take(5))}...]");
-                    // Provider from meeting details doesn't exist in participant details
                     if (!unmatchedProviders.Contains(providerName))
                     {
                         unmatchedProviders.Add($"{providerName} (tried all formats)");
                     }
                 }
             }
+
+            // Track unmatched meeting IDs
+            if (!string.IsNullOrWhiteSpace(meetingId) && !meetingMatched)
+            {
+                unmatchedMeetingIds.Add(meetingId);
+            }
+
             debugInfo.Add("---");
         }
 
@@ -577,6 +559,11 @@ internal static class TransmorgerDatabase
         if (unmatchedProviders.Count > 0)
         {
             WriteErrorFile(tmpDir, "vdmd-provider.error", unmatchedProviders.ToList());
+        }
+
+        if (unmatchedMeetingIds.Count > 0)
+        {
+            WriteErrorFile(tmpDir, "vsmd-meetingid.error", unmatchedMeetingIds.ToList());
         }
     }
 
@@ -626,97 +613,76 @@ internal static class TransmorgerDatabase
         return name;
     }
 
-    /// <summary>Adds meeting IDs to provider records from Visit Details Meeting Details.</summary>
-    /// <param name="tmpDir">Directory containing JSON files.</param>
-    /// <param name="providersByName">Dictionary of providers keyed by name.</param>
-    private static void AddMeetingsFromMeetingDetails(string tmpDir, Dictionary<string, Dictionary<string, object?>> providersByName)
+    /// <summary>Tries to match a provider name in various formats against a HashSet.</summary>
+    /// <param name="providerName">Provider name to match.</param>
+    /// <param name="providerNames">HashSet of known provider names.</param>
+    /// <param name="matchedName">The matched name if found.</param>
+    /// <returns>True if a match was found.</returns>
+    private static bool TryMatchProviderName(string providerName, HashSet<string> providerNames, out string? matchedName)
     {
-        var meetingDetails = ReadJsonFile(tmpDir, "Visit_Details-Meeting_Details.json") as List<Dictionary<string, object?>>;
-
-        if (meetingDetails == null)
+        matchedName = null;
+        
+        // Try as-is
+        if (providerNames.Contains(providerName))
         {
-            return;
+            matchedName = providerName;
+            return true;
         }
-
-        var unmatchedMeetingIds = new HashSet<string>();
-
-        foreach (var meeting in meetingDetails)
+        
+        // Try reversed
+        var reversed = ReverseNameParts(providerName);
+        if (providerNames.Contains(reversed))
         {
-            // Try different possible field name variations
-            var providerNames = GetStringValue(meeting, "Provider/Staff Names")
-                             ?? GetStringValue(meeting, "Provider/Staff Name")
-                             ?? GetStringValue(meeting, "Provider Names")
-                             ?? GetStringValue(meeting, "Staff Names");
-
-            var meetingId = GetStringValue(meeting, "Meeting ID")
-                         ?? GetStringValue(meeting, "MeetingId");
-
-            if (string.IsNullOrWhiteSpace(providerNames) || string.IsNullOrWhiteSpace(meetingId))
-            {
-                continue;
-            }
-
-            // Split provider names - use semicolon first, then comma as fallback delimiter
-            char delimiter = providerNames.Contains(';') ? ';' : ',';
-            var namesList = providerNames.Split(delimiter).Select(n => n.Trim()).Where(n => !string.IsNullOrWhiteSpace(n)).ToArray();
-
-            bool meetingMatched = false;
-
-            // Match names with MeetingId
-            foreach (var providerName in namesList)
-            {
-                // Try to match provider name in different formats
-                Dictionary<string, object?>? provider = null;
-
-                // Try 1: As-is
-                if (providersByName.TryGetValue(providerName, out provider))
-                {
-                    // Match found
-                }
-                // Try 2: Reverse "LAST FIRST" to "FIRST LAST" format
-                else
-                {
-                    var reversedName = ReverseNameParts(providerName);
-                    if (providersByName.TryGetValue(reversedName, out provider))
-                    {
-                        // Match found
-                    }
-                    // Try 3: Normalize "LAST, FIRST" format
-                    else
-                    {
-                        var normalizedName = NormalizeProviderName(providerName);
-                        if (providersByName.TryGetValue(normalizedName, out provider))
-                        {
-                            // Match found
-                        }
-                    }
-                }
-
-                if (provider != null)
-                {
-                    var meetings = (List<string>)provider["Meetings"]!;
-                    
-                    // Only add if not already present
-                    if (!meetings.Contains(meetingId))
-                    {
-                        meetings.Add(meetingId);
-                    }
-                    
-                    meetingMatched = true;
-                }
-            }
-
-            // If no provider matched this meeting, track it as an error
-            if (!meetingMatched && !unmatchedMeetingIds.Contains(meetingId))
-            {
-                unmatchedMeetingIds.Add(meetingId);
-            }
+            matchedName = reversed;
+            return true;
         }
-
-        if (unmatchedMeetingIds.Count > 0)
+        
+        // Try normalized
+        var normalized = NormalizeProviderName(providerName);
+        if (providerNames.Contains(normalized))
         {
-            WriteErrorFile(tmpDir, "vsmd-meetingid.error", unmatchedMeetingIds.ToList());
+            matchedName = normalized;
+            return true;
         }
+        
+        return false;
+    }
+
+    /// <summary>Tries to match a provider name in various formats against a Dictionary.</summary>
+    /// <param name="providerName">Provider name to match.</param>
+    /// <param name="providersByName">Dictionary of providers keyed by name.</param>
+    /// <param name="provider">The matched provider dictionary if found.</param>
+    /// <param name="matchedName">The matched name if found.</param>
+    /// <returns>True if a match was found.</returns>
+    private static bool TryMatchProviderInDictionary(string providerName, Dictionary<string, Dictionary<string, object?>> providersByName, out Dictionary<string, object?>? provider, out string? matchedName)
+    {
+        provider = null;
+        matchedName = null;
+        
+        // Try as-is
+        if (providersByName.TryGetValue(providerName, out provider))
+        {
+            matchedName = providerName;
+            return true;
+        }
+        
+        // Try reversed
+        var reversed = ReverseNameParts(providerName);
+        if (providersByName.TryGetValue(reversed, out provider))
+        {
+            matchedName = reversed;
+            return true;
+        }
+        
+        // Try normalized
+        var normalized = NormalizeProviderName(providerName);
+        if (providersByName.TryGetValue(normalized, out provider))
+        {
+            matchedName = normalized;
+            return true;
+        }
+        
+        return false;
     }
 
     /// <summary>Adds phone numbers with failed meeting details to patient records from SMS stats.</summary>
@@ -897,11 +863,10 @@ internal static class TransmorgerDatabase
     /// <summary>Adds delivery success data to phone numbers from Message Delivery Stats.</summary>
     /// <param name="tmpDir">Directory containing JSON files.</param>
     /// <param name="patientsByName">Dictionary of patients keyed by name.</param>
-    private static void AddDeliverySuccessFromMessageDeliveryStats(string tmpDir, Dictionary<string, Dictionary<string, object?>> patientsByName)
+    /// <param name="messageDeliveryStats">Cached message delivery stats data.</param>
+    private static void AddDeliverySuccessFromMessageDeliveryStats(string tmpDir, Dictionary<string, Dictionary<string, object?>> patientsByName, List<Dictionary<string, object?>>? messageDeliveryStats)
     {
-        var deliveryStats = ReadJsonFile(tmpDir, "Message_Delivery-Message_Delivery_Stats.json") as List<Dictionary<string, object?>>;
-
-        if (deliveryStats == null)
+        if (messageDeliveryStats == null)
         {
             return;
         }
@@ -923,7 +888,7 @@ internal static class TransmorgerDatabase
         var unmatchedPhoneNumbers = new HashSet<string>();
 
         // Process each delivery record
-        foreach (var record in deliveryStats)
+        foreach (var record in messageDeliveryStats)
         {
             var deliveryType = GetStringValue(record, "Delivery Type");
 
@@ -995,11 +960,10 @@ internal static class TransmorgerDatabase
     /// <summary>Adds delivery success data to email addresses from Message Delivery Stats.</summary>
     /// <param name="tmpDir">Directory containing JSON files.</param>
     /// <param name="patientsByName">Dictionary of patients keyed by name.</param>
-    private static void AddEmailDeliverySuccessFromMessageDeliveryStats(string tmpDir, Dictionary<string, Dictionary<string, object?>> patientsByName)
+    /// <param name="messageDeliveryStats">Cached message delivery stats data.</param>
+    private static void AddEmailDeliverySuccessFromMessageDeliveryStats(string tmpDir, Dictionary<string, Dictionary<string, object?>> patientsByName, List<Dictionary<string, object?>>? messageDeliveryStats)
     {
-        var deliveryStats = ReadJsonFile(tmpDir, "Message_Delivery-Message_Delivery_Stats.json") as List<Dictionary<string, object?>>;
-
-        if (deliveryStats == null)
+        if (messageDeliveryStats == null)
         {
             return;
         }
@@ -1021,7 +985,7 @@ internal static class TransmorgerDatabase
         var unmatchedEmailAddresses = new HashSet<string>();
 
         // Process each delivery record
-        foreach (var record in deliveryStats)
+        foreach (var record in messageDeliveryStats)
         {
             var deliveryType = GetStringValue(record, "Delivery Type");
 
@@ -1087,10 +1051,9 @@ internal static class TransmorgerDatabase
     /// <summary>Adds meeting information to patient records from Visit Details Participant Details.</summary>
     /// <param name="tmpDir">Directory containing JSON files.</param>
     /// <param name="patientsByName">Dictionary of patients keyed by name.</param>
-    private static void AddMeetingsFromParticipantDetails(string tmpDir, Dictionary<string, Dictionary<string, object?>> patientsByName)
+    /// <param name="participantDetails">Cached participant details data.</param>
+    private static void AddMeetingsFromParticipantDetails(string tmpDir, Dictionary<string, Dictionary<string, object?>> patientsByName, List<Dictionary<string, object?>>? participantDetails)
     {
-        var participantDetails = ReadJsonFile(tmpDir, "Visit_Details-Participant_Details.json") as List<Dictionary<string, object?>>;
-
         if (participantDetails == null)
         {
             return;
