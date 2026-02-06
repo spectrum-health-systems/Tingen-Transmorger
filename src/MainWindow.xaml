@@ -28,8 +28,8 @@
                 Margin="100,8,0,0"
                 Padding="0,0,0,0"
                 VerticalAlignment="Top"
-                Content="00/00/0000 - 00/00/0000"
                 VerticalContentAlignment="Center"
+                Content="00/00/0000 - 00/00/0000"
                 FontSize="20"
                 FontWeight="SemiBold">
                 <Label.Resources>
@@ -105,21 +105,24 @@
                             <StackPanel x:Name="spnlSearchByNameOrId" Orientation="Vertical">
                                 <RadioButton
                                     x:Name="rbtnByName"
-                                    Margin="5,12,0,0"
-                                    FontSize="14"
-                                    VerticalContentAlignment="Center"
                                     Width="116"
-                                    Content="By name" />
+                                    Margin="5,12,0,0"
+                                    VerticalContentAlignment="Center"
+                                    Content="By name"
+                                    FontSize="14" />
                                 <RadioButton
                                     x:Name="rbtnById"
-                                    VerticalContentAlignment="Center"
-                                    Margin="5,5,0,0"
-                                    FontSize="14"
                                     Width="116"
-                                    Content="By ID" />
+                                    Margin="5,5,0,0"
+                                    VerticalContentAlignment="Center"
+                                    Content="By ID"
+                                    FontSize="14" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel x:Name="spnlSearchBar" Margin="0,0,0,6" Orientation="Horizontal">
+                        <StackPanel
+                            x:Name="spnlSearchBar"
+                            Margin="0,0,0,6"
+                            Orientation="Horizontal">
                             <TextBox
                                 x:Name="txbxSearch"
                                 Width="260"

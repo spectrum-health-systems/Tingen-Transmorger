@@ -1,5 +1,5 @@
-﻿// 260205_code
-// 260205_documentation
+﻿// 260206_code
+// 260206_documentation
 
 using System.IO;
 using System.Windows;
@@ -8,14 +8,18 @@ using TingenTransmorger.Database;
 
 namespace TingenTransmorger;
 
-/// <summary>Entry class for Tingen Transmorger.</summary>
+/// <summary>
+/// Entry class for Tingen Transmorger.
+/// </summary>
 public partial class MainWindow : Window
 {
     public TransmorgerDatabase TransMorgDb { get; set; }
     private enum SearchMode { Patient, Provider, Meeting }
     private SearchMode _searchMode = SearchMode.Patient;
 
-    /// <summary>Entry method for Tingen Transmorger.</summary>
+    /// <summary>
+    /// Entry method for Tingen Transmorger.
+    /// </summary>
     public MainWindow()
     {
         InitializeComponent();
@@ -46,7 +50,9 @@ public partial class MainWindow : Window
         };
     }
 
-    /// <summary>Performs application startup tasks.</summary>
+    /// <summary>
+    /// Performs application startup tasks.
+    /// </summary>
     private void StartApp()
     {
         var config = Configuration.Load();
@@ -61,18 +67,20 @@ public partial class MainWindow : Window
 
         var localDbPath = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
         TransMorgDb = TransmorgerDatabase.Load(localDbPath);
-
-        var test =0;
     }
 
-    /// <summary>Stops the Tingen Muno application.</summary>
+    /// <summary>
+    /// Stops the application.
+    /// </summary>
+    /// <param name="msgExit">
+    /// An optional exit message to display to the user.
+    /// </param>
     /// <remarks>
-    ///     If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox before
-    ///     the application exits.<br/>
-    ///     <br/>
-    ///     This method is public because it is called from other methods outside the <see cref="MainWindow"/> class.
+    /// If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox before the
+    /// application exits.<br/>
+    /// <br/>
+    /// This method is public because it is called from other methods outside the <see cref="MainWindow"/> class.
     /// </remarks>
-    /// <param name="msgExit">An optional exit message to display to the user.</param>
     public static void StopApp(string msgExit = "")
     {
         if (!string.IsNullOrEmpty(msgExit))
