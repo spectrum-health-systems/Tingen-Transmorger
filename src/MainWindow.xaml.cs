@@ -14,8 +14,8 @@ namespace TingenTransmorger;
 public partial class MainWindow : Window
 {
     public TransmorgerDatabase TransMorgDb { get; set; }
-    private enum SearchMode { Patient, Provider, Meeting }
-    private SearchMode _searchMode = SearchMode.Patient;
+    //private enum SearchMode { Patient, Provider, Meeting }
+    //private SearchMode _searchMode = SearchMode.Patient;
 
     /// <summary>
     /// Entry method for Tingen Transmorger.
@@ -25,7 +25,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         StartApp();
 
-        btnSearchToggle.Click += BtnSearchToggle_Click;
+        //btnSearchToggle.Click += BtnSearchToggle_Click;
     }
 
     /// <summary>
@@ -44,7 +44,10 @@ public partial class MainWindow : Window
         }
 
         var localDbPath = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
+
         TransMorgDb = TransmorgerDatabase.Load(localDbPath);
+
+        rbtnByName.IsChecked = true;
     }
 
     /// <summary>
@@ -75,28 +78,24 @@ public partial class MainWindow : Window
 
     private void SearchToggleClick()
     {
-        // Cycle through Patient -> Provider -> Meeting
-        _searchMode = _searchMode switch
+        switch (btnSearchToggle.Content)
         {
-            SearchMode.Patient => SearchMode.Provider,
-            SearchMode.Provider => SearchMode.Meeting,
-            SearchMode.Meeting => SearchMode.Patient,
-            _ => SearchMode.Patient
-        };
+            case "Patient Search":
+                btnSearchToggle.Content = "Provider Search";
+                break;
 
-        // Update button text
-        btnSearchToggle.Content = _searchMode switch
-        {
-            SearchMode.Patient => "Patient Search",
-            SearchMode.Provider => "Provider Search",
-            SearchMode.Meeting => "Meeting Search",
-            _ => "Patient Search"
-        };
+            case "Provider Search":
+                btnSearchToggle.Content = "Meeting Search";
+                break;
+
+            default:
+                btnSearchToggle.Content = "Patient Search";
+                break;
+        }
     }
 
     /*
      * EVENT HANDLERS
      */
-    private void BtnSearchToggle_Click(object? sender, RoutedEventArgs e) => SearchToggleClick();
-
+    private void btnSearchToggle_Click(object? sender, RoutedEventArgs e) => SearchToggleClick();
 }
