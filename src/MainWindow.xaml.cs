@@ -25,29 +25,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         StartApp();
 
-        // Wire search toggle button
         btnSearchToggle.Click += BtnSearchToggle_Click;
-    }
-
-    private void BtnSearchToggle_Click(object? sender, RoutedEventArgs e)
-    {
-        // Cycle through Patient -> Provider -> Meeting
-        _searchMode = _searchMode switch
-        {
-            SearchMode.Patient => SearchMode.Provider,
-            SearchMode.Provider => SearchMode.Meeting,
-            SearchMode.Meeting => SearchMode.Patient,
-            _ => SearchMode.Patient
-        };
-
-        // Update button text
-        btnSearchToggle.Content = _searchMode switch
-        {
-            SearchMode.Patient => "Patient Search",
-            SearchMode.Provider => "Provider Search",
-            SearchMode.Meeting => "Meeting Search",
-            _ => "Patient Search"
-        };
     }
 
     /// <summary>
@@ -90,4 +68,35 @@ public partial class MainWindow : Window
 
         Environment.Exit(0);
     }
+
+    /*
+     * EVENTS
+     */
+
+    private void SearchToggleClick()
+    {
+        // Cycle through Patient -> Provider -> Meeting
+        _searchMode = _searchMode switch
+        {
+            SearchMode.Patient => SearchMode.Provider,
+            SearchMode.Provider => SearchMode.Meeting,
+            SearchMode.Meeting => SearchMode.Patient,
+            _ => SearchMode.Patient
+        };
+
+        // Update button text
+        btnSearchToggle.Content = _searchMode switch
+        {
+            SearchMode.Patient => "Patient Search",
+            SearchMode.Provider => "Provider Search",
+            SearchMode.Meeting => "Meeting Search",
+            _ => "Patient Search"
+        };
+    }
+
+    /*
+     * EVENT HANDLERS
+     */
+    private void BtnSearchToggle_Click(object? sender, RoutedEventArgs e) => SearchToggleClick();
+
 }
