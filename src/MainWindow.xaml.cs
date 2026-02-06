@@ -2,6 +2,7 @@
 // 260206_documentation
 
 using System.IO;
+using System.Text.Json;
 using System.Windows;
 using TingenTransmorger.Core;
 using TingenTransmorger.Database;
@@ -51,6 +52,7 @@ public partial class MainWindow : Window
         TransMorgDb = TransmorgerDatabase.Load(localDbPath);
 
         rbtnByName.IsChecked = true;
+        spnlPatientDetails.Visibility = Visibility.Collapsed;
     }
 
     /// <summary>
@@ -110,6 +112,10 @@ public partial class MainWindow : Window
         // Clear search box and results when toggling
         txbxSearch.Text = string.Empty;
         lstbxSearchResults.Items.Clear();
+
+        // Clear and hide details panel
+        //txtDetailsPlaceholder.Visibility = Visibility.Visible;
+        spnlPatientDetails.Visibility = Visibility.Collapsed;
     }
 
     /// <summary>Handles the search text changed event.</summary>
@@ -168,6 +174,101 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>Handles the selection changed event for the search results list.</summary>
+    /// <remarks>
+    /// <para>
+    /// This method is called when the user selects a patient from the search results.
+    /// It retrieves the full patient details and displays them in the details panel.
+    /// </para>
+    /// </remarks>
+    private void SearchResultSelected()
+    {
+        // Hide placeholder and show patient details section
+        //txtDetailsPlaceholder.Visibility = Visibility.Collapsed;
+        spnlPatientDetails.Visibility = Visibility.Visible;
+
+        // Get the selected item
+        var selectedItem = lstbxSearchResults.SelectedItem as string;
+        if (string.IsNullOrWhiteSpace(selectedItem))
+        {
+            return;
+        }
+
+        // Parse the selected item to extract PatientName and PatientId
+        // Format is "PatientName (PatientId)"
+        var lastParenIndex = selectedItem.LastIndexOf('(');
+        if (lastParenIndex == -1)
+        {
+            return;
+        }
+
+        var patientName = selectedItem.Substring(0, lastParenIndex).Trim();
+        var patientId = selectedItem.Substring(lastParenIndex + 1).TrimEnd(')').Trim();
+
+        // Get patient details from database
+        var patientDetails = TransMorgDb.GetPatientDetails(patientName, patientId);
+        if (patientDetails == null)
+        {
+            return;
+        }
+
+        // Display patient name and ID
+        lblPatientNameValue.Content = patientName;
+        lblPatientIdValue.Content = patientId;
+
+        // Display phone numbers
+        var phoneNumbers = new List<string>();
+        if (patientDetails.Value.TryGetProperty("PhoneNumbers", out var phoneNumbersArray))
+        {
+            if (phoneNumbersArray.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var phoneEntry in phoneNumbersArray.EnumerateArray())
+                {
+                    if (phoneEntry.TryGetProperty("Number", out var numberElem))
+                    {
+                        var number = numberElem.GetString();
+                        if (!string.IsNullOrWhiteSpace(number))
+                        {
+                            phoneNumbers.Add(number);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (phoneNumbers.Count == 0)
+        {
+            phoneNumbers.Add("No phone numbers on file");
+        }
+
+
+        // Display email addresses
+        var emailAddresses = new List<string>();
+        if (patientDetails.Value.TryGetProperty("EmailAddresses", out var emailAddressesArray))
+        {
+            if (emailAddressesArray.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var emailEntry in emailAddressesArray.EnumerateArray())
+                {
+                    if (emailEntry.TryGetProperty("Address", out var addressElem))
+                    {
+                        var address = addressElem.GetString();
+                        if (!string.IsNullOrWhiteSpace(address))
+                        {
+                            emailAddresses.Add(address);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (emailAddresses.Count == 0)
+        {
+            emailAddresses.Add("No email addresses on file");
+        }
+
+    }
+
     /*
      * EVENT HANDLERS
      */
@@ -176,4 +277,6 @@ public partial class MainWindow : Window
     private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => SearchTextChanged();
 
     private void rbtnSearch_Checked(object sender, RoutedEventArgs e) => SearchTextChanged();
+
+    private void lstbxSearchResults_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => SearchResultSelected();
 }

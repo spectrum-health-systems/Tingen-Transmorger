@@ -136,7 +136,10 @@
                                 </Button.Resources>
                             </Button>
                         </StackPanel>
-                        <ListBox x:Name="lstbxSearchResults" Height="450">
+                        <ListBox
+                            x:Name="lstbxSearchResults"
+                            Height="450"
+                            SelectionChanged="lstbxSearchResults_SelectionChanged">
                             <ListBox.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="7" />
@@ -147,24 +150,197 @@
                 </Border>
                 <!--  Right: Details panel  -->
                 <Border
+                    x:Name="brdrRightPanel"
                     Grid.Column="1"
                     Margin="4,12,12,12"
                     Padding="8"
                     Background="White"
                     CornerRadius="0,6,6,0">
-                    <ScrollViewer>
-                        <StackPanel x:Name="spnlDetails">
-                            <TextBlock
-                                Margin="0,0,0,8"
-                                FontSize="18"
-                                FontWeight="Bold"
-                                Text="Details" />
-                            <TextBlock
-                                x:Name="txtDetailsPlaceholder"
-                                Text="Select a result on the left to view details."
-                                TextWrapping="Wrap" />
+                    <StackPanel x:Name="spnlDetailsMain">
+                        <!--
+                            Patient Details Section
+                            This is what should be visible/collapsed when showing/hiding patient details.
+                        -->
+                        <StackPanel
+                            x:Name="spnlPatientDetails"
+                            Height="100"
+                            Margin="0"
+                            Background="White"
+                            Orientation="Horizontal">
+                            <StackPanel x:Name="spnlPatientNameAndId" Orientation="Vertical">
+                                <Label
+                                    x:Name="lblPatientHeader"
+                                    Width="100"
+                                    Margin="0,0,0,0"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="Black"
+                                    BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Content="PATIENT"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Foreground="White" Height="64">
+                                    <Label.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5,0,0,5" />
+                                        </Style>
+                                    </Label.Resources>
+                                </Label>
+
+                            </StackPanel>
+                            <StackPanel x:Name="spnlPatientHeaderAndIdKey" Orientation="vertical">
+
+
+                                <!--  Patient Name  -->
+
+
+                                <Label
+                                    x:Name="lblPatientNameValue"
+                                    Height="32"
+                                    Margin="0,0,0,0"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,0"
+                                    Content="Christopher Connerney"
+                                    FontSize="16"
+                                    FontWeight="SemiBold" Width="250">
+                                    <Label.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="0,5,0,0" />
+                                        </Style>
+                                    </Label.Resources>
+                                </Label>
+                                <Label
+                                    x:Name="lblPatientIdValue"
+                                    Width="250"
+                                    Margin="0,0,0,0"
+                                    Height="32"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="White"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,0,1,1"
+                                    Content="123456789"
+                                    FontSize="14"
+                                    FontWeight="Regular"
+                                    Foreground="Black">
+                                    <Label.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="0,0,5,0" />
+                                        </Style>
+                                    </Label.Resources>
+                                </Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel x:Name="spnlPatientPhone" Orientation="Horizontal">
+                                    <Label
+                                        x:Name="lblPatientPhoneKey"
+                                        Width="60"
+                                        Height="30"
+                                        Margin="5,0,0,4"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        Background="Black"
+                                        BorderBrush="Black"
+                                        BorderThickness="1"
+                                        Content="Phone"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="White">
+                                        <Label.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5,0,0,5" />
+                                            </Style>
+                                        </Label.Resources>
+                                    </Label>
+                                    <Label
+                                        x:Name="lblPatientPhoneValue"
+                                        Width="340"
+                                        Height="30"
+                                        Margin="0,0,0,4"
+                                        Padding="0,0,0,0"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        BorderBrush="Black"
+                                        BorderThickness="1,1,0,1"
+                                        Content="555-555-5555"
+                                        FontSize="16"
+                                        FontWeight="SemiBold">
+                                        <Label.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="0,0,0,0" />
+                                            </Style>
+                                        </Label.Resources>
+                                    </Label>
+                                    <Button
+                                        x:Name="btnPhoneDetails"
+                                        Width="32"
+                                        Height="30"
+                                        Margin="0,0,0,4">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="0,5,5,0" />
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel x:Name="spnlPatientEmail" Orientation="Horizontal">
+                                    <Label
+                                        x:Name="lblPatientEmailKey"
+                                        Width="60"
+                                        Height="30"
+                                        Margin="5,0,0,0"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        Background="Black"
+                                        BorderBrush="Black"
+                                        BorderThickness="1"
+                                        Content="Email"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="White">
+                                        <Label.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="5,0,0,5" />
+                                            </Style>
+                                        </Label.Resources>
+                                    </Label>
+                                    <Label
+                                        x:Name="lblPatientEmailValue"
+                                        Width="340"
+                                        Height="30"
+                                        Margin="0,0,0,0"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        BorderBrush="Black"
+                                        BorderThickness="1,1,0,1"
+                                        Content="this-is-an-email@acolor-healthsystems-place.org"
+                                        FontSize="12"
+                                        FontWeight="Regular">
+                                        <Label.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="0,0,0,0" />
+                                            </Style>
+                                        </Label.Resources>
+                                    </Label>
+                                    <Button
+                                        x:Name="btnEmailDetails"
+                                        Width="32"
+                                        Height="30"
+                                        Margin="0,0,0,0">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="0,5,5,0" />
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
-                    </ScrollViewer>
+                    </StackPanel>
+
                 </Border>
             </Grid>
         </Border>

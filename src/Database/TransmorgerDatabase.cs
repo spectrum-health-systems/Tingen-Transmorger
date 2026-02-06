@@ -115,6 +115,35 @@ public class TransmorgerDatabase
         return patients;
     }
 
+    /// <summary>Gets detailed information for a specific patient.</summary>
+    /// <param name="patientName">The name of the patient.</param>
+    /// <param name="patientId">The ID of the patient.</param>
+    /// <returns>JsonElement containing the full patient record, or null if not found.</returns>
+    public JsonElement? GetPatientDetails(string patientName, string patientId)
+    {
+        if (!_hasData)
+            return null;
+
+        if (!_jsonRoot.TryGetProperty("Patients", out var patientsArray))
+            return null;
+
+        if (patientsArray.ValueKind != JsonValueKind.Array)
+            return null;
+
+        foreach (var patient in patientsArray.EnumerateArray())
+        {
+            var name = patient.TryGetProperty("PatientName", out var nameElem) ? nameElem.GetString() : null;
+            var id = patient.TryGetProperty("PatientId", out var idElem) ? idElem.GetString() : null;
+
+            if (name == patientName && id == patientId)
+            {
+                return patient;
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>Builds the complete transmorger.json file from processed JSON reports.</summary>
     /// <param name="tmpDir">Directory containing processed JSON files.</param>
     internal static void Build(string tmpDir, string masterDbDir)
