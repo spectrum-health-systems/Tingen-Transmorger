@@ -55,6 +55,18 @@ public partial class MainWindow : Window
 
         if (config.Mode.Trim().ToLower() == "admin")
         {
+            MessageBoxResult result = MessageBox.Show(
+                "Would you like to rebuild the database?",
+                "Admin Mode",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.No)
+            {
+                // If user chooses not to rebuild, just return
+                return;
+            }
+
             // Hide the main window during database rebuild
             this.Hide();
 
@@ -103,7 +115,43 @@ public partial class MainWindow : Window
             });
         }
 
+        // Check if MasterDb is newer than LocalDb and offer to upgrade
         var localDbPath = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
+        var masterDbPath = Path.Combine(config.StandardDirectories["MasterDb"], "transmorger.db");
+
+        if (File.Exists(masterDbPath) && File.Exists(localDbPath))
+        {
+            var masterDbDate = File.GetLastWriteTime(masterDbPath);
+            var localDbDate = File.GetLastWriteTime(localDbPath);
+
+            if (masterDbDate > localDbDate)
+            {
+                MessageBoxResult upgradeResult = MessageBox.Show(
+                    $"A newer database version is available.\n\nMaster Database: {masterDbDate}\nLocal Database: {localDbDate}\n\nWould you like to upgrade your local database?",
+                    "Database Upgrade Available",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (upgradeResult == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        File.Copy(masterDbPath, localDbPath, overwrite: true);
+                        MessageBox.Show(
+                            "Database upgraded successfully.",
+                            "Upgrade Complete",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMessage = $"Failed to upgrade database:\n{ex.Message}";
+                        StopApp(errorMessage);
+                        return;
+                    }
+                }
+            }
+        }
 
         try
         {
@@ -320,6 +368,13 @@ public partial class MainWindow : Window
                         var number = numberElem.GetString();
                         if (!string.IsNullOrWhiteSpace(number))
                         {
+                            // Remove non-digits
+                            var digits = new string(number.Where(char.IsDigit).ToArray());
+                            // Format as ###-###-#### if 10 digits
+                            if (digits.Length == 10)
+                            {
+                                number = $"{digits.Substring(0, 3)}-{digits.Substring(3, 3)}-{digits.Substring(6, 4)}";
+                            }
                             phoneNumbers.Add(number);
                         }
                     }

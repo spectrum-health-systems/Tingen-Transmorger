@@ -1,21 +1,23 @@
 # Tingen Muno: Development Notes
 
-- [X] Building the database when it exists in the master directory = error.
-- [ ] Getting latest master DB
+
 - [ ] Break up TransmorgerDatabase.cs
 - [ ] Clean up Database classes
-- [X] Change version to vx.x.x.x
+
 - [ ] Details for phone messages
 - [ ] Details for email messages
 - [ ] Details for all messages
 - [ ] Make sure controls clear when they are supposed to
-- [ ] Collapse window components correctly
 - [ ] Smaller final database
 - [ ] Show building process
 - [ ] SHFB
-- [X] Remove leading "+1" on phone numbers
-- [ ] Add "-" to phone numbers
 
+- [X] Add "-" to phone numbers
+- [X] Remove leading "+1" on phone numbers
+- [X] Change version to vx.x.x.x
+- [X] Building the database when it exists in the master directory = error.
+- [X] Getting latest master DB
+- [X] Collapse window components correctly
 
 
 ## Settings
