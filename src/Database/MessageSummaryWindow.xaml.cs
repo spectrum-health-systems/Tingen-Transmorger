@@ -32,16 +32,18 @@ public partial class MessageSummaryWindow : Window
         // Add SMS Failures
         foreach (var failure in smsFailures)
         {
+            var formattedStartTime = FormatStartTime(failure.ScheduledStartTime);
+            
             combinedMessages.Add(new MessageHistoryRow
             {
-                MessageCategory = "Failure",
                 IsFailure = true,
-                PhoneNumber = failure.PhoneNumber ?? string.Empty,
-                Date = ExtractDate(failure.ScheduledStartTime),
-                Time = ExtractTime(failure.ScheduledStartTime),
+                Sent = "---", // Show --- for failures
+                ScheduleStartTime = formattedStartTime,
                 Status = "Failed",
                 MessageType = "SMS",
-                ErrorMessage = failure.ErrorMessage ?? string.Empty,
+                ErrorDetails = FormatErrorDetails(failure.ErrorMessage),
+                PhoneNumber = failure.PhoneNumber ?? string.Empty,
+                Type = "Failure",
                 SortTimestamp = ParseTimestamp(failure.ScheduledStartTime)
             });
         }
@@ -49,17 +51,21 @@ public partial class MessageSummaryWindow : Window
         // Add Message Deliveries
         foreach (var delivery in messageDeliveries)
         {
+            // Combine date and time for successful deliveries
+            var sent = CombineDateAndTime(delivery.DateSent, delivery.TimeSent);
+            var formattedSent = string.IsNullOrWhiteSpace(sent) ? "---" : sent;
+            
             combinedMessages.Add(new MessageHistoryRow
             {
-                MessageCategory = "Delivery",
                 IsFailure = false,
-                PhoneNumber = delivery.PhoneNumber ?? string.Empty,
-                Date = delivery.DateSent ?? string.Empty,
-                Time = delivery.TimeSent ?? string.Empty,
+                Sent = formattedSent,
+                ScheduleStartTime = "---", // Show --- for successful deliveries
                 Status = delivery.DeliveryStatus ?? string.Empty,
                 MessageType = delivery.MessageType ?? string.Empty,
-                ErrorMessage = delivery.ErrorMessage ?? string.Empty,
-                SortTimestamp = ParseTimestamp($"{delivery.DateSent} {delivery.TimeSent}")
+                ErrorDetails = FormatErrorDetails(delivery.ErrorMessage),
+                PhoneNumber = delivery.PhoneNumber ?? string.Empty,
+                Type = "Delivery",
+                SortTimestamp = ParseTimestamp(sent)
             });
         }
 
@@ -100,24 +106,15 @@ public partial class MessageSummaryWindow : Window
         }
     }
 
-    private string ExtractDate(string scheduledStartTime)
+    private string CombineDateAndTime(string? date, string? time)
     {
-        if (string.IsNullOrWhiteSpace(scheduledStartTime))
+        if (string.IsNullOrWhiteSpace(date))
             return string.Empty;
-
-        // Assuming format like "MM/DD/YYYY HH:MM:SS" or similar
-        var parts = scheduledStartTime.Split(' ');
-        return parts.Length > 0 ? parts[0] : scheduledStartTime;
-    }
-
-    private string ExtractTime(string scheduledStartTime)
-    {
-        if (string.IsNullOrWhiteSpace(scheduledStartTime))
-            return string.Empty;
-
-        // Assuming format like "MM/DD/YYYY HH:MM:SS" or similar
-        var parts = scheduledStartTime.Split(' ');
-        return parts.Length > 1 ? string.Join(" ", parts.Skip(1)) : string.Empty;
+        
+        if (string.IsNullOrWhiteSpace(time))
+            return date;
+        
+        return $"{date} {time}";
     }
 
     private DateTime ParseTimestamp(string timestamp)
@@ -131,6 +128,40 @@ public partial class MessageSummaryWindow : Window
 
         return DateTime.MinValue;
     }
+
+    /// <summary>
+    /// Formats the start time to MM/DD/YY HH:MM AM/PM format, or returns "---" if empty.
+    /// </summary>
+    private string FormatStartTime(string? startTime)
+    {
+        if (string.IsNullOrWhiteSpace(startTime))
+            return "---";
+
+        // Try to parse the datetime
+        if (DateTime.TryParse(startTime, out var dt))
+        {
+            // Format as MM/DD/YY HH:MM AM/PM
+            return dt.ToString("MM/dd/yy hh:mm tt");
+        }
+
+        // If parsing fails, return the original value or ---
+        return string.IsNullOrWhiteSpace(startTime) ? "---" : startTime;
+    }
+
+    /// <summary>
+    /// Formats error details, showing "---" if empty or if content is "{}".
+    /// </summary>
+    private string FormatErrorDetails(string? errorDetails)
+    {
+        if (string.IsNullOrWhiteSpace(errorDetails))
+            return "---";
+
+        // Check if content is just "{}"
+        if (errorDetails.Trim() == "{}")
+            return "---";
+
+        return errorDetails;
+    }
 }
 
 /// <summary>
@@ -138,14 +169,14 @@ public partial class MessageSummaryWindow : Window
 /// </summary>
 public class MessageHistoryRow
 {
-    public string MessageCategory { get; set; } = string.Empty;
     public bool IsFailure { get; set; }
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string Date { get; set; } = string.Empty;
-    public string Time { get; set; } = string.Empty;
+    public string Sent { get; set; } = string.Empty;
+    public string ScheduleStartTime { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public string MessageType { get; set; } = string.Empty;
-    public string ErrorMessage { get; set; } = string.Empty;
+    public string ErrorDetails { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
     public DateTime SortTimestamp { get; set; }
 }
 

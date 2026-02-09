@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TingenTransmorger.Database"
         mc:Ignorable="d"
-        Title="Message Summary" Height="600" Width="900"
+        Title="Message Summary" Height="600" Width="1100"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
     <Grid Margin="10">
@@ -45,33 +45,33 @@
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn
-                                    Width="80"
-                                    Binding="{Binding MessageCategory}"
-                                    Header="Type" />
+                                    Width="140"
+                                    Binding="{Binding Sent}"
+                                    Header="Sent" />
+                            <DataGridTextColumn
+                                    Width="160"
+                                    Binding="{Binding ScheduleStartTime}"
+                                    Header="Start Time" />
+                            <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding Status}"
+                                    Header="Status" />
+                            <DataGridTextColumn
+                                    Width="140"
+                                    Binding="{Binding MessageType}"
+                                    Header="Message Type" />
+                            <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding ErrorDetails}"
+                                    Header="Error/Details" />
                             <DataGridTextColumn
                                     Width="110"
                                     Binding="{Binding PhoneNumber}"
                                     Header="Phone Number" />
                             <DataGridTextColumn
-                                    Width="100"
-                                    Binding="{Binding Date}"
-                                    Header="Date" />
-                            <DataGridTextColumn
                                     Width="80"
-                                    Binding="{Binding Time}"
-                                    Header="Time" />
-                            <DataGridTextColumn
-                                    Width="120"
-                                    Binding="{Binding Status}"
-                                    Header="Status" />
-                            <DataGridTextColumn
-                                    Width="100"
-                                    Binding="{Binding MessageType}"
-                                    Header="Message Type" />
-                            <DataGridTextColumn
-                                    Width="*"
-                                    Binding="{Binding ErrorMessage}"
-                                    Header="Error/Details" />
+                                    Binding="{Binding Type}"
+                                    Header="Type" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
