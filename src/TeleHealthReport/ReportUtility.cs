@@ -71,10 +71,131 @@ internal static class ReportUtility
     {
         JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
+        // Normalize phone numbers before serialization
+        var normalizedData = NormalizePhoneNumbersInData(data);
+
         var path = Path.Combine(tmpDir, fileName);
-        var json = JsonSerializer.Serialize(data, JsonOptions);
+        var json = JsonSerializer.Serialize(normalizedData, JsonOptions);
 
         File.WriteAllText(path, json, Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Recursively normalizes phone number fields in data structures before JSON serialization.
+    /// </summary>
+    /// <param name="data">
+    /// Data object that may contain phone number fields.
+    /// </param>
+    /// <returns>
+    /// The data with phone number fields normalized.
+    /// </returns>
+    private static object NormalizePhoneNumbersInData(object data)
+    {
+        if (data is List<Dictionary<string, object?>> list)
+        {
+            return list.Select(dict => NormalizePhoneNumbersInDictionary(dict)).ToList();
+        }
+        else if (data is Dictionary<string, object?> dict)
+        {
+            return NormalizePhoneNumbersInDictionary(dict);
+        }
+
+        return data;
+    }
+
+    /// <summary>
+    /// Normalizes phone number fields within a dictionary.
+    /// </summary>
+    /// <param name="dict">
+    /// Dictionary that may contain phone number fields.
+    /// </param>
+    /// <returns>
+    /// A new dictionary with phone number fields normalized.
+    /// </returns>
+    private static Dictionary<string, object?> NormalizePhoneNumbersInDictionary(Dictionary<string, object?> dict)
+    {
+        var normalized = new Dictionary<string, object?>();
+
+        foreach (var kvp in dict)
+        {
+            var key = kvp.Key;
+            var value = kvp.Value;
+
+            // Handle nested structures (like "Records" arrays in SMS Stats)
+            if (value is List<Dictionary<string, object?>> nestedList)
+            {
+                normalized[key] = nestedList.Select(d => NormalizePhoneNumbersInDictionary(d)).ToList();
+            }
+            // Check if this field is likely a phone number field
+            else if (IsPhoneNumberField(key) && value != null)
+            {
+                var valueStr = value.ToString();
+                normalized[key] = NormalizePhoneNumber(valueStr);
+            }
+            // Also normalize any string value that looks like a phone number
+            else if (value is string strValue && !string.IsNullOrWhiteSpace(strValue) && LooksLikePhoneNumber(strValue))
+            {
+                normalized[key] = NormalizePhoneNumber(strValue);
+            }
+            else
+            {
+                normalized[key] = value;
+            }
+        }
+
+        return normalized;
+    }
+
+    /// <summary>
+    /// Determines if a field name likely contains phone number data.
+    /// </summary>
+    /// <param name="fieldName">
+    /// Name of the field to check.
+    /// </param>
+    /// <returns>
+    /// True if the field name suggests it contains phone number data.
+    /// </returns>
+    private static bool IsPhoneNumberField(string fieldName)
+    {
+        var lowerName = fieldName.ToLower();
+        return lowerName.Contains("phone") || 
+               lowerName.Contains("mobile") || 
+               lowerName.Contains("cell") ||
+               lowerName.Contains("telephone") ||
+               lowerName.Contains("tel") ||
+               lowerName.Contains("number") ||
+               lowerName.Contains("to ") ||
+               lowerName.Contains("from ") ||
+               lowerName.Contains("recipient");
+    }
+
+    /// <summary>
+    /// Determines if a string value looks like a phone number.
+    /// </summary>
+    /// <param name="value">
+    /// String value to check.
+    /// </param>
+    /// <returns>
+    /// True if the value appears to be a phone number.
+    /// </returns>
+    private static bool LooksLikePhoneNumber(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length < 10)
+        {
+            return false;
+        }
+
+        // Count digits in the string
+        var digitCount = value.Count(char.IsDigit);
+
+        // If it has 10-11 digits and contains common phone number formatting characters, it's likely a phone number
+        if (digitCount >= 10 && digitCount <= 11)
+        {
+            // Check for common phone number patterns
+            return value.Any(c => c == '-' || c == '(' || c == ')' || c == '+' || c == ' ' || c == '.');
+        }
+
+        return false;
     }
 
     /// <summary>Updates the headers collection with columns from the current table.</summary>
@@ -201,4 +322,41 @@ internal static class ReportUtility
 
         return result;
     }
+
+    /// <summary>
+    /// Normalizes a phone number to exactly 10 digits by removing non-numeric characters and the leading '1' if present.
+    /// </summary>
+    /// <param name="phoneNumber">
+    /// Raw phone number string that may contain formatting characters like '+', '-', '(', ')', spaces, etc.
+    /// </param>
+    /// <returns>
+    /// A 10-digit phone number string (area code + local number) if the input can be normalized; 
+    /// otherwise, returns the original value if it cannot be normalized to exactly 10 digits.
+    /// </returns>
+    /// <remarks>
+    /// This method ensures phone numbers are stored in JSON files with consistent formatting:
+    /// - All non-numeric characters ('+', '-', '(', ')', spaces, etc.) are removed
+    /// - Leading '1' is removed if the number is 11 digits (common in North American phone numbers)
+    /// - Only returns the normalized value if it results in exactly 10 digits
+    /// </remarks>
+    internal static string NormalizePhoneNumber(string? phoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            return phoneNumber ?? string.Empty;
+        }
+
+        // Remove all non-digit characters
+        var digits = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+        // Remove leading '1' if the number is 11 digits
+        if (digits.Length == 11 && digits[0] == '1')
+        {
+            digits = digits.Substring(1);
+        }
+
+        // Only return normalized value if it's exactly 10 digits, otherwise return original
+        return digits.Length == 10 ? digits : phoneNumber;
+    }
 }
+

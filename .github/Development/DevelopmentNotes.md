@@ -9,7 +9,6 @@
 - [ ] Details for all messages
 - [ ] Make sure controls clear when they are supposed to
 - [ ] Smaller final database
-- [ ] Show building process
 - [ ] SHFB
 
 - [X] Add "-" to phone numbers
@@ -18,7 +17,7 @@
 - [X] Building the database when it exists in the master directory = error.
 - [X] Getting latest master DB
 - [X] Collapse window components correctly
-
+- [X] Show building process
 
 ## Settings
 - [ ] Check for database updates at startup
