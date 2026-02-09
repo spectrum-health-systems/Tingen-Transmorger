@@ -44,6 +44,16 @@ public partial class MainWindow : Window
     private List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _messageDeliveries = new();
 
     /// <summary>
+    /// Email failure records for the current patient's email addresses.
+    /// </summary>
+    private List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> _emailFailures = new();
+
+    /// <summary>
+    /// Email delivery records for the current patient's email addresses.
+    /// </summary>
+    private List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _emailDeliveries = new();
+
+    /// <summary>
     /// Entry method for Tingen Transmorger.
     /// </summary>
     public MainWindow()
@@ -462,6 +472,34 @@ public partial class MainWindow : Window
 
         lblPatientEmailValue.Content = string.Join(", ", emailAddresses);
 
+        // Query email failure and delivery stats for all patient email addresses
+        _emailFailures.Clear();
+        _emailDeliveries.Clear();
+
+        foreach (var emailAddress in emailAddresses)
+        {
+            if (emailAddress != "No email addresses on file")
+            {
+                // DEBUG: Show what we're searching for
+                System.Diagnostics.Debug.WriteLine($"Searching for email: {emailAddress}");
+
+                // Query email failures
+                var failures = TransMorgDb.GetEmailFailureStats(emailAddress);
+                System.Diagnostics.Debug.WriteLine($"Found {failures.Count} email failures");
+                _emailFailures.AddRange(failures);
+
+                // Query email deliveries
+                var deliveries = TransMorgDb.GetEmailDeliveryStats(emailAddress);
+                System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} email deliveries");
+                _emailDeliveries.AddRange(deliveries);
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"Total email failures: {_emailFailures.Count}, Total email deliveries: {_emailDeliveries.Count}");
+
+        // Update btnEmailDetails button based on email records
+        UpdateEmailDetailsButton();
+
         // Display meetings
         var meetingRows = new List<PatientMeetingRow>();
         if (patientDetails.Value.TryGetProperty("Meetings", out var meetingsArray))
@@ -874,6 +912,46 @@ public partial class MainWindow : Window
         messageSummaryWindow.ShowDialog();
     }
 
+    /// <summary>Updates the btnEmailDetails button appearance based on email failure and delivery records.</summary>
+    private void UpdateEmailDetailsButton()
+    {
+        bool hasFailures = _emailFailures.Count > 0;
+        bool hasDeliveries = _emailDeliveries.Count > 0;
+
+        if (!hasFailures && !hasDeliveries)
+        {
+            // No records: gray background, disabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Gray;
+            btnEmailDetails.IsEnabled = false;
+        }
+        else if (hasFailures && hasDeliveries)
+        {
+            // Both: yellow background, enabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Yellow;
+            btnEmailDetails.IsEnabled = true;
+        }
+        else if (hasFailures)
+        {
+            // Only failures: red background, enabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Red;
+            btnEmailDetails.IsEnabled = true;
+        }
+        else
+        {
+            // Only deliveries: green background, enabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Green;
+            btnEmailDetails.IsEnabled = true;
+        }
+    }
+
+    /// <summary>Handles the email details button click event.</summary>
+    private void EmailDetailsClicked()
+    {
+        var emailSummaryWindow = new Database.EmailSummaryWindow(_emailFailures, _emailDeliveries);
+        emailSummaryWindow.Owner = this;
+        emailSummaryWindow.ShowDialog();
+    }
+
     /*
      * EVENT HANDLERS
      */
@@ -888,4 +966,6 @@ public partial class MainWindow : Window
     private void dgPatientMeetings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => MeetingSelected();
 
     private void btnPhoneDetails_Click(object sender, RoutedEventArgs e) => PhoneDetailsClicked();
+
+    private void btnEmailDetails_Click(object sender, RoutedEventArgs e) => EmailDetailsClicked();
 }
