@@ -1,8 +1,15 @@
 # Tingen Transmorger: Changelog
 
+## 0.9.24.0 - 2/11/2026
+
+`ADDED` Functionality to copy Meeting Details (General)  
+`ADDED` Functionality to copy Meeting Details (Patient)  
+`REMOVED` DiagnosticWindow  
+`REMOVED` EmailSummaryWindow  
+
 ## 0.9.23.0 - 2/11/2026
 
-`MODIFIED` Migrated the EmailSummaryWindow functionality into MessageHistoryWindow
+`MODIFIED` Migrated the EmailSummaryWindow functionality into MessageHistoryWindow  
 
 ## 0.9.22.0 - 2/11/2026
 

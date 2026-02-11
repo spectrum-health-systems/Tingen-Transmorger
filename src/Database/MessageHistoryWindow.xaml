@@ -33,7 +33,7 @@
                             FontWeight="Bold" />
                         <TextBlock
                             x:Name="txbkMessageSummary"
-                            Margin="185,15,10,0"
+                            Margin="105,15,10,0"
                             FontSize="16"
                             FontWeight="SemiBold"
                             Text="# Total messages / # Successful / # Failures" />
@@ -41,7 +41,7 @@
                             x:Name="btnCopyTopTenMessageHistory"
                             Width="24"
                             Height="24"
-                            Margin="195,0,0,0"
+                            Margin="170,0,0,0"
                             BorderThickness="0"
                             Click="btnCopyTopTenMessageHistory_Click">
                             <Button.Resources>

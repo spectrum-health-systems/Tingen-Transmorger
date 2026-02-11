@@ -1249,6 +1249,98 @@ public partial class MainWindow : Window
         emailHistoryWindow.ShowDialog();
     }
 
+    /// <summary>Handles the copy meeting details general button click event.</summary>
+    private void CopyMeetingDetailsGeneralClicked()
+    {
+        try
+        {
+            var sb = new System.Text.StringBuilder();
+            
+            // Header
+            sb.AppendLine("=== MEETING DETAILS (GENERAL) ===");
+            sb.AppendLine();
+            
+            // Left column
+            sb.AppendLine("Meeting ID:       " + lblMeetingIdValue.Text);
+            sb.AppendLine("Title:            " + lblMeetingTitleValue.Text);
+            sb.AppendLine("Status:           " + lblMeetingStatusValue.Text);
+            sb.AppendLine("Joins:            " + lblMeetingJoins.Text);
+            sb.AppendLine("Duration:         " + lblMeetingDuration.Text);
+            sb.AppendLine("Service code:     " + lblMeetingServiceCode.Text);
+            sb.AppendLine();
+            
+            // Center column
+            sb.AppendLine("Started by:       " + lblMeetingInitiatedBy.Text);
+            sb.AppendLine("Scheduled start:  " + lblMeetingScheduledStart.Text);
+            sb.AppendLine("Actual start:     " + lblMeetingActualStart.Text);
+            sb.AppendLine("Ended by:         " + lblMeetingEndedBy.Text);
+            sb.AppendLine("Scheduled end:    " + lblMeetingScheduledEnd.Text);
+            sb.AppendLine("Actual end:       " + lblMeetingActualEnd.Text);
+            sb.AppendLine();
+            
+            // Right column
+            sb.AppendLine("Workflow:         " + txtMeetingWorkflow.Text);
+            sb.AppendLine("Program:          " + txtMeetingProgram.Text);
+            sb.AppendLine("Scribe enabled:   " + txtMeetingScribeEnabled.Text);
+            sb.AppendLine("Front Desk Check-In: " + txtMeetingCheckedInByFrontDesk.Text);
+            sb.AppendLine();
+            sb.AppendLine("Meeting error:");
+            sb.AppendLine(txtMeetingError.Text);
+            
+            Clipboard.SetText(sb.ToString());
+            MessageBox.Show(this, "Meeting details (General) copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, $"Failed to copy meeting details: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
+    /// <summary>Handles the copy meeting details patient button click event.</summary>
+    private void CopyMeetingDetailsPatientClicked()
+    {
+        try
+        {
+            var sb = new System.Text.StringBuilder();
+            
+            // Header
+            sb.AppendLine("=== MEETING DETAILS (PATIENT) ===");
+            sb.AppendLine();
+            
+            // Left column
+            sb.AppendLine("Patient arrived:  " + txtPatientArrived.Text);
+            sb.AppendLine("Patient dropped:  " + txtPatientDropped.Text);
+            sb.AppendLine("Duration:         " + txtPatientDuration.Text);
+            sb.AppendLine("Rating:           " + txtPatientRating.Text);
+            sb.AppendLine();
+            
+            // Center column
+            sb.AppendLine("Checked-In via chat: " + txtCheckInViaChat.Text);
+            sb.AppendLine("Check-In wait:    " + txtCheckInWait.Text);
+            sb.AppendLine("Wait for Care Team: " + txtWaitForCareTeam.Text);
+            sb.AppendLine("Wait for provider: " + txtWaitForProvider.Text);
+            sb.AppendLine("Check-out wait:   " + txtCheckOutWait.Text);
+            sb.AppendLine();
+            
+            // Right column
+            sb.AppendLine("Device:           " + txtPatientDevice.Text);
+            sb.AppendLine("OS:               " + txtPatientOs.Text);
+            sb.AppendLine("Browser:          " + txtPatientBrowser.Text);
+            sb.AppendLine();
+            
+            // Quality data (spanning section)
+            sb.AppendLine("Participant Meeting Quality Data:");
+            sb.AppendLine(txtMeetingQualityData.Text);
+            
+            Clipboard.SetText(sb.ToString());
+            MessageBox.Show(this, "Meeting details (Patient) copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, $"Failed to copy meeting details: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
     /*
      * EVENT HANDLERS
      */
@@ -1265,4 +1357,8 @@ public partial class MainWindow : Window
     private void btnPhoneDetails_Click(object sender, RoutedEventArgs e) => PhoneDetailsClicked();
 
     private void btnEmailDetails_Click(object sender, RoutedEventArgs e) => EmailDetailsClicked();
+
+    private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsGeneralClicked();
+
+    private void btnCopyMeetingDetailsPatient_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsPatientClicked();
 }
