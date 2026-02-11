@@ -8,7 +8,7 @@ This documentation is not final, is missing a bunch of things, and basically goe
 
 ## Downloading Tingen Transmorger
 
-1. Download the latest [release]()
+1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
 2. Extract the `TingenTransmorger.exe` file to a location of your choice.
 
 > [!IMPORTANT]

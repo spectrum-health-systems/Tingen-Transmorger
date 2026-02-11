@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,20 +7,44 @@ using System.Windows.Media;
 namespace TingenTransmorger.Database;
 
 /// <summary>
+/// Message type for the MessageHistoryWindow
+/// </summary>
+public enum MessageHistoryType
+{
+    SMS,
+    Email
+}
+
+/// <summary>
 /// Interaction logic for MessageHistoryWindow.xaml
 /// </summary>
 public partial class MessageHistoryWindow : Window
 {
     private List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> _smsFailures;
     private List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _messageDeliveries;
+    private MessageHistoryType _messageType;
 
+    // Constructor for SMS messages
     public MessageHistoryWindow(
         List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> smsFailures,
         List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> messageDeliveries)
     {
         InitializeComponent();
-
+        _messageType = MessageHistoryType.SMS;
+        ConfigureForMessageType();
         SetMessageData(smsFailures, messageDeliveries);
+    }
+
+    // Constructor for Email messages
+    public MessageHistoryWindow(
+        List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> emailFailures,
+        List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> emailDeliveries,
+        MessageHistoryType messageType)
+    {
+        InitializeComponent();
+        _messageType = messageType;
+        ConfigureForMessageType();
+        SetEmailData(emailFailures, emailDeliveries);
     }
 
     private void btnCopyAllSuccessMessageHistory_Click(object sender, RoutedEventArgs e)
@@ -77,13 +98,14 @@ public partial class MessageHistoryWindow : Window
             }
 
             // Format successes similar to other copy methods
-            var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", "Phone Number", "Type" };
+            var contactHeader = _messageType == MessageHistoryType.SMS ? "Phone Number" : "Email Address";
+            var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", contactHeader, "Type" };
             var rowList = successes.Select(r => new[] {
                 r.SentOrStartTime ?? string.Empty,
                 r.Status ?? string.Empty,
                 r.MessageType ?? string.Empty,
                 r.ErrorDetails ?? string.Empty,
-                r.PhoneNumber ?? string.Empty,
+                (_messageType == MessageHistoryType.SMS ? r.PhoneNumber : r.EmailAddress) ?? string.Empty,
                 r.Type ?? string.Empty
             }).ToList();
 
@@ -99,9 +121,12 @@ public partial class MessageHistoryWindow : Window
 
             static string Truncate(string s, int w)
             {
-                if (s == null) return string.Empty;
-                if (s.Length <= w) return s;
-                if (w <= 3) return s.Substring(0, w);
+                if (s == null)
+                    return string.Empty;
+                if (s.Length <= w)
+                    return s;
+                if (w <= 3)
+                    return s.Substring(0, w);
                 return s.Substring(0, w - 3) + "...";
             }
 
@@ -109,7 +134,8 @@ public partial class MessageHistoryWindow : Window
             for (int c = 0; c < headerNames.Length; c++)
             {
                 sb.Append(headerNames[c].PadRight(widths[c]));
-                if (c < headerNames.Length - 1) sb.Append("  ");
+                if (c < headerNames.Length - 1)
+                    sb.Append("  ");
             }
             sb.AppendLine();
 
@@ -119,7 +145,8 @@ public partial class MessageHistoryWindow : Window
                 {
                     var cell = Escape(Truncate(r[c] ?? string.Empty, widths[c]));
                     sb.Append(cell.PadRight(widths[c]));
-                    if (c < r.Length - 1) sb.Append("  ");
+                    if (c < r.Length - 1)
+                        sb.Append("  ");
                 }
                 sb.AppendLine();
             }
@@ -180,13 +207,14 @@ public partial class MessageHistoryWindow : Window
             }
 
             // Format failures similar to other copy methods
-            var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", "Phone Number", "Type" };
+            var contactHeader = _messageType == MessageHistoryType.SMS ? "Phone Number" : "Email Address";
+            var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", contactHeader, "Type" };
             var rowList = failures.Select(r => new[] {
                 r.SentOrStartTime ?? string.Empty,
                 r.Status ?? string.Empty,
                 r.MessageType ?? string.Empty,
                 r.ErrorDetails ?? string.Empty,
-                r.PhoneNumber ?? string.Empty,
+                (_messageType == MessageHistoryType.SMS ? r.PhoneNumber : r.EmailAddress) ?? string.Empty,
                 r.Type ?? string.Empty
             }).ToList();
 
@@ -202,9 +230,12 @@ public partial class MessageHistoryWindow : Window
 
             static string Truncate(string s, int w)
             {
-                if (s == null) return string.Empty;
-                if (s.Length <= w) return s;
-                if (w <= 3) return s.Substring(0, w);
+                if (s == null)
+                    return string.Empty;
+                if (s.Length <= w)
+                    return s;
+                if (w <= 3)
+                    return s.Substring(0, w);
                 return s.Substring(0, w - 3) + "...";
             }
 
@@ -212,7 +243,8 @@ public partial class MessageHistoryWindow : Window
             for (int c = 0; c < headerNames.Length; c++)
             {
                 sb.Append(headerNames[c].PadRight(widths[c]));
-                if (c < headerNames.Length - 1) sb.Append("  ");
+                if (c < headerNames.Length - 1)
+                    sb.Append("  ");
             }
             sb.AppendLine();
 
@@ -222,7 +254,8 @@ public partial class MessageHistoryWindow : Window
                 {
                     var cell = Escape(Truncate(r[c] ?? string.Empty, widths[c]));
                     sb.Append(cell.PadRight(widths[c]));
-                    if (c < r.Length - 1) sb.Append("  ");
+                    if (c < r.Length - 1)
+                        sb.Append("  ");
                 }
                 sb.AppendLine();
             }
@@ -243,7 +276,8 @@ public partial class MessageHistoryWindow : Window
             // Use the DataGrid's current item ordering (dgMessages.Items) so we respect user sorting/filtering
             var items = dgMessages.Items.Cast<object>().Where(i => i != null).Take(10).ToList();
 
-            var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", "Phone Number", "Type" };
+            var contactHeader = _messageType == MessageHistoryType.SMS ? "Phone Number" : "Email Address";
+            var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", contactHeader, "Type" };
             var rowList = new List<string[]>();
 
             foreach (var item in items)
@@ -255,7 +289,7 @@ public partial class MessageHistoryWindow : Window
                         mr.Status ?? string.Empty,
                         mr.MessageType ?? string.Empty,
                         mr.ErrorDetails ?? string.Empty,
-                        mr.PhoneNumber ?? string.Empty,
+                        (_messageType == MessageHistoryType.SMS ? mr.PhoneNumber : mr.EmailAddress) ?? string.Empty,
                         mr.Type ?? string.Empty
                     });
                 }
@@ -300,9 +334,12 @@ public partial class MessageHistoryWindow : Window
 
             static string Truncate(string s, int w)
             {
-                if (s == null) return string.Empty;
-                if (s.Length <= w) return s;
-                if (w <= 3) return s.Substring(0, w);
+                if (s == null)
+                    return string.Empty;
+                if (s.Length <= w)
+                    return s;
+                if (w <= 3)
+                    return s.Substring(0, w);
                 return s.Substring(0, w - 3) + "...";
             }
 
@@ -310,7 +347,8 @@ public partial class MessageHistoryWindow : Window
             for (int c = 0; c < headerNames.Length; c++)
             {
                 sb.Append(headerNames[c].PadRight(widths[c]));
-                if (c < headerNames.Length - 1) sb.Append("  ");
+                if (c < headerNames.Length - 1)
+                    sb.Append("  ");
             }
             sb.AppendLine();
 
@@ -320,7 +358,8 @@ public partial class MessageHistoryWindow : Window
                 {
                     var cell = Escape(Truncate(r[c] ?? string.Empty, widths[c]));
                     sb.Append(cell.PadRight(widths[c]));
-                    if (c < r.Length - 1) sb.Append("  ");
+                    if (c < r.Length - 1)
+                        sb.Append("  ");
                 }
                 sb.AppendLine();
             }
@@ -331,6 +370,23 @@ public partial class MessageHistoryWindow : Window
         catch (Exception ex)
         {
             MessageBox.Show(this, $"Failed to copy message history: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
+    private void ConfigureForMessageType()
+    {
+        // Update window title
+        Title = _messageType == MessageHistoryType.SMS ? "SMS Message History" : "Email Message History";
+
+        // Update label content
+        lblMessageHistoryTitle.Content = _messageType == MessageHistoryType.SMS ? "Message History - Phone" : "Message History - Email";
+
+        // Update the contact column header and binding
+        var contactColumn = dgMessages.Columns[4] as DataGridTextColumn; // Phone Number / Email Address column
+        if (contactColumn != null)
+        {
+            contactColumn.Header = _messageType == MessageHistoryType.SMS ? "Phone Number" : "Email Address";
+            contactColumn.Binding = new System.Windows.Data.Binding(_messageType == MessageHistoryType.SMS ? "PhoneNumber" : "EmailAddress");
         }
     }
 
@@ -366,6 +422,7 @@ public partial class MessageHistoryWindow : Window
                 MessageType = "SMS",
                 ErrorDetails = isOptedOut ? "Opted out" : FormatErrorDetails(failure.ErrorMessage),
                 PhoneNumber = failure.PhoneNumber ?? string.Empty,
+                EmailAddress = string.Empty,
                 Type = "Failure",
                 SortTimestamp = ParseTimestamp(failure.ScheduledStartTime)
             });
@@ -388,6 +445,7 @@ public partial class MessageHistoryWindow : Window
                 MessageType = delivery.MessageType ?? string.Empty,
                 ErrorDetails = FormatErrorDetails(delivery.ErrorMessage),
                 PhoneNumber = delivery.PhoneNumber ?? string.Empty,
+                EmailAddress = string.Empty,
                 Type = "Delivery",
                 SortTimestamp = ParseTimestamp(sent)
             });
@@ -399,12 +457,75 @@ public partial class MessageHistoryWindow : Window
             .ToList();
 
         dgMessages.ItemsSource = sortedMessages;
+        UpdateSummary(sortedMessages);
+    }
 
+    public void SetEmailData(
+        List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> emailFailures,
+        List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> emailDeliveries)
+    {
+        _smsFailures = null;
+        _messageDeliveries = null;
+
+        // Combine both lists into a unified message history
+        var combinedMessages = new List<MessageHistoryRow>();
+
+        // Add Email Failures
+        foreach (var failure in emailFailures)
+        {
+            var formattedStartTime = FormatStartTime(failure.ScheduledStartTime);
+
+            combinedMessages.Add(new MessageHistoryRow
+            {
+                IsFailure = true,
+                Sent = "---",
+                ScheduleStartTime = FormatStartTime(formattedStartTime),
+                Status = "Failed",
+                MessageType = "Email",
+                ErrorDetails = FormatErrorDetails(failure.ErrorMessage),
+                PhoneNumber = string.Empty,
+                EmailAddress = failure.EmailAddress ?? string.Empty,
+                Type = "Failure",
+                SortTimestamp = ParseTimestamp(failure.ScheduledStartTime)
+            });
+        }
+
+        // Add Email Deliveries
+        foreach (var delivery in emailDeliveries)
+        {
+            var sent = CombineDateAndTime(delivery.DateSent, delivery.TimeSent);
+            var formattedSent = FormatStartTime(sent);
+
+            combinedMessages.Add(new MessageHistoryRow
+            {
+                IsFailure = false,
+                Sent = formattedSent,
+                ScheduleStartTime = "---",
+                Status = delivery.DeliveryStatus ?? string.Empty,
+                MessageType = delivery.MessageType ?? string.Empty,
+                ErrorDetails = FormatErrorDetails(delivery.ErrorMessage),
+                PhoneNumber = string.Empty,
+                EmailAddress = delivery.EmailAddress ?? string.Empty,
+                Type = "Delivery",
+                SortTimestamp = ParseTimestamp(sent)
+            });
+        }
+
+        var sortedMessages = combinedMessages
+            .OrderByDescending(m => m.SortTimestamp)
+            .ToList();
+
+        dgMessages.ItemsSource = sortedMessages;
+        UpdateSummary(sortedMessages);
+    }
+
+    private void UpdateSummary(List<MessageHistoryRow> messages)
+    {
         // Update summary textblock: "# Total messages / # Successful / # Failures"
         try
         {
-            var total = sortedMessages.Count;
-            var failures = sortedMessages.Count(m => m.IsFailure);
+            var total = messages.Count;
+            var failures = messages.Count(m => m.IsFailure);
             var successes = total - failures;
 
             // Build colored runs: total (black), successes (green), failures (red)
@@ -491,7 +612,8 @@ public partial class MessageHistoryWindow : Window
             // Preferred: ItemsSource is the List<MessageHistoryRow> we set in SetMessageData
             if (dgMessages.ItemsSource is IEnumerable<MessageHistoryRow> rows)
             {
-                var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", "Phone Number", "Type" };
+                var contactHeader = _messageType == MessageHistoryType.SMS ? "Phone Number" : "Email Address";
+                var headerNames = new[] { "Sent / Start Time", "Status", "Message Type", "Error/Details", contactHeader, "Type" };
 
                 // Prepare rows
                 var rowList = rows.Select(r => new[] {
@@ -499,7 +621,7 @@ public partial class MessageHistoryWindow : Window
                     r.Status ?? string.Empty,
                     r.MessageType ?? string.Empty,
                     r.ErrorDetails ?? string.Empty,
-                    r.PhoneNumber ?? string.Empty,
+                    (_messageType == MessageHistoryType.SMS ? r.PhoneNumber : r.EmailAddress) ?? string.Empty,
                     r.Type ?? string.Empty
                 }).ToList();
 
@@ -518,9 +640,12 @@ public partial class MessageHistoryWindow : Window
 
                 static string Truncate(string s, int w)
                 {
-                    if (s == null) return string.Empty;
-                    if (s.Length <= w) return s;
-                    if (w <= 3) return s.Substring(0, w);
+                    if (s == null)
+                        return string.Empty;
+                    if (s.Length <= w)
+                        return s;
+                    if (w <= 3)
+                        return s.Substring(0, w);
                     return s.Substring(0, w - 3) + "...";
                 }
 
@@ -530,7 +655,8 @@ public partial class MessageHistoryWindow : Window
                 for (int c = 0; c < headerNames.Length; c++)
                 {
                     sb.Append(headerNames[c].PadRight(widths[c]));
-                    if (c < headerNames.Length - 1) sb.Append("  ");
+                    if (c < headerNames.Length - 1)
+                        sb.Append("  ");
                 }
                 sb.AppendLine();
 
@@ -541,7 +667,8 @@ public partial class MessageHistoryWindow : Window
                     {
                         var cell = Escape(Truncate(r[c] ?? string.Empty, widths[c]));
                         sb.Append(cell.PadRight(widths[c]));
-                        if (c < r.Length - 1) sb.Append("  ");
+                        if (c < r.Length - 1)
+                            sb.Append("  ");
                     }
                     sb.AppendLine();
                 }
@@ -590,9 +717,12 @@ public partial class MessageHistoryWindow : Window
                     max = Math.Max(max, (r[c]?.Length) ?? 0);
                 // apply some generic caps
                 int cap = 120;
-                if (c == 0) cap = 30; // time
-                if (c == headerCols.Length - 1) cap = 15; // type
-                if (c == headerCols.Length - 2) cap = 20; // phone
+                if (c == 0)
+                    cap = 30; // time
+                if (c == headerCols.Length - 1)
+                    cap = 15; // type
+                if (c == headerCols.Length - 2)
+                    cap = 20; // phone
                 widths2[c] = Math.Min(max, cap);
             }
 
@@ -600,7 +730,8 @@ public partial class MessageHistoryWindow : Window
             for (int c = 0; c < headerCols.Length; c++)
             {
                 sbFallback.Append(headerCols[c].PadRight(widths2[c]));
-                if (c < headerCols.Length - 1) sbFallback.Append("  ");
+                if (c < headerCols.Length - 1)
+                    sbFallback.Append("  ");
             }
             sbFallback.AppendLine();
 
@@ -611,7 +742,8 @@ public partial class MessageHistoryWindow : Window
                     var cell = Escape(r[c] ?? string.Empty);
                     var truncated = cell.Length > widths2[c] ? cell.Substring(0, widths2[c] - 3) + "..." : cell;
                     sbFallback.Append(truncated.PadRight(widths2[c]));
-                    if (c < r.Length - 1) sbFallback.Append("  ");
+                    if (c < r.Length - 1)
+                        sbFallback.Append("  ");
                 }
                 sbFallback.AppendLine();
             }
@@ -647,6 +779,7 @@ public class MessageHistoryRow
     public string MessageType { get; set; } = string.Empty;
     public string ErrorDetails { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
+    public string EmailAddress { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
     public DateTime SortTimestamp { get; set; }
 

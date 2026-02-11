@@ -1244,9 +1244,9 @@ public partial class MainWindow : Window
     /// <summary>Handles the email details button click event.</summary>
     private void EmailDetailsClicked()
     {
-        var emailSummaryWindow = new Database.EmailSummaryWindow(_emailFailures, _emailDeliveries);
-        emailSummaryWindow.Owner = this;
-        emailSummaryWindow.ShowDialog();
+        var emailHistoryWindow = new Database.MessageHistoryWindow(_emailFailures, _emailDeliveries, Database.MessageHistoryType.Email);
+        emailHistoryWindow.Owner = this;
+        emailHistoryWindow.ShowDialog();
     }
 
     /*

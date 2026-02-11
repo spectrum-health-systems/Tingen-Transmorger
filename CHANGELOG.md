@@ -1,22 +1,26 @@
 # Tingen Transmorger: Changelog
 
-## 0.9.22.0 -2/11/2026
+## 0.9.23.0 - 2/11/2026
 
-`ADDED` Functionality to copy the following message histories to the clipboard:
-  - All message history
-  - The top 10 rows of message history
-  - All successes
-  - All errors
-`ADDED` TingenTransmorger.Help.HelpWindow
-`MODIFIED` TingenTransmorger.Database.MessageHistoryWindow
-    - Renamed TingenTransmorger.Database.MessageSummaryWindow -> TingenTransmorger.Database.MessageHistoryWindow
-    - Minor changes to user interface
+`MODIFIED` Migrated the EmailSummaryWindow functionality into MessageHistoryWindow
+
+## 0.9.22.0 - 2/11/2026
+
+`ADDED` Functionality to copy the following message histories to the clipboard:  
+  - All message history  
+  - The top 10 rows of message history  
+  - All successes  
+  - All errors  
+`ADDED` TingenTransmorger.Help.HelpWindow  
+`MODIFIED` TingenTransmorger.Database.MessageHistoryWindow  
+    - Renamed TingenTransmorger.Database.MessageSummaryWindow -> TingenTransmorger.Database.MessageHistoryWindow  
+    - Minor changes to user interface  
 
 
-## 0.9.21.0 -2/11/2026
+## 0.9.21.0 - 2/11/2026
 
-`ADDED` ProjectInfo.cs
-`FIXED` The "opted-out" message properly displays
+`ADDED` ProjectInfo.cs  
+`FIXED` The "opted-out" message properly displays  
 
 ## 0.9.20.0 - 2/10/2026
 
