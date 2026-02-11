@@ -265,12 +265,22 @@ public partial class MainWindow : Window
                 break;
 
             case "Provider Search":
-                btnSearchToggle.Content = "Meeting Search";
-                break;
-
-            case "Meeting Search":
                 btnSearchToggle.Content = "Patient Search";
                 break;
+
+                /* Eventually we might bring meeting search back.
+                 */
+                //case "Patient Search":
+                //    btnSearchToggle.Content = "Provider Search";
+                //    break;
+
+                //case "Provider Search":
+                //    btnSearchToggle.Content = "Meeting Search";
+                //    break;
+
+                //case "Meeting Search":
+                //    btnSearchToggle.Content = "Patient Search";
+                //    break;
         }
 
         // Clear search box and results when toggling
@@ -645,7 +655,7 @@ public partial class MainWindow : Window
                                 return "---";
                             }
 
-                            // Otherwise replace all null markers with "---" 
+                            // Otherwise replace all null markers with "---"
                             result = result.Replace("<<NULL>>", "---");
                         }
 
@@ -1154,15 +1164,25 @@ public partial class MainWindow : Window
         txtPatientBrowser.Text = ReplaceNull(browser);
         txtMeetingQualityData.Text = ReplaceNull(qualityData);
 
-        // Show/hide patient-specific meeting details based on current view mode
-        // If we're viewing a provider, hide the patient-specific section
+        // Show/hide patient-specific and provider-specific meeting details based on current view mode
+        // If we're viewing a provider, hide the patient-specific section and show provider section
         if (lblPatientHeader.Content?.ToString() == "PROVIDER")
         {
             brdrMeetingDetailsPatient.Visibility = Visibility.Collapsed;
+            brdrMeetingDetailsProvider.Visibility = Visibility.Visible;
+
+            // Get and display participant names from MeetingDetail
+            var participantNames = string.Empty;
+            if (meetingDetail.Value.TryGetProperty("ParticipantNames", out var participantNamesElem))
+            {
+                participantNames = participantNamesElem.GetString() ?? string.Empty;
+            }
+            txtProviderParticipantNames.Text = ReplaceNull(participantNames);
         }
         else
         {
             brdrMeetingDetailsPatient.Visibility = Visibility.Visible;
+            brdrMeetingDetailsProvider.Visibility = Visibility.Collapsed;
         }
 
         // Show the meeting details section
@@ -1255,11 +1275,11 @@ public partial class MainWindow : Window
         try
         {
             var sb = new System.Text.StringBuilder();
-            
+
             // Header
             sb.AppendLine("=== MEETING DETAILS (GENERAL) ===");
             sb.AppendLine();
-            
+
             // Left column
             sb.AppendLine("Meeting ID:       " + lblMeetingIdValue.Text);
             sb.AppendLine("Title:            " + lblMeetingTitleValue.Text);
@@ -1268,7 +1288,7 @@ public partial class MainWindow : Window
             sb.AppendLine("Duration:         " + lblMeetingDuration.Text);
             sb.AppendLine("Service code:     " + lblMeetingServiceCode.Text);
             sb.AppendLine();
-            
+
             // Center column
             sb.AppendLine("Started by:       " + lblMeetingInitiatedBy.Text);
             sb.AppendLine("Scheduled start:  " + lblMeetingScheduledStart.Text);
@@ -1277,7 +1297,7 @@ public partial class MainWindow : Window
             sb.AppendLine("Scheduled end:    " + lblMeetingScheduledEnd.Text);
             sb.AppendLine("Actual end:       " + lblMeetingActualEnd.Text);
             sb.AppendLine();
-            
+
             // Right column
             sb.AppendLine("Workflow:         " + txtMeetingWorkflow.Text);
             sb.AppendLine("Program:          " + txtMeetingProgram.Text);
@@ -1286,7 +1306,7 @@ public partial class MainWindow : Window
             sb.AppendLine();
             sb.AppendLine("Meeting error:");
             sb.AppendLine(txtMeetingError.Text);
-            
+
             Clipboard.SetText(sb.ToString());
             MessageBox.Show(this, "Meeting details (General) copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -1302,18 +1322,18 @@ public partial class MainWindow : Window
         try
         {
             var sb = new System.Text.StringBuilder();
-            
+
             // Header
             sb.AppendLine("=== MEETING DETAILS (PATIENT) ===");
             sb.AppendLine();
-            
+
             // Left column
             sb.AppendLine("Patient arrived:  " + txtPatientArrived.Text);
             sb.AppendLine("Patient dropped:  " + txtPatientDropped.Text);
             sb.AppendLine("Duration:         " + txtPatientDuration.Text);
             sb.AppendLine("Rating:           " + txtPatientRating.Text);
             sb.AppendLine();
-            
+
             // Center column
             sb.AppendLine("Checked-In via chat: " + txtCheckInViaChat.Text);
             sb.AppendLine("Check-In wait:    " + txtCheckInWait.Text);
@@ -1321,19 +1341,43 @@ public partial class MainWindow : Window
             sb.AppendLine("Wait for provider: " + txtWaitForProvider.Text);
             sb.AppendLine("Check-out wait:   " + txtCheckOutWait.Text);
             sb.AppendLine();
-            
+
             // Right column
             sb.AppendLine("Device:           " + txtPatientDevice.Text);
             sb.AppendLine("OS:               " + txtPatientOs.Text);
             sb.AppendLine("Browser:          " + txtPatientBrowser.Text);
             sb.AppendLine();
-            
+
             // Quality data (spanning section)
             sb.AppendLine("Participant Meeting Quality Data:");
             sb.AppendLine(txtMeetingQualityData.Text);
-            
+
             Clipboard.SetText(sb.ToString());
             MessageBox.Show(this, "Meeting details (Patient) copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, $"Failed to copy meeting details: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
+    /// <summary>Handles the copy meeting details provider button click event.</summary>
+    private void CopyMeetingDetailsProviderClicked()
+    {
+        try
+        {
+            var sb = new System.Text.StringBuilder();
+
+            // Header
+            sb.AppendLine("=== MEETING DETAILS (PROVIDER) ===");
+            sb.AppendLine();
+
+            // Participant names
+            sb.AppendLine("Participant Names:");
+            sb.AppendLine(txtProviderParticipantNames.Text);
+
+            Clipboard.SetText(sb.ToString());
+            MessageBox.Show(this, "Meeting details (Provider) copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
@@ -1361,4 +1405,6 @@ public partial class MainWindow : Window
     private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsGeneralClicked();
 
     private void btnCopyMeetingDetailsPatient_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsPatientClicked();
+
+    private void btnCopyMeetingDetailsProvider_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsProviderClicked();
 }
