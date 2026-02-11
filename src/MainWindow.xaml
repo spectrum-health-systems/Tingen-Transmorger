@@ -654,18 +654,6 @@
                                                         FontSize="11"
                                                         Text="---" />
                                                 </StackPanel>
-                                                <!--  Scribe Enabled  -->
-                                                <StackPanel Margin="0,2" Orientation="Horizontal">
-                                                    <TextBlock
-                                                        Width="90"
-                                                        FontSize="11"
-                                                        FontWeight="SemiBold"
-                                                        Text="Scribe enabled:" />
-                                                    <TextBlock
-                                                        x:Name="txtMeetingScribeEnabled"
-                                                        FontSize="11"
-                                                        Text="---" />
-                                                </StackPanel>
                                                 <!--  Front Desk Check-in  -->
                                                 <StackPanel Margin="0,2" Orientation="Horizontal">
                                                     <TextBlock

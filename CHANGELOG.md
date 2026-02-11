@@ -1,9 +1,14 @@
 # Tingen Transmorger: Changelog
 
-### 0.9.25.0 - 2/11/2026
+## 0.9.25.1
 
-`ADDED` Meeting Details (Provider) component
-`MODIFIED` Disabled the meeting search functionality for now
+`REMOVED` Unused/abandoned code  
+
+
+## 0.9.25.0 - 2/11/2026
+
+`ADDED` Meeting Details (Provider) component  
+`MODIFIED` Disabled the meeting search functionality for now  
 
 ### 0.9.24.0
 
@@ -25,9 +30,8 @@
   - All errors  
 `ADDED` TingenTransmorger.Help.HelpWindow  
 `MODIFIED` TingenTransmorger.Database.MessageHistoryWindow  
-    - Renamed TingenTransmorger.Database.MessageSummaryWindow -> TingenTransmorger.Database.MessageHistoryWindow  
-    - Minor changes to user interface  
-
+  - Renamed TingenTransmorger.Database.MessageSummaryWindow -> TingenTransmorger.Database.MessageHistoryWindow  
+  - Minor changes to user interface  
 
 ### 0.9.21.0
 

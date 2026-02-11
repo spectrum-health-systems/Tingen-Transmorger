@@ -1028,19 +1028,14 @@ public partial class MainWindow : Window
         var serviceCode = meetingDetail.Value.TryGetProperty("ServiceCode", out var serviceCodeElem)
             ? (serviceCodeElem.GetString() ?? string.Empty) : string.Empty;
 
-        // Condensed section properties
-        var appointmentId = meetingDetail.Value.TryGetProperty("AppointmentId", out var appointmentIdElem)
-            ? (appointmentIdElem.GetString() ?? string.Empty) : string.Empty;
+
+        // Extract workflow, program, and front desk check-in
         var workflow = meetingDetail.Value.TryGetProperty("Workflow", out var workflowElem)
             ? (workflowElem.GetString() ?? string.Empty) : string.Empty;
         var program = meetingDetail.Value.TryGetProperty("Program", out var programElem)
             ? (programElem.GetString() ?? string.Empty) : string.Empty;
         var checkedInByFrontDesk = meetingDetail.Value.TryGetProperty("CheckedInByFrontDesk", out var checkedInElem)
             ? (checkedInElem.GetString() ?? string.Empty) : string.Empty;
-        var scribeEnabled = meetingDetail.Value.TryGetProperty("ScribeEnabled", out var scribeEnabledElem)
-            ? (scribeEnabledElem.GetString() ?? string.Empty) : string.Empty;
-        var scribeConsentAcceptance = meetingDetail.Value.TryGetProperty("ScribeConsentAcceptance", out var scribeConsentElem)
-            ? (scribeConsentElem.GetString() ?? string.Empty) : string.Empty;
 
         // Populate labels with null-safe values
         lblMeetingIdValue.Text = ReplaceNull(meetingId ?? string.Empty);
@@ -1061,7 +1056,6 @@ public partial class MainWindow : Window
         // Populate additional information TextBlocks
         txtMeetingWorkflow.Text = ReplaceNull(workflow ?? string.Empty);
         txtMeetingProgram.Text = ReplaceNull(program ?? string.Empty);
-        txtMeetingScribeEnabled.Text = ReplaceNull(scribeEnabled ?? string.Empty);
         txtMeetingCheckedInByFrontDesk.Text = ReplaceNull(checkedInByFrontDesk ?? string.Empty);
 
         // Get and display meeting error if it exists
@@ -1301,7 +1295,6 @@ public partial class MainWindow : Window
             // Right column
             sb.AppendLine("Workflow:         " + txtMeetingWorkflow.Text);
             sb.AppendLine("Program:          " + txtMeetingProgram.Text);
-            sb.AppendLine("Scribe enabled:   " + txtMeetingScribeEnabled.Text);
             sb.AppendLine("Front Desk Check-In: " + txtMeetingCheckedInByFrontDesk.Text);
             sb.AppendLine();
             sb.AppendLine("Meeting error:");
