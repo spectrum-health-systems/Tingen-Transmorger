@@ -1,3 +1,10 @@
+<div align="center">
+
+  ![Release](https://img.shields.io/badge/version-0.9.25.0-teal)&nbsp;&nbsp;
+  ![License](https://img.shields.io/badge/license-apache-blue)
+
+</div>
+
 # Tingen Transmorger
 
 Tingen Transmorger is a utility for Netsmart's Avatar TeleHealth platform.
