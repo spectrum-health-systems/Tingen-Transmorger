@@ -4,7 +4,6 @@
 
 `REMOVED` Unused/abandoned code  
 
-
 ## 0.9.25.0 - 2/11/2026
 
 `ADDED` Meeting Details (Provider) component  
