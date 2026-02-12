@@ -1,11 +1,13 @@
-// 260206_code
-// 260206_documentation
+// 260212_code
+// 260212_documentation
 
 using System.IO;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Windows;
+using TingenTransmorger.Core;
 
 namespace TingenTransmorger.Database;
 
@@ -13,6 +15,7 @@ namespace TingenTransmorger.Database;
 public partial class TransmorgerDatabase
 {
 
+    /* OLD STRUCTURE - START ======================================================================================== */
 
     internal static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -26,41 +29,158 @@ public partial class TransmorgerDatabase
     private JsonElement _jsonRoot;
     private bool _hasData;
 
-    internal static TransmorgerDatabase Load(string localDb)
+    /* OLD STRUCTURE - END  ========================================================================================= */
+
+    /*
+     * NEW STRUCTURE - START ===========================================================================================
+     */
+
+    /// <summary>Check to see if the master database is newer than the local database and offer to upgrade.</summary>
+    /// <param name="localDbPath">The local database path.</param>
+    /// <param name="masterDbPath">The master database path.</param>
+    internal static void Update(string localDbPath, string masterDbPath)
     {
-        // If no path supplied, default to "Database/transmorger.db" under app base
-        if (string.IsNullOrWhiteSpace(localDb))
+        if (File.Exists(masterDbPath))
         {
-            localDb = Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), "Database", "transmorger.db");
+            DateTime masterDate = File.GetLastWriteTime(masterDbPath);
+
+            /* If the local database does not exist, give it a date that is definitely older than the master database,
+             * that way the user will be prompted to upgrade.
+             */
+            DateTime localDate = File.Exists(localDbPath)
+                ? File.GetLastWriteTime(localDbPath)
+                : new DateTime(0);
+
+            /* Defined here because it's used in both branches of the conditional below.
+             */
+            string[] msgboxContent;
+
+            if (masterDate > localDate)
+            {
+                msgboxContent                   = Catalog.msgbox_DatabaseUpdateAvailable();
+                MessageBoxResult updateResponse = MessageBox.Show(msgboxContent[1], msgboxContent[0], MessageBoxButton.YesNo, MessageBoxImage.Error);
+
+                if (updateResponse == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        File.Copy(masterDbPath, localDbPath, overwrite: true);
+
+                        msgboxContent = Catalog.msgbox_DatabaseUpdateSuccess();
+                        MessageBox.Show(msgboxContent[1], msgboxContent[0], MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MainWindow.StopApp($"Failed to upgrade database:\n{ex.Message}");
+                    }
+                }
+                else
+                {
+                    MainWindow.StopApp();
+                }
+            }
         }
-
-
-
-        // Resolve path: try as provided, then relative to application base directory
-        var path = localDb;
-        if (!File.Exists(path))
+        else
         {
-            var alt = Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), localDb);
-            if (File.Exists(alt))
-            {
-                path = alt;
-            }
-            else
-            {
-                throw new FileNotFoundException($"Database file not found: {localDb}", localDb);
-            }
+            MainWindow.StopApp("Master database file not found.");
         }
-
-        var json = File.ReadAllText(path, Encoding.UTF8);
-
-        using var doc = JsonDocument.Parse(json);
-        var instance = new TransmorgerDatabase();
-        // Clone the root element so it lives beyond the JsonDocument scope
-        instance._jsonRoot = doc.RootElement.Clone();
-        instance._hasData = true;
-
-        return instance;
     }
+
+    internal static TransmorgerDatabase Load(string localDbPath)
+    {
+        if (File.Exists(localDbPath))
+        {
+            var tmDbJson = File.ReadAllText(localDbPath, Encoding.UTF8);
+
+
+            using var doc = JsonDocument.Parse(tmDbJson);
+            var instance = new TransmorgerDatabase();
+            // Clone the root element so it lives beyond the JsonDocument scope
+            instance._jsonRoot = doc.RootElement.Clone();
+            instance._hasData = true;
+            return instance;
+        }
+        else
+        {
+            MainWindow.StopApp("Local database file not found.");
+        }
+
+        return new TransmorgerDatabase();
+
+        //try
+        //{
+
+
+
+        ////// Resolve path: try as provided, then relative to application base directory
+        ////var path = localDbDir;
+
+        ////if (!File.Exists(path))
+        ////{
+        ////    var alt = Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), localDbDir);
+
+        ////    if (File.Exists(alt))
+        ////    {
+        ////        path = alt;
+        ////    }
+        ////    else
+        ////    {
+        ////        throw new FileNotFoundException($"Database file not found: {localDbDir}", localDbDir);
+        ////    }
+        ////}
+
+        ////var json = File.ReadAllText(path, Encoding.UTF8);
+
+        ////using var doc = JsonDocument.Parse(json);
+        ////var instance = new TransmorgerDatabase();
+        ////// Clone the root element so it lives beyond the JsonDocument scope
+        ////instance._jsonRoot = doc.RootElement.Clone();
+        ////instance._hasData = true;
+
+        ////return instance;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * NEW STRUCTURE - END =============================================================================================
+     */
+
+
+
+
+    /* OLD STRUCTURE - START ======================================================================================== */
+
 
     /// <summary>Returns the VisitStats section from the loaded database as pretty JSON.</summary>
     public string GetSummaryVisitStatsJson()
@@ -1642,4 +1762,7 @@ public partial class TransmorgerDatabase
 
         File.Copy(dbTempPath, masterDbPath);
     }
+
+    /* OLD STRUCTURE - END  ========================================================================================= */
+
 }

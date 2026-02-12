@@ -1,5 +1,14 @@
 # Tingen Transmorger: Changelog
 
+
+### 0.9.25.3
+
+'REFACTOR` Made significant changes to the following classes:
+  - MainWindow.asmx.cs
+  - MainWindow.AdminMode.cs
+  - TransmorgerDatabase.cs
+`ADDED` Additional MsgBox components to Core.Catalog.cs
+
 ### 0.9.25.2
 
 `MODIFIED` The default configuration file now defines both the LocalDb and Tmp directories under /AppData

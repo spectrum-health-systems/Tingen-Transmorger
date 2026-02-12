@@ -52,4 +52,18 @@ class Catalog
         $"{Environment.NewLine}" +
         $"Please note: If you select 'No', the application will close."
     ];
+
+    internal static string[] msgbox_DatabaseUpdateAvailable() =>
+    [
+        $"Tingen Transmorger - Database update",
+        $"A newer database version is available.{Environment.NewLine}" +
+        $"{Environment.NewLine}" +
+        $"Would you like to upgrade?"
+    ];
+
+    internal static string[] msgbox_DatabaseUpdateSuccess() =>
+    [
+        $"Tingen Transmorger - Database update",
+        $"Database upgraded successfully."
+    ];
 }

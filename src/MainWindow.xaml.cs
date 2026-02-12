@@ -18,171 +18,85 @@ using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
 
-/// <summary>
-/// Entry class for Tingen Transmorger.
-/// </summary>
+/// <summary>Entry class for Tingen Transmorger.</summary>
 public partial class MainWindow : Window
 {
-    /// <summary>
-    /// The Transmorger database.
-    /// </summary>
-    /// <remarks>
-    /// Defined here so it can be used throughout the application.
-    /// </remarks>
-    public TransmorgerDatabase TransMorgDb { get; set; }
+    /// <summary>The Transmorger database.</summary>
+    /// <remarks>Defined here so it can be used throughout the application.</remarks>
+    public TransmorgerDatabase tmDb { get; set; }
 
-    /// <summary>
-    /// Currently selected patient name.
-    /// </summary>
+    /// <summary> Currently selected patient name.</summary>
     private string _currentPatientName = string.Empty;
 
-    /// <summary>
-    /// Currently selected patient ID.
-    /// </summary>
+    /// <summary>Currently selected patient ID.</summary>
     private string _currentPatientId = string.Empty;
 
     /* TODO: The provider details section is currently not implemented in the UI, so we may not either of these.
      */
-    /////// <summary>
-    /////// Currently selected provider name.
-    /////// </summary>
+    /////// <summary>Currently selected provider name.</summary>
     ////private string _currentProviderName = string.Empty;
-
-    /////// <summary>
-    /////// Currently selected provider ID.
-    /////// </summary>
+    /////// <summary>Currently selected provider ID.</summary>
     ////private string _currentProviderId = string.Empty;
 
-    /// <summary>
-    /// SMS failure records for the current patient's phone numbers.
-    /// </summary>
+    /// <summary>SMS failure records for the current patient's phone numbers.</summary>
     private List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> _smsFailures = new();
 
-    /// <summary>
-    /// Message delivery records for the current patient's phone numbers.
-    /// </summary>
+    /// <summary>Message delivery records for the current patient's phone numbers.</summary>
     private List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _smsDeliveries = new();
 
-    /// <summary>
-    /// Email failure records for the current patient's email addresses.
-    /// </summary>
+    /// <summary>Email failure records for the current patient's email addresses.</summary>
     private List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> _emailFailures = new();
 
-    /// <summary>
-    /// Email delivery records for the current patient's email addresses.
-    /// </summary>
+    /// <summary>Email delivery records for the current patient's email addresses.</summary>
     private List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _emailDeliveries = new();
 
-    /// <summary>
-    /// Entry method for Tingen Transmorger.
-    /// </summary>
+    /// <summary>Entry method for Tingen Transmorger.</summary>
     public MainWindow()
     {
         InitializeComponent();
 
-        /* TODO Does this need to be async?
+        /* Call StartApp() asynchronously.
          */
-        // Call StartApp asynchronously
         _ = StartApp();
     }
 
-    /// <summary>
-    /// Starts the application.
-    /// </summary>
+    /// <summary>Starts the application.</summary>
     private async Task StartApp()
     {
+        /* TODO: Make sure this is verified properly.
+         */
         var config = Configuration.Load();
 
         /* TODO: Verify this is working. If the config file doesn't have an Import path, the app crashes.
          */
         Framework.Verify(config);
 
-        /* TODO: Do we need flow control here?
+        /* If the mode is set to Admin, let's do some admin stuff before we load the database.
          */
-        if (config.Mode.Trim().ToLower() == "admin")
+        if (string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase))
         {
-            //EnterAdminMode(config.AdminDirectories["Import"], config.AdminDirectories["Tmp"], config.StandardDirectories["MasterDb"]);
-            //var flowControl = await AdminMode(config.AdminDirectories["Import"], config.StandardDirectories["MasterDb"], config.AdminDirectories["Tmp"]);
-            var flowControl = await EnterAdminMode(config.AdminDirectories["Import"], config.AdminDirectories["Tmp"], config.StandardDirectories["MasterDb"]);
+            var flowControl = await EnterAdminMode(config.AdminDirectories["Import"],
+                                                   config.AdminDirectories["Tmp"],
+                                                   config.StandardDirectories["MasterDb"]);
+
             if (!flowControl)
             {
                 return;
             }
         }
 
-        // Check if MasterDb is newer than LocalDb and offer to upgrade
-        var localDbPath = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
-        var masterDbPath = Path.Combine(config.StandardDirectories["MasterDb"], "transmorger.db");
+        string localDbPath  = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
+        string masterDbPath = Path.Combine(config.StandardDirectories["MasterDb"], "transmorger.db");
 
-        ////if (File.Exists(masterDbPath) && File.Exists(localDbPath))
-        if (File.Exists(masterDbPath))
-        {
-            DateTime masterDbDate = File.GetLastWriteTime(masterDbPath);
-            DateTime localDbDate = File.GetLastWriteTime(localDbPath);
+        TransmorgerDatabase.Update(localDbPath, masterDbPath);
+        tmDb = TransmorgerDatabase.Load(localDbPath);
 
-            if (File.Exists(localDbPath))
-            {
-                localDbDate = File.GetLastWriteTime(localDbPath);
-            }
-            else
-            {
-                localDbDate = default;
-            }
-
-
-            if (masterDbDate > localDbDate)
-            {
-                MessageBoxResult upgradeResult = MessageBox.Show(
-                    $"A newer database version is available.\n\nMaster Database: {masterDbDate}\nLocal Database: {localDbDate}\n\nWould you like to upgrade your local database?",
-                    "Database Upgrade Available",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (upgradeResult == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        File.Copy(masterDbPath, localDbPath, overwrite: true);
-                        MessageBox.Show(
-                            "Database upgraded successfully.",
-                            "Upgrade Complete",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        var errorMessage = $"Failed to upgrade database:\n{ex.Message}";
-                        StopApp(errorMessage);
-                        return;
-                    }
-                }
-            }
-        }
-
-        try
-        {
-            TransMorgDb = TransmorgerDatabase.Load(localDbPath);
-        }
-        catch (FileNotFoundException)
-        {
-            var errorMessage = $"Database file not found at:\n{localDbPath}\n\nPlease ensure the database file exists or run the application in admin mode to rebuild it.";
-            StopApp(errorMessage);
-            return;
-        }
-        catch (Exception ex)
-        {
-            var errorMessage = $"Failed to load database:\n{ex.Message}";
-            StopApp(errorMessage);
-            return;
-        }
 
         rbtnByName.IsChecked = true;
         spnlPatientDetails.Visibility = Visibility.Collapsed;
         spnlPatientMeetings.Visibility = Visibility.Collapsed;
         spnlMeetingDetails.Visibility = Visibility.Collapsed;
     }
-
-
 
     /// <summary>
     /// Stops the application.
@@ -281,7 +195,7 @@ public partial class MainWindow : Window
         }
 
         // Don't search if database is not yet initialized
-        if (TransMorgDb == null)
+        if (tmDb == null)
         {
             return;
         }
@@ -300,7 +214,7 @@ public partial class MainWindow : Window
     private void SearchPatients(string searchText)
     {
         // Get all patients from the database
-        var allPatients = TransMorgDb.GetPatients();
+        var allPatients = tmDb.GetPatients();
 
         // Filter patients based on search type
         var filteredPatients = new List<(string PatientName, string PatientId)>();
@@ -333,7 +247,7 @@ public partial class MainWindow : Window
     private void SearchProviders(string searchText)
     {
         // Get all providers from the database
-        var allProviders = TransMorgDb.GetProviders();
+        var allProviders = tmDb.GetProviders();
 
         // Filter providers based on search type
         var filteredProviders = new List<(string ProviderName, string ProviderId)>();
@@ -373,7 +287,7 @@ public partial class MainWindow : Window
     private void SearchResultSelected()
     {
         // Don't process selection if database is not yet initialized
-        if (TransMorgDb == null)
+        if (tmDb == null)
         {
             return;
         }
@@ -422,7 +336,7 @@ public partial class MainWindow : Window
         _currentPatientId = patientId;
 
         // Get patient details from database
-        var patientDetails = TransMorgDb.GetPatientDetails(patientName, patientId);
+        var patientDetails = tmDb.GetPatientDetails(patientName, patientId);
         if (patientDetails == null)
         {
             return;
@@ -487,12 +401,12 @@ public partial class MainWindow : Window
                     System.Diagnostics.Debug.WriteLine($"Searching for phone: {normalizedPhone}");
 
                     // Query SMS failures
-                    var failures = TransMorgDb.GetSmsFailureStats(normalizedPhone);
+                    var failures = tmDb.GetSmsFailureStats(normalizedPhone);
                     System.Diagnostics.Debug.WriteLine($"Found {failures.Count} SMS failures");
                     _smsFailures.AddRange(failures);
 
                     // Query message deliveries
-                    var deliveries = TransMorgDb.GetMessageDeliveryStats(normalizedPhone);
+                    var deliveries = tmDb.GetMessageDeliveryStats(normalizedPhone);
                     System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} message deliveries");
                     _smsDeliveries.AddRange(deliveries);
                 }
@@ -543,12 +457,12 @@ public partial class MainWindow : Window
                 System.Diagnostics.Debug.WriteLine($"Searching for email: {emailAddress}");
 
                 // Query email failures
-                var failures = TransMorgDb.GetEmailFailureStats(emailAddress);
+                var failures = tmDb.GetEmailFailureStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {failures.Count} email failures");
                 _emailFailures.AddRange(failures);
 
                 // Query email deliveries
-                var deliveries = TransMorgDb.GetEmailDeliveryStats(emailAddress);
+                var deliveries = tmDb.GetEmailDeliveryStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} email deliveries");
                 _emailDeliveries.AddRange(deliveries);
             }
@@ -585,7 +499,7 @@ public partial class MainWindow : Window
                         ? (durationElem.GetString() ?? string.Empty) : string.Empty;
 
                     // Get ScheduledStart and Status from MeetingDetail
-                    var meetingDetail = TransMorgDb.GetMeetingDetail(meetingId);
+                    var meetingDetail = tmDb.GetMeetingDetail(meetingId);
                     var scheduledStart = string.Empty;
                     var status = string.Empty;
 
@@ -628,7 +542,7 @@ public partial class MainWindow : Window
                     }
 
                     // Check if meeting has an error
-                    var hasError = TransMorgDb.HasMeetingError(meetingId);
+                    var hasError = tmDb.HasMeetingError(meetingId);
 
                     // Check status flags (case-insensitive)
                     var statusLower = status?.ToLower() ?? string.Empty;
@@ -723,7 +637,7 @@ public partial class MainWindow : Window
         //////_currentProviderId = providerId;
 
         // Get provider details from database
-        var providerDetails = TransMorgDb.GetProviderDetails(providerName);
+        var providerDetails = tmDb.GetProviderDetails(providerName);
         if (providerDetails == null)
         {
             return;
@@ -770,12 +684,12 @@ public partial class MainWindow : Window
                 System.Diagnostics.Debug.WriteLine($"Searching for provider email: {emailAddress}");
 
                 // Query email failures
-                var failures = TransMorgDb.GetEmailFailureStats(emailAddress);
+                var failures = tmDb.GetEmailFailureStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {failures.Count} email failures");
                 _emailFailures.AddRange(failures);
 
                 // Query email deliveries
-                var deliveries = TransMorgDb.GetEmailDeliveryStats(emailAddress);
+                var deliveries = tmDb.GetEmailDeliveryStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} email deliveries");
                 _emailDeliveries.AddRange(deliveries);
             }
@@ -796,7 +710,7 @@ public partial class MainWindow : Window
                         continue;
 
                     // Get meeting details from MeetingDetail
-                    var meetingDetail = TransMorgDb.GetMeetingDetail(meetingId);
+                    var meetingDetail = tmDb.GetMeetingDetail(meetingId);
                     if (meetingDetail == null)
                         continue;
 
@@ -834,7 +748,7 @@ public partial class MainWindow : Window
                     }
 
                     // Check if meeting has an error
-                    var hasError = TransMorgDb.HasMeetingError(meetingId);
+                    var hasError = tmDb.HasMeetingError(meetingId);
 
                     // Check status flags
                     var statusLower = status?.ToLower() ?? string.Empty;
@@ -921,7 +835,7 @@ public partial class MainWindow : Window
     private void MeetingSelected()
     {
         // Don't process selection if database is not yet initialized
-        if (TransMorgDb == null)
+        if (tmDb == null)
         {
             spnlMeetingDetails.Visibility = Visibility.Collapsed;
             return;
@@ -936,7 +850,7 @@ public partial class MainWindow : Window
         }
 
         // Get meeting details from database
-        var meetingDetail = TransMorgDb.GetMeetingDetail(selectedMeeting.MeetingId);
+        var meetingDetail = tmDb.GetMeetingDetail(selectedMeeting.MeetingId);
         if (meetingDetail == null)
         {
             spnlMeetingDetails.Visibility = Visibility.Collapsed;
@@ -1026,7 +940,7 @@ public partial class MainWindow : Window
         txtMeetingCheckedInByFrontDesk.Text = ReplaceNull(checkedInByFrontDesk ?? string.Empty);
 
         // Get and display meeting error if it exists
-        var meetingError = TransMorgDb.GetMeetingError(selectedMeeting.MeetingId);
+        var meetingError = tmDb.GetMeetingError(selectedMeeting.MeetingId);
         if (meetingError != null)
         {
             var kind = meetingError.Value.TryGetProperty("Kind", out var kindElem)
@@ -1064,7 +978,7 @@ public partial class MainWindow : Window
         var browser = string.Empty;
 
         // Retrieve the patient details to access the meetings array
-        var patientDetailsForQuality = TransMorgDb.GetPatientDetails(_currentPatientName, _currentPatientId);
+        var patientDetailsForQuality = tmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
 
         if (patientDetailsForQuality != null && patientDetailsForQuality.Value.TryGetProperty("Meetings", out var meetingsArray))
         {
