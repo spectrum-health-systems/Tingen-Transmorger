@@ -35,7 +35,7 @@ public partial class MainWindow : Window
 
         SetupPatientDetailUi(patientName, patientId);
 
-        DisplayPhoneNumbers(patientDetails);
+        DisplayPhoneNumber(patientDetails);
 
 
         // Display email addresses
@@ -245,10 +245,10 @@ public partial class MainWindow : Window
     ///
     /// </summary>
     /// <param name="patientDetails"></param>
-    private void DisplayPhoneNumbers(JsonElement? patientDetails)
+    private void DisplayPhoneNumber(JsonElement? patientDetails)
     {
-        // Display phone numbers
-        var phoneNumbers = new List<string>();
+        var phoneNumbers     = new List<string>();
+        var normalizedPhones = new List<string>();
 
         if (patientDetails.Value.TryGetProperty("PhoneNumbers", out var phoneNumbersArray))
         {
@@ -262,12 +262,16 @@ public partial class MainWindow : Window
 
                         if (!string.IsNullOrWhiteSpace(number))
                         {
-
                             var digits = new string(number.Where(char.IsDigit).ToArray()); // Remove non-digits
 
                             if (digits.Length == 10)
                             {
                                 number = $"{digits.Substring(0, 3)}-{digits.Substring(3, 3)}-{digits.Substring(6, 4)}"; // Format as ###-###-#### if 10 digits
+                                normalizedPhones.Add(digits);
+                            }
+                            else
+                            {
+                                normalizedPhones.Add(digits);
                             }
 
                             phoneNumbers.Add(number);
@@ -277,33 +281,25 @@ public partial class MainWindow : Window
             }
         }
 
-        if (phoneNumbers.Count == 0)
-        {
-            phoneNumbers.Add("No phone numbers on file");
-        }
-
-        lblPatientPhoneValue.Content = string.Join(", ", phoneNumbers);
+        lblPatientPhoneValue.Content = phoneNumbers.Count > 0
+            ? string.Join(", ", phoneNumbers)
+            : "No phone numbers on file";
 
         // Query SMS failure and delivery stats for all patient phone numbers
         _smsFailures.Clear();
         _smsDeliveries.Clear();
 
-        foreach (var phoneNumber in phoneNumbers)
+        for (int i = 0; i < normalizedPhones.Count; i++)
         {
-            if (phoneNumber != "No phone numbers on file")
+            if (normalizedPhones[i].Length == 10)
             {
-                var normalizedPhone = new string(phoneNumber.Where(char.IsDigit).ToArray()); // Get normalized phone number (digits only)
+                // Query SMS failures
+                var failures = TmDb.GetSmsFailureStats(normalizedPhones[i]);
+                _smsFailures.AddRange(failures);
 
-                if (normalizedPhone.Length == 10)
-                {
-                    // Query SMS failures
-                    var failures = TmDb.GetSmsFailureStats(normalizedPhone);
-                    _smsFailures.AddRange(failures);
-
-                    // Query message deliveries
-                    var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhone);
-                    _smsDeliveries.AddRange(deliveries);
-                }
+                // Query message deliveries
+                var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhones[i]);
+                _smsDeliveries.AddRange(deliveries);
             }
         }
 
