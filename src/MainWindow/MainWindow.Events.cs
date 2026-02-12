@@ -32,7 +32,6 @@ public partial class MainWindow : Window
         ClearUi();
     }
 
-
     /// <summary>The text in the search box was changed.</summary>
     /// <remarks>
     ///     This method is called when the user types in the search text box. It filters and displays results based on
@@ -49,29 +48,10 @@ public partial class MainWindow : Window
             return;
         }
 
-        /* TODO: Probably don't need this, the database should be verified by now.
-         */
-        //// Don't search if database is not yet initialized
-        //if (tmDb == null)
-        //{
-        //    return;
-        //}
+        var searchType = btnSearchToggle.Content.ToString();
 
-        switch (btnSearchToggle.Content.ToString())
-        {
-            case "Patient Search":
-                PatientSearch(searchText);
-                break;
-
-            case "Provider Search":
-                SearchProviders(searchText);
-                break;
-        }
+        DisplaySearchResults(searchType, searchText);
     }
-
-
-
-
 
     /* EVENT HANDLERS */
     private void btnSearchToggle_Click(object? sender, RoutedEventArgs e) => SearchToggleClicked();

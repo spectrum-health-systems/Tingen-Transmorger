@@ -51,6 +51,46 @@ public partial class TransmorgerDatabase
     /// </remarks>
     private bool _hasData;
 
+
+    internal static async Task<bool> Rebuild(string importDir, string tmpDir, string masterDbDir, Window parentWindow)
+    {
+
+        // Show the rebuild window
+        var databaseRebuildWindow = new DatabaseRebuildWindow();
+        databaseRebuildWindow.SetParentWindow(parentWindow);
+        databaseRebuildWindow.Show();
+
+        // Run rebuild on background thread
+        await Task.Run(() =>
+        {
+            // Process reports with progress updates
+            databaseRebuildWindow.UpdateTask("Processing VisitStats workbooks...");
+            databaseRebuildWindow.UpdateProgress(10);
+            TeleHealthReport.ReportProcessor.ProcessVisitStats(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+
+            databaseRebuildWindow.UpdateTask("Processing VisitDetails workbooks...");
+            databaseRebuildWindow.UpdateProgress(30);
+            TeleHealthReport.ReportProcessor.ProcessVisitDetails(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+
+            databaseRebuildWindow.UpdateTask("Processing MessageFailure workbooks...");
+            databaseRebuildWindow.UpdateProgress(50);
+            TeleHealthReport.ReportProcessor.ProcessMessageFailure(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+
+            databaseRebuildWindow.UpdateTask("Processing MessageDelivery workbooks...");
+            databaseRebuildWindow.UpdateProgress(70);
+            TeleHealthReport.ReportProcessor.ProcessMessageDelivery(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+
+            databaseRebuildWindow.UpdateTask("Building Transmorger database...");
+            databaseRebuildWindow.UpdateProgress(90);
+            TransmorgerDatabase.Build(tmpDir, masterDbDir);
+
+            databaseRebuildWindow.Complete();
+        });
+
+        return true;
+    }
+
+
     /// <summary>Check to see if the master database is newer than the local database and offer to upgrade.</summary>
     /// <param name="localDbPath">The local database path.</param>
     /// <param name="masterDbPath">The master database path.</param>
@@ -101,6 +141,10 @@ public partial class TransmorgerDatabase
             MainWindow.StopApp("Master database file not found.");
         }
     }
+
+
+
+
 
     /// <summary> Loads a TransmorgerDatabase instance from the specified local database file path. </summary>
     /// <remarks>

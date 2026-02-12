@@ -24,7 +24,7 @@ public partial class MainWindow : Window
 {
     /// <summary>The Transmorger database.</summary>
     /// <remarks>Defined here so it can be used throughout the application.</remarks>
-    public TransmorgerDatabase tmDb { get; set; }
+    public TransmorgerDatabase TmDb { get; set; }
 
     /// <summary> Currently selected patient name.</summary>
     private string _currentPatientName = string.Empty;
@@ -91,7 +91,7 @@ public partial class MainWindow : Window
 
         TransmorgerDatabase.Update(localDbPath, masterDbPath);
 
-        tmDb = TransmorgerDatabase.Load(localDbPath);
+        TmDb = TransmorgerDatabase.Load(localDbPath);
 
         SetupInitialUI();
     }
@@ -117,106 +117,25 @@ public partial class MainWindow : Window
         Environment.Exit(0);
     }
 
-    /// <summary>Patient search.</summary>
+    /// <summary>Display search results..</summary>
+    /// <remarks>
+    ///     This method is called when the user types in the search text box. It filters and displays results based on
+    ///     the current search mode and search type (by name or ID).
+    /// </remarks>
     /// <param name="searchText">Contents of the search box.</param>
-    private void PatientSearch(string searchText)
+    private void DisplaySearchResults(string searchType, string searchText)
     {
         bool searchByName = rbtnByName.IsChecked == true;
 
-        var patientList = SearchFor.Patients(searchText, tmDb, searchByName);
+        List<string> resultList = searchType == "Patient Search"
+            ? SearchFor.Patients(searchText, TmDb, searchByName)
+            : SearchFor.Providers(searchText, TmDb, searchByName);
 
-        foreach (var patient in patientList)
+        foreach (var result in resultList)
         {
-            lstbxSearchResults.Items.Add(patient);
+            lstbxSearchResults.Items.Add(result);
         }
     }
-
-    /// <summary>Searches for providers based on the search text.</summary>
-    /// <param name="searchText">Contents of the search box.</param>
-    private void SearchProviders(string searchText)
-    {
-        bool searchByName = rbtnByName.IsChecked == true;
-
-        var providerList = SearchFor.Providers(searchText, tmDb, searchByName);
-
-        foreach (var provider in providerList)
-        {
-            lstbxSearchResults.Items.Add(provider);
-        }
-    }
-
-
-
-
-
-
-
-    /////// <summary>Searches for patients based on the search text.</summary>
-    ////private void SearchPatients(string searchText)
-    ////{
-    ////    // Get all patients from the database
-    ////    var allPatients = tmDb.GetPatients();
-
-    ////    // Filter patients based on search type
-    ////    var filteredPatients = new List<(string PatientName, string PatientId)>();
-
-    ////    if (rbtnByName.IsChecked == true)
-    ////    {
-    ////        // Search by name - case insensitive
-    ////        filteredPatients = allPatients
-    ////            .Where(p => p.PatientName.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-    ////            .OrderBy(p => p.PatientName)
-    ////            .ToList();
-    ////    }
-    ////    else if (rbtnById.IsChecked == true)
-    ////    {
-    ////        // Search by ID
-    ////        filteredPatients = allPatients
-    ////            .Where(p => p.PatientId.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-    ////            .OrderBy(p => p.PatientName)
-    ////            .ToList();
-    ////    }
-
-    ////    // Display results in the format "PatientName (PatientId)"
-    ////    foreach (var patient in filteredPatients)
-    ////    {
-    ////        lstbxSearchResults.Items.Add($"{patient.PatientName} ({patient.PatientId})");
-    ////    }
-    ////}
-
-    ///////// <summary>Searches for providers based on the search text.</summary>
-    //////private void SearchProviders(string searchText)
-    //////{
-    //////    // Get all providers from the database
-    //////    var allProviders = tmDb.GetProviders();
-
-    //////    // Filter providers based on search type
-    //////    var filteredProviders = new List<(string ProviderName, string ProviderId)>();
-
-    //////    if (rbtnByName.IsChecked == true)
-    //////    {
-    //////        // Search by name - case insensitive
-    //////        filteredProviders = allProviders
-    //////            .Where(p => p.ProviderName.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-    //////            .OrderBy(p => p.ProviderName)
-    //////            .ToList();
-    //////    }
-    //////    else if (rbtnById.IsChecked == true)
-    //////    {
-    //////        // Search by ID
-    //////        filteredProviders = allProviders
-    //////            .Where(p => p.ProviderId.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-    //////            .OrderBy(p => p.ProviderName)
-    //////            .ToList();
-    //////    }
-
-    //////    // Display results in the format "ProviderName (ProviderId)"
-    //////    foreach (var provider in filteredProviders)
-    //////    {
-    //////        var displayId = provider.ProviderId == "N/A" ? "No ID" : provider.ProviderId;
-    //////        lstbxSearchResults.Items.Add($"{provider.ProviderName} ({displayId})");
-    //////    }
-    //////}
 
     /// <summary>Handles the selection changed event for the search results list.</summary>
     /// <remarks>
@@ -228,7 +147,7 @@ public partial class MainWindow : Window
     private void SearchResultSelected()
     {
         // Don't process selection if database is not yet initialized
-        if (tmDb == null)
+        if (TmDb == null)
         {
             return;
         }
@@ -277,7 +196,7 @@ public partial class MainWindow : Window
         _currentPatientId = patientId;
 
         // Get patient details from database
-        var patientDetails = tmDb.GetPatientDetails(patientName, patientId);
+        var patientDetails = TmDb.GetPatientDetails(patientName, patientId);
         if (patientDetails == null)
         {
             return;
@@ -342,12 +261,12 @@ public partial class MainWindow : Window
                     System.Diagnostics.Debug.WriteLine($"Searching for phone: {normalizedPhone}");
 
                     // Query SMS failures
-                    var failures = tmDb.GetSmsFailureStats(normalizedPhone);
+                    var failures = TmDb.GetSmsFailureStats(normalizedPhone);
                     System.Diagnostics.Debug.WriteLine($"Found {failures.Count} SMS failures");
                     _smsFailures.AddRange(failures);
 
                     // Query message deliveries
-                    var deliveries = tmDb.GetMessageDeliveryStats(normalizedPhone);
+                    var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhone);
                     System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} message deliveries");
                     _smsDeliveries.AddRange(deliveries);
                 }
@@ -398,12 +317,12 @@ public partial class MainWindow : Window
                 System.Diagnostics.Debug.WriteLine($"Searching for email: {emailAddress}");
 
                 // Query email failures
-                var failures = tmDb.GetEmailFailureStats(emailAddress);
+                var failures = TmDb.GetEmailFailureStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {failures.Count} email failures");
                 _emailFailures.AddRange(failures);
 
                 // Query email deliveries
-                var deliveries = tmDb.GetEmailDeliveryStats(emailAddress);
+                var deliveries = TmDb.GetEmailDeliveryStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} email deliveries");
                 _emailDeliveries.AddRange(deliveries);
             }
@@ -440,7 +359,7 @@ public partial class MainWindow : Window
                         ? (durationElem.GetString() ?? string.Empty) : string.Empty;
 
                     // Get ScheduledStart and Status from MeetingDetail
-                    var meetingDetail = tmDb.GetMeetingDetail(meetingId);
+                    var meetingDetail = TmDb.GetMeetingDetail(meetingId);
                     var scheduledStart = string.Empty;
                     var status = string.Empty;
 
@@ -483,7 +402,7 @@ public partial class MainWindow : Window
                     }
 
                     // Check if meeting has an error
-                    var hasError = tmDb.HasMeetingError(meetingId);
+                    var hasError = TmDb.HasMeetingError(meetingId);
 
                     // Check status flags (case-insensitive)
                     var statusLower = status?.ToLower() ?? string.Empty;
@@ -578,7 +497,7 @@ public partial class MainWindow : Window
         //////_currentProviderId = providerId;
 
         // Get provider details from database
-        var providerDetails = tmDb.GetProviderDetails(providerName);
+        var providerDetails = TmDb.GetProviderDetails(providerName);
         if (providerDetails == null)
         {
             return;
@@ -625,12 +544,12 @@ public partial class MainWindow : Window
                 System.Diagnostics.Debug.WriteLine($"Searching for provider email: {emailAddress}");
 
                 // Query email failures
-                var failures = tmDb.GetEmailFailureStats(emailAddress);
+                var failures = TmDb.GetEmailFailureStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {failures.Count} email failures");
                 _emailFailures.AddRange(failures);
 
                 // Query email deliveries
-                var deliveries = tmDb.GetEmailDeliveryStats(emailAddress);
+                var deliveries = TmDb.GetEmailDeliveryStats(emailAddress);
                 System.Diagnostics.Debug.WriteLine($"Found {deliveries.Count} email deliveries");
                 _emailDeliveries.AddRange(deliveries);
             }
@@ -651,7 +570,7 @@ public partial class MainWindow : Window
                         continue;
 
                     // Get meeting details from MeetingDetail
-                    var meetingDetail = tmDb.GetMeetingDetail(meetingId);
+                    var meetingDetail = TmDb.GetMeetingDetail(meetingId);
                     if (meetingDetail == null)
                         continue;
 
@@ -689,7 +608,7 @@ public partial class MainWindow : Window
                     }
 
                     // Check if meeting has an error
-                    var hasError = tmDb.HasMeetingError(meetingId);
+                    var hasError = TmDb.HasMeetingError(meetingId);
 
                     // Check status flags
                     var statusLower = status?.ToLower() ?? string.Empty;
@@ -776,7 +695,7 @@ public partial class MainWindow : Window
     private void MeetingSelected()
     {
         // Don't process selection if database is not yet initialized
-        if (tmDb == null)
+        if (TmDb == null)
         {
             spnlMeetingDetails.Visibility = Visibility.Collapsed;
             return;
@@ -791,7 +710,7 @@ public partial class MainWindow : Window
         }
 
         // Get meeting details from database
-        var meetingDetail = tmDb.GetMeetingDetail(selectedMeeting.MeetingId);
+        var meetingDetail = TmDb.GetMeetingDetail(selectedMeeting.MeetingId);
         if (meetingDetail == null)
         {
             spnlMeetingDetails.Visibility = Visibility.Collapsed;
@@ -881,7 +800,7 @@ public partial class MainWindow : Window
         txtMeetingCheckedInByFrontDesk.Text = ReplaceNull(checkedInByFrontDesk ?? string.Empty);
 
         // Get and display meeting error if it exists
-        var meetingError = tmDb.GetMeetingError(selectedMeeting.MeetingId);
+        var meetingError = TmDb.GetMeetingError(selectedMeeting.MeetingId);
         if (meetingError != null)
         {
             var kind = meetingError.Value.TryGetProperty("Kind", out var kindElem)
@@ -919,7 +838,7 @@ public partial class MainWindow : Window
         var browser = string.Empty;
 
         // Retrieve the patient details to access the meetings array
-        var patientDetailsForQuality = tmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
+        var patientDetailsForQuality = TmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
 
         if (patientDetailsForQuality != null && patientDetailsForQuality.Value.TryGetProperty("Meetings", out var meetingsArray))
         {
