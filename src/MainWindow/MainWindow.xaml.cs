@@ -127,9 +127,7 @@ public partial class MainWindow : Window
     {
         bool searchByName = rbtnByName.IsChecked == true;
 
-        List<string> resultList = searchType == "Patient Search"
-            ? SearchFor.Patients(searchText, TmDb, searchByName)
-            : SearchFor.Providers(searchText, TmDb, searchByName);
+        List<string> resultList = SearchFor.PatientOrProvider(searchType, searchText, TmDb, searchByName);
 
         foreach (var result in resultList)
         {

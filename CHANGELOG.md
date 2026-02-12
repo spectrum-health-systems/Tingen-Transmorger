@@ -1,5 +1,16 @@
 # Tingen Transmorger: Changelog
 
+### 0.9.25.7
+
+- 'REFACTOR` Combined the patient and provider search methods into a single method
+
+### 0.9.25.6
+
+- 'REFACTOR` Made significant changes to the following classes:
+  - MainWindow.asmx.cs
+  - MainWindow.AdminMode.cs
+  - TransmorgerDatabase.cs
+
 ### 0.9.25.5
 
 - 'REFACTOR` Made significant changes to the following classes:

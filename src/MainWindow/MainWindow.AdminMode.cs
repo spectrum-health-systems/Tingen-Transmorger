@@ -32,59 +32,12 @@ public partial class MainWindow : Window
             MainWindow.StopApp();
         }
 
-        ////// Show the rebuild window
-        //var rebuildWindow = new DatabaseRebuildWindow();
-        //rebuildWindow.SetParentWindow(this);
-        //rebuildWindow.Show();
-
         return await TransmorgerDatabase.Rebuild(importDir, tmpDirImport, masterDbDir, this);
-
     }
-
-
-    //////private async Task<bool> RebuildDatabase(string importDir, string tmpDir, string masterDbDir)
-    //////{
-
-    //////    // Show the rebuild window
-    //////    var rebuildWindow = new DatabaseRebuildWindow();
-    //////    rebuildWindow.SetParentWindow(this);
-    //////    rebuildWindow.Show();
-
-    //////    // Run rebuild on background thread
-    //////    await Task.Run(() =>
-    //////    {
-    //////        // Process reports with progress updates
-    //////        rebuildWindow.UpdateTask("Processing VisitStats workbooks...");
-    //////        rebuildWindow.UpdateProgress(10);
-    //////        TeleHealthReport.ReportProcessor.ProcessVisitStats(importDir, tmpDir, (status) => rebuildWindow.UpdateStatus(status));
-
-    //////        rebuildWindow.UpdateTask("Processing VisitDetails workbooks...");
-    //////        rebuildWindow.UpdateProgress(30);
-    //////        TeleHealthReport.ReportProcessor.ProcessVisitDetails(importDir, tmpDir, (status) => rebuildWindow.UpdateStatus(status));
-
-    //////        rebuildWindow.UpdateTask("Processing MessageFailure workbooks...");
-    //////        rebuildWindow.UpdateProgress(50);
-    //////        TeleHealthReport.ReportProcessor.ProcessMessageFailure(importDir, tmpDir, (status) => rebuildWindow.UpdateStatus(status));
-
-    //////        rebuildWindow.UpdateTask("Processing MessageDelivery workbooks...");
-    //////        rebuildWindow.UpdateProgress(70);
-    //////        TeleHealthReport.ReportProcessor.ProcessMessageDelivery(importDir, tmpDir, (status) => rebuildWindow.UpdateStatus(status));
-
-    //////        rebuildWindow.UpdateTask("Building Transmorger database...");
-    //////        rebuildWindow.UpdateProgress(90);
-    //////        TransmorgerDatabase.Build(tmpDir, masterDbDir);
-
-    //////        rebuildWindow.Complete();
-    //////    });
-    //////    return true;
-    //////}
 
     /// <summary>Sets the theme for admin mode.</summary>
     private void SetAdminModeTheme()
     {
         this.Background = System.Windows.Media.Brushes.Red;
     }
-
-
-
 }

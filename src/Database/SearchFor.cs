@@ -6,55 +6,31 @@ namespace TingenTransmorger.Database;
 /// <summary>Database searches.</summary>
 internal static class SearchFor
 {
-    /// <summary>Patient search.</summary>
+    /// <summary>Patient/provider search.</summary>
+    /// <param name="searchType">The type of search.</param>
     /// <param name="searchText">The text to search for.</param>
     /// <param name="tmDb">The Transmorger database instance.</param>
-    /// <param name="searchByName">Indicates whether to search by patient name (true) or patient ID (false).</param>
-    internal static List<string> Patients(string searchText, TransmorgerDatabase tmDb, bool searchByName)
+    /// <param name="searchByName">Indicates whether to search by name (true) or ID (false).</param>
+    internal static List<string> PatientOrProvider(string searchType, string searchText, TransmorgerDatabase tmDb, bool searchByName)
     {
         //TODO: Find a way to do this without passing the entire database.
-        List<(string PatientName, string PatientId)> allPatients = tmDb.GetPatients();
+        List<(string name, string id)> allPeople = searchType == "Patient Search"
+            ? tmDb.GetPatients()
+            : tmDb.GetProviders();
 
-        var patientNameAndId = new List<(string PatientName, string PatientId)>();
+        var nameAndId = new List<(string name, string id)>();
 
-        patientNameAndId = searchByName
-            ? [.. allPatients.Where(p => p.PatientName.Contains(searchText, StringComparison.OrdinalIgnoreCase)).OrderBy(p => p.PatientName)]
-            : [.. allPatients.Where(p => p.PatientId.Contains(searchText, StringComparison.OrdinalIgnoreCase)).OrderBy(p => p.PatientName)];
+        nameAndId = searchByName
+            ? [.. allPeople.Where(p => p.name.Contains(searchText, StringComparison.OrdinalIgnoreCase)).OrderBy(p => p.name)]
+            : [.. allPeople.Where(p => p.id.Contains(searchText, StringComparison.OrdinalIgnoreCase)).OrderBy(p => p.name)];
 
-        List<string> patientList = [];
+        List<string> resultList = [];
 
-        foreach (var (PatientName, PatientId) in patientNameAndId)
+        foreach (var (name, id) in nameAndId)
         {
-            patientList.Add($"{PatientName} ({PatientId})");
+            resultList.Add($"{name} ({id})");
         }
 
-        return patientList;
+        return resultList;
     }
-
-    /// <summary>Provider search.</summary>
-    /// <param name="searchText">The text to search for.</param>
-    /// <param name="tmDb">The Transmorger database instance.</param>
-    /// <param name="searchByName">Indicates whether to search by provider name (true) or provider ID (false).</param>
-    internal static List<string> Providers(string searchText, TransmorgerDatabase tmDb, bool searchByName)
-    {
-        //TODO: Find a way to do this without passing the entire database.
-        List<(string ProviderName, string ProviderId)> allProviders = tmDb.GetProviders();
-
-        var providerNameAndId = new List<(string ProviderName, string ProviderId)>();
-
-        providerNameAndId = searchByName
-            ? [.. allProviders.Where(p => p.ProviderName.Contains(searchText, StringComparison.OrdinalIgnoreCase)).OrderBy(p => p.ProviderName)]
-            : [.. allProviders.Where(p => p.ProviderId.Contains(searchText, StringComparison.OrdinalIgnoreCase)).OrderBy(p => p.ProviderName)];
-
-        List<string> patientList = [];
-
-        foreach (var (ProviderName, ProviderId) in providerNameAndId)
-        {
-            patientList.Add($"{ProviderName} ({ProviderId})");
-        }
-
-        return patientList;
-    }
-
-
 }
