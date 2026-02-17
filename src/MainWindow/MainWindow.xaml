@@ -4,25 +4,29 @@
 -->
 
 <!--
-    This is the main window of the Tingen Transmorger application. I am not a UI designer, so it probably breaks a
-    number of UI best practices, but I did my best! To that point, this window has a resolution of 1200x700, and is not
-    designed to be resized.
-    
-    I've provided detailed comments throughout the XAML to explain the structure and purpose of each element in the UI,
-    and the code-behind contains is written to be as clear as possible.
-    
+    This is the main window of the Tingen Transmorger application. I am not a UI designer, so it probably
+    breaks a number of UI best practices, but I did my best! To that point, this window has a resolution of
+    1200x700, and is not  designed to be resized.
+
+    I've provided detailed comments throughout the XAML to explain the structure and purpose of each element
+    in the UI, and the code-behind contains is written to be as clear as possible.
+
     A few things of note:
-    
-    The brdrMainContainer control will be different colors, depending on what type of user is running the application;
-    standard users will see a SteelBlue background, admin users will see a DarkRed background
-    
+
+    The brdrMainContainer control will be different colors, depending on what type of user is running the
+    application; standard users will see a SteelBlue background, admin users will see a DarkRed background
+
+    There are two main columns:
+    - The left column is for searching patients/providers
+    - The right column is for displaying details about the selected patient/provider and their meetings
+
     The btnSearchToggle control toggles between patient and provider search modes.
-    
+
     When in patient search mode:
     - The brdrMeetingDetailsPatient control is visible
     - The spnlPatientPhoneAndEmail control is visible
     - The brdrMeetingDetailsProvider control is hidden
-    
+
     When in provider search mode:
     - The spnlPatientPhoneAndEmail control is hidden
     - The brdrMeetingDetailsProvider control is visible
@@ -42,10 +46,10 @@
     ResizeMode="NoResize"
     mc:Ignorable="d">
 
-    <!-- The main grid. -->
-    <Grid x:Name="gridMainContainer">
+    <!-- Main -->
+    <Grid x:Name="grdMainContainer">
 
-        <!-- The main border that holds all of the UI -->
+        <!-- Holds all of the UI -->
         <Border x:Name="brdrMainContainer"
             Margin="10"
             Background="SteelBlue">
@@ -55,35 +59,36 @@
                 </Style>
             </Border.Resources>
 
-            <!--
-                The grid that contains the two main columns of the UI.
-                A :
-                - The left column will be for searching patients/providers
-                - The right column will be for displaying details about the selected patient/provider and their meetings.
-            -->
-            <Grid x:Name="gridMainColumnsContainer">
+            <!-- Defines the two main columns of the UI -->
+            <Grid x:Name="grdMainColumnsDefinition">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="colLeftColumn"
+                    <!-- Left column: Search -->
+                    <ColumnDefinition x:Name="colLeftColumnDefinition"
                         Width="360" />
-                    <ColumnDefinition x:Name="colRightColumn"
+                    <!-- Right column: Details -->
+                    <ColumnDefinition x:Name="colRightColumnDefinition"
                         Width="*" />
                 </Grid.ColumnDefinitions>
-                <!-- LEFT COLUMN BORDER -->
-                <Border x:Name="brdrLeftColumn"
+
+                <!-- Left column -->
+                <Border x:Name="brdrLeftColumnContainer"
                     Grid.Column="0"
                     Margin="12,12,4,12"
                     Padding="8"
                     Background="White"
                     CornerRadius="6,0,0,6">
-                    <!-- StackPanel to hold search options, search bar, and search results -->
+
+                    <!-- Search UI -->
                     <StackPanel x:Name="spnlSearchContainer"
                         Orientation="Vertical">
-                        <!-- Search options: patient/provider toggle and search by name/ID radio buttons -->
-                        <StackPanel x:Name="spnlSearchOptions"
+
+                        <!-- Search option components -->
+                        <StackPanel x:Name="spnlSearchOptionsComponents"
                             Grid.Column="0"
                             Background="White"
                             Orientation="Horizontal">
-                            <!-- Button to toggle between patient/provider searches -->
+
+                            <!-- Toggle between patient/provider search -->
                             <Button x:Name="btnSearchToggle"
                                 Width="200"
                                 Height="42"
@@ -99,10 +104,12 @@
                                     </Style>
                                 </Button.Resources>
                             </Button>
-                            <!-- Radio buttons to toggle between searching by name or ID -->
-                            <StackPanel x:Name="spnlSearchByNameOrId"
+
+                            <!-- Search by name/ID components -->
+                            <StackPanel x:Name="spnlSearchByNameOrIdComponents"
                                 Orientation="Vertical">
-                                <!-- Radio button to search by name -->
+
+                                <!-- Search by name -->
                                 <RadioButton x:Name="rbtnByName"
                                     Width="116"
                                     Margin="5,12,0,0"
@@ -110,7 +117,8 @@
                                     Checked="rbtnSearch_Checked"
                                     Content="By name"
                                     FontSize="14" />
-                                <!-- Radio button to search by ID -->
+
+                                <!-- Search by ID -->
                                 <RadioButton x:Name="rbtnById"
                                     Width="116"
                                     Margin="5,5,0,0"
@@ -120,10 +128,12 @@
                                     FontSize="14" />
                             </StackPanel>
                         </StackPanel>
-                        <!-- Search bar and search results listbox -->
+
+                        <!-- Search bar and results components -->
                         <StackPanel x:Name="spnlSearchBar"
                             Margin="0,0,0,6"
                             Orientation="Horizontal">
+
                             <!-- Search bar -->
                             <TextBox x:Name="txbxSearch"
                                 Width="310"
@@ -140,7 +150,8 @@
                                 </TextBox.Resources>
                             </TextBox>
                         </StackPanel>
-                        <!-- ListBox to display search results -->
+
+                        <!-- Search results -->
                         <ListBox x:Name="lstbxSearchResults"
                             Height="476"
                             SelectionChanged="lstbxSearchResults_SelectionChanged">
@@ -152,22 +163,32 @@
                         </ListBox>
                     </StackPanel>
                 </Border>
-                <!-- RIGHT COLUMN BORDER -->
-                <Border x:Name="brdrRightPanel"
+
+                <!-- Right column -->
+                <Border x:Name="brdrRightPanelContainer"
                     Grid.Column="1"
                     Margin="4,12,12,12"
                     Padding="8"
                     Background="White"
                     CornerRadius="0,6,6,0">
-                    <!-- StackPanel for both patient/provider details -->
-                    <StackPanel x:Name="spnlDetailsMain">
-                        <!-- StackPanel for patient/provider name, and patient phone/email. -->
-                        <StackPanel x:Name="spnlNamePhoneEmail"
+
+                    <!-- Patient/provider details components -->
+                    <StackPanel x:Name="spnlPatientProviderDetailsComponents">
+
+                        <!-- Patient/provider name, and patient phone/email components. -->
+                        <StackPanel x:Name="spnlNamePhoneEmailComponents"
                             Height="65"
                             Margin="0"
                             Background="White"
                             Orientation="Horizontal">
+
                             <!-- Patient/provider label -->
+                            <!--
+                                This value components of this label are: "lblPatientProviderNameValue" and
+                                "lblPatientProviderIdValue".
+
+                                This label will either say "PATIENT" or "PROVIDER", depending on the search mode.
+                            -->
                             <Label x:Name="lblPatientProviderKey"
                                 Width="100"
                                 Height="64"
@@ -187,9 +208,11 @@
                                     </Style>
                                 </Label.Resources>
                             </Label>
-                            <!-- Patient/provider name and ID -->
-                            <StackPanel x:Name="spnlPatientProviderNameAndId"
+
+                            <!-- Patient/provider name and ID components -->
+                            <StackPanel x:Name="spnlPatientProviderNameAndIdComponents"
                                 Orientation="vertical">
+
                                 <!-- Patient/provider Name -->
                                 <Label x:Name="lblPatientProviderNameValue"
                                     Width="250"
@@ -208,6 +231,7 @@
                                         </Style>
                                     </Label.Resources>
                                 </Label>
+
                                 <!-- Patient/provider ID -->
                                 <Label x:Name="lblPatientProviderIdValue"
                                     Width="250"
@@ -229,13 +253,19 @@
                                     </Label.Resources>
                                 </Label>
                             </StackPanel>
-                            <!-- Patient phone and email -->
-                            <StackPanel x:Name="spnlPatientPhoneAndEmail"
+
+                            <!-- Patient phone and email components -->
+                            <!--
+                                This is only visible in patient search mode.
+                            -->
+                            <StackPanel x:Name="spnlPatientPhoneAndEmailComponents"
                                 Orientation="Vertical">
-                                <!-- Patient phone -->
-                                <StackPanel x:Name="spnlPatientPhone"
+
+                                <!-- Patient phone components -->
+                                <StackPanel x:Name="spnlPatientPhoneComponents"
                                     Orientation="Horizontal">
-                                    <!-- Patient phone label -->
+
+                                    <!-- Phone label -->
                                     <Label x:Name="lblPatientPhoneKey"
                                         Width="60"
                                         Height="30"
@@ -255,7 +285,8 @@
                                             </Style>
                                         </Label.Resources>
                                     </Label>
-                                    <!-- Patient phone number -->
+
+                                    <!-- Phone number -->
                                     <Label x:Name="lblPatientPhoneValue"
                                         Width="325"
                                         Height="30"
@@ -274,7 +305,8 @@
                                             </Style>
                                         </Label.Resources>
                                     </Label>
-                                    <!-- Button to view patient phone details -->
+
+                                    <!-- View phone details -->
                                     <Button x:Name="btnPhoneDetails"
                                         Width="32"
                                         Height="30"
@@ -287,10 +319,12 @@
                                         </Button.Resources>
                                     </Button>
                                 </StackPanel>
-                                <!-- Patient email -->
-                                <StackPanel x:Name="spnlPatientEmail"
+
+                                <!-- Patient email components -->
+                                <StackPanel x:Name="spnlPatientEmailComponents"
                                     Orientation="Horizontal">
-                                    <!--  -->
+
+                                    <!-- Email label -->
                                     <Label x:Name="lblPatientEmailKey"
                                         Width="60"
                                         Height="30"
@@ -310,7 +344,8 @@
                                             </Style>
                                         </Label.Resources>
                                     </Label>
-                                    <!--  -->
+
+                                    <!-- Email value -->
                                     <Label x:Name="lblPatientEmailValue"
                                         Width="325"
                                         Height="30"
@@ -328,7 +363,8 @@
                                             </Style>
                                         </Label.Resources>
                                     </Label>
-                                    <!--  -->
+
+                                    <!-- View email details -->
                                     <Button x:Name="btnEmailDetails"
                                         Width="32"
                                         Height="30"
@@ -343,63 +379,76 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <!-- Patient/provider meeting information -->
-                        <StackPanel x:Name="spnlPatientProviderMeetings"
+
+                        <!-- Meeting components -->
+                        <StackPanel x:Name="spnlMeetingComponents"
                             Margin="0,10,0,0">
-                            <!-- Meeting details -->
-                            <StackPanel x:Name="spnlMeetingsHeader"
+
+                            <!-- Meetings breakdown components -->
+                            <StackPanel x:Name="spnlMeetingsBreakdownComponents"
                                 Margin="0,0,0,8"
                                 Orientation="Horizontal">
+
                                 <!-- Total meetings -->
-                                <TextBlock x:Name="txtMeetingsTotal"
+                                <TextBlock x:Name="txbkTotalMeetings"
                                     Margin="0,0,5,0"
                                     FontSize="16"
                                     FontWeight="Bold"
                                     Text="Meetings" />
+
                                 <!-- Completed meetings -->
-                                <TextBlock x:Name="txtMeetingsCompleted"
+                                <TextBlock x:Name="txbkCompletedMeetings"
                                     FontSize="16"
                                     Foreground="Green"
                                     Text="0 Completed" />
+
                                 <!-- Separator -->
-                                <TextBlock x:Name="txtMeetingsSeparator1"
+                                <TextBlock x:Name="txbkMeetingsSeparator1"
                                     FontSize="16"
                                     Text=" / " />
+
                                 <!-- In-progress meetings -->
-                                <TextBlock x:Name="txtMeetingsInProgress"
+                                <TextBlock x:Name="txbkMeetingsInProgress"
                                     FontSize="16"
                                     Foreground="Orange"
                                     Text="0 In-Progress" />
+
                                 <!-- Separator -->
-                                <TextBlock x:Name="txtMeetingsSeparator2"
+                                <TextBlock x:Name="txbkMeetingsSeparator2"
                                     FontSize="16"
                                     Text=" / " />
+
                                 <!-- Expired meetings -->
-                                <TextBlock x:Name="txtMeetingsExpired"
+                                <TextBlock x:Name="txbkMeetingsExpired"
                                     FontSize="16"
                                     Foreground="Red"
                                     Text="0 Expired" />
+
                                 <!-- Separator -->
-                                <TextBlock x:Name="txtMeetingsSeparator3"
+                                <TextBlock x:Name="txbkMeetingsSeparator3       "
                                     FontSize="16"
                                     Text=" / " />
+
                                 <!-- Cancelled meetings -->
-                                <TextBlock x:Name="txtMeetingsCancelled"
+                                <TextBlock x:Name="txbkMeetingsCancelled"
                                     FontSize="16"
                                     Foreground="Black"
                                     Text="0 Cancelled" />
+
                                 <!-- Separator -->
-                                <TextBlock x:Name="txtMeetingsSeparator4"
+                                <TextBlock x:Name="txbkMeetingsSeparator4"
                                     FontSize="16"
                                     Text=" / " />
+
                                 <!-- Scheduled meetings -->
-                                <TextBlock x:Name="txtMeetingsScheduled"
+                                <TextBlock x:Name="txbkMeetingsScheduled"
                                     FontSize="16"
                                     Foreground="Gray"
                                     Text="0 Scheduled" />
                             </StackPanel>
+
                             <!-- DataGrid to display patient/provider meetings -->
-                            <DataGrid x:Name="dgPatientProviderMeetings"
+                            <DataGrid x:Name="dgrdPatientProviderMeetings"
                                 Height="120"
                                 MaxHeight="120"
                                 AutoGenerateColumns="False"

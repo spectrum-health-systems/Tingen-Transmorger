@@ -11,7 +11,8 @@
 - [ ] Show data base statistics/summaries
 - [ ] After rebuild, non-existant database causes error
 - [ ] Version on title bar
-
+- [ ] Do the MeetingBreakdownComponents need to have text when launching?
+- [ ] What controls have text when launching that don't need text?
 
 - [ ] Review dgPatientProviderMeetings to make sure the comments work for both patients and providers
 
