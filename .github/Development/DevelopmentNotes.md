@@ -47,28 +47,26 @@ Open excel files for detailed research
 
 
 
-- Left column: Meeting ID, Title, Status, Joins, Duration, Service code
-- Center column: Started by, Scheduled start, Actual start, Ended by, Scheduled end, Actual end
-- Right column: Workflow, Program, Front Desk Check-in, Meeting error
+<!-- Left column: Meeting ID, Title, Status, Joins, Duration, Service code -->
+<StackPanel x:Name="spnlMeetingDetailsGeneralLeftComponents"
+    Grid.Column="0"
+    Margin="0,0,10,0">
+
+    <!-- Meeting ID -->
+    <StackPanel x:Name="spnlMeetingId"
+        Margin="0,2"
+        Orientation="Horizontal">
+
+        <!-- Meeting ID label -->
+        <TextBlock x:Name="txbkMeetingIdKey"
+            Width="80"
+            FontSize="11"
+            FontWeight="SemiBold"
+            Text="Meeting ID:" />
 
 
 
-        - A left column for searching
-        - A right column for details
-        - Buttons to view additional details
-        - Buttons to copy information to the clipboard
-
-                                            StackPanel to hold Meeting Details (General) information, which consists of:
-                                    - The top row, containing the title and the copy button.
-                                    - The bottom row, containing a 3-column grid meeting information.
-
-
-
-    Left column: Meeting ID, Title, Status, Joins, Duration, Service code -->
-            <ColumnDefinition x:Name="colMeetingDetailsGeneralLeft"
-                Width="*" />
-            <!-- Center column: Started by, Scheduled start, Actual start, Ended by, Scheduled end, Actual end -->
-            <ColumnDefinition x:Name="colMeetingDetailsGeneralCenter"
-                Width="*" />
-            <!-- Right column: Workflow, Program, Front Desk Check-in, Meeting error -->
-            <ColumnDefinition x:Name="colMeetingDetailsGeneralRight"
+                                                                                            <!-- Left column: Meeting ID, Title, Status, Joins, Duration, Service code -->
+                                        <StackPanel x:Name="spnlMeetingDetailsGeneralLeftComponents"
+                                            Grid.Column="0"
+                                            Margin="0,0,10,0">

@@ -589,8 +589,8 @@
                                         </Button>
                                     </StackPanel>
 
-                                    <!-- Definitions for the meeting details grid -->
-                                    <Grid x:Name="grdMeetingDetailsDefinitions"
+                                    <!-- Definitions for the meeting details (general) grid -->
+                                    <Grid x:Name="grdMeetingDetailsGeneralDefinitions"
                                         Margin="0,4,0,0">
                                         <Grid.ColumnDefinitions>
                                             <!-- Left column -->
@@ -911,23 +911,33 @@
                                 </StackPanel>
                             </Border>
 
-
-                            <!-- Meeting Details (Patient) Section -->
-                            <Border x:Name="brdrMeetingDetailsPatient"
+                            <!-- Meeting Details (Patient) -->
+                            <!--
+                                This visible only in patient search mode.
+                            -->
+                            <Border x:Name="brdrMeetingDetailsPatientContainer"
                                 Margin="0,10,20,0"
                                 BorderBrush="Black"
                                 BorderThickness="1"
                                 CornerRadius="5">
-                                <StackPanel x:Name="spnlMeetingDetailsPatient"
+
+                                <!-- Contains the patient-specific meeting details components -->
+                                <StackPanel x:Name="spnlMeetingDetailsPatientComponent"
                                     Margin="8">
-                                    <StackPanel
+
+                                    <!-- StackPanel containing the header and copy button -->
+                                    <StackPanel x:Name="spnlMeetingDetailsPatientTop"
                                         Margin="0,0,0,4"
                                         Orientation="Horizontal">
-                                        <TextBlock
+
+                                        <!-- Header -->
+                                        <TextBlock x:Name="txbkMeetingDetailsPatientHeader"
                                             Margin="0,5,0,0"
                                             FontSize="12"
                                             FontWeight="SemiBold"
                                             Text="Meeting Details (Patient)" />
+
+                                        <!-- Copy button -->
                                         <Button x:Name="btnCopyMeetingDetailsPatient"
                                             Width="24"
                                             Height="24"
@@ -944,66 +954,97 @@
                                             </Button.Background>
                                         </Button>
                                     </StackPanel>
-                                    <Grid Margin="0,4,0,0">
+
+                                    <!-- Definitions for the meeting details (patient) grid -->
+                                    <Grid x:Name="grdMeetingDetailsPatientDefinitions"
+                                        Margin="0,4,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <!-- Left column -->
+                                            <ColumnDefinition x:Name="colMeetingDetailsPatientLeft"
+                                                Width="*" />
+                                            <!-- Center column -->
+                                            <ColumnDefinition x:Name="colMeetingDetailsPatientCenter"
+                                                Width="*" />
+                                            <!-- Right column -->
+                                            <ColumnDefinition x:Name="colMeetingDetailsPatientRight"
+                                                Width="*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <!-- LEFT COLUMN -->
-                                        <StackPanel
+                                        <!-- Left column: Patient arrived, Patient dropped, Duration, Rating -->
+                                        <StackPanel x:Name="spnlMeetingDetailsPatientLeftComponents"
                                             Grid.Column="0"
                                             Margin="0,0,10,0">
+
                                             <!-- Patient Arrived -->
-                                            <StackPanel
+                                            <StackPanel x:Name="spnlPatientArrived"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
-                                                <TextBlock
+
+                                                <!-- Patient Arrived key -->
+                                                <TextBlock x:Name="txbkPatientArrivedKey"
                                                     Width="90"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Patient arrived:" />
-                                                <TextBlock x:Name="txtPatientArrived"
+
+                                                <!-- Patient Arrived value -->
+                                                <TextBlock x:Name="txbkPatientArrivedValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
+
                                             <!-- Patient Dropped -->
-                                            <StackPanel
+                                            <StackPanel x:Name="spnlPatientDropped"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
-                                                <TextBlock
+
+                                                <!-- Patient Dropped key -->
+                                                <TextBlock x:Name="txbkPatientDroppedKey"
                                                     Width="90"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Patient dropped:" />
-                                                <TextBlock x:Name="txtPatientDropped"
+
+                                                <!--  -->
+                                                <TextBlock x:Name="txbkPatientDroppedValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
+
                                             <!-- Duration -->
-                                            <StackPanel
+                                            <StackPanel x:Name="spnlPatientDuration"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
-                                                <TextBlock
+
+                                                <!-- Duration key -->
+                                                <TextBlock x:Name="txbkPatientDurationKey"
                                                     Width="90"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Duration:" />
-                                                <TextBlock x:Name="txtPatientDuration"
+
+                                                <!-- Duration value -->
+                                                <TextBlock x:Name="txbkPatientDurationValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
+
                                             <!-- Rating -->
                                             <StackPanel
+                                                x:Name="spnlPatientRating"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
+
+                                                <!-- Rating key -->
                                                 <TextBlock
+                                                    x:Name="txbkPatientRatingKey"
                                                     Width="90"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Rating:" />
-                                                <TextBlock x:Name="txtPatientRating"
+
+                                                <!-- Rating value -->
+                                                <TextBlock x:Name="txbkPatientRatingValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
