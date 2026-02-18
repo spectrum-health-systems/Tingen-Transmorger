@@ -5,6 +5,9 @@ using System.Text.Json;
 using System.Windows;
 using TingenTransmorger.Models;
 
+/* MainWindow classes are in MainWindow/ to keep the code organized.
+ * Namespace is TingenTransmorger to avoid confusion with the MainWindow class.
+ */
 namespace TingenTransmorger;
 
 /* Partial class MainWindow.DetailDisplay.cs.
@@ -88,7 +91,7 @@ public partial class MainWindow : Window
         System.Diagnostics.Debug.WriteLine($"Total email failures: {_emailFailures.Count}, Total email deliveries: {_emailDeliveries.Count}");
 
         // Update btnEmailDetails button based on email records
-        UpdatePhoneEmailDetailsButton(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnEmailDetails);
+        UpdateDetailsButtonColor(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnEmailDetails);
 
         // Display meetings
         var meetingRows = new List<PatientMeetingRow>();
@@ -302,7 +305,7 @@ public partial class MainWindow : Window
 
         System.Diagnostics.Debug.WriteLine($"Total failures: {_smsFailures.Count}, Total deliveries: {_smsDeliveries.Count}");
 
-        UpdatePhoneEmailDetailsButton(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
+        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
     }
 
     /// <summary>Displays provider details in the UI.</summary>

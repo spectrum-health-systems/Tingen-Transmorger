@@ -1,38 +1,44 @@
-﻿// 260212_code
-// 260212_documentation
+﻿// 260218_code
+// 260218_documentation
 
 using System.Windows;
 using TingenTransmorger.Core;
 using TingenTransmorger.Database;
 
-/* I've moved the MainWindow partial classes to MainWindow/ to keep the code organized, but I'm leaving the namespace as
- * TingenTransmorger instead of TingenTransmorger.MainWindow to avoid confusion with the MainWindow class.
- */
 namespace TingenTransmorger;
 
-/* Partial class MainWindow.AdminMode.cs.
- */
 public partial class MainWindow : Window
 {
-    /// <summary>Handles admin mode operations. </summary>
-    /// <remarks>Currently admin mode is focused on rebuilding the Transmorger database.</remarks>
-    /// <param name="config">The Transmorger configuration object.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the database
-    /// rebuild was initiated; otherwise, <see langword="false"/> if the user declined to proceed.</returns>
-    private async Task<bool> EnterAdminMode(string importDir, string tmpDirImport, string masterDbDir)
+    /// <summary>Handles admin mode operations.</summary>
+    /// <remarks>
+    ///     Currently admin mode is focused on rebuilding the Transmorger database, but I'm leaving this the way it is
+    ///     for now in case we want to add more admin-related operations in the future.
+    /// </remarks>
+    /// <param name="importDir">The directory for importing data.</param>
+    /// <param name="tmpDir">The temporary directory for various operations.</param>
+    /// <param name="masterDbDir">The directory of the master database.</param>
+    /// <returns>Asynchronous task.</returns>
+    private async Task<bool> EnterAdminMode(string importDir, string tmpDir, string masterDbDir)
     {
         SetAdminModeTheme();
         Hide();
 
-        var msgboxContent                = Catalog.msgbox_DatabaseRebuildCheck();
-        MessageBoxResult rebuildResponse = MessageBox.Show(msgboxContent[1], msgboxContent[0], MessageBoxButton.YesNo, MessageBoxImage.Error);
-
-        if (rebuildResponse == MessageBoxResult.No)
+        if (!RebuildDatabaseYes())
         {
             MainWindow.StopApp();
         }
 
-        return await TransmorgerDatabase.Rebuild(importDir, tmpDirImport, masterDbDir, this);
+        return await TransmorgerDatabase.Rebuild(importDir, tmpDir, masterDbDir, this);
+    }
+
+    /// <summary>Prompts the user to confirm if they want to rebuild the database.</summary>
+    /// <returns>True if the user confirms, otherwise false.</returns>
+    private static bool RebuildDatabaseYes()
+    {
+        var msgboxContent                = Catalog.msgbox_DatabaseRebuildCheck();
+        MessageBoxResult rebuildResponse = MessageBox.Show(msgboxContent[1], msgboxContent[0], MessageBoxButton.YesNo, MessageBoxImage.Error);
+
+        return rebuildResponse == MessageBoxResult.Yes;
     }
 
     /// <summary>Sets the theme for admin mode.</summary>

@@ -1,10 +1,10 @@
-﻿// 260212_code
-// 260212_documentation
+﻿// 260218_code
+// 260218_documentation
 
 using System.Windows;
 
-/* I've moved the MainWindow partial classes to MainWindow/ to keep the code organized, but I'm leaving the namespace as
- * TingenTransmorger instead of TingenTransmorger.MainWindow to avoid confusion with the MainWindow class.
+/* MainWindow classes are in MainWindow/ to keep the code organized.
+ * Namespace is TingenTransmorger to avoid confusion with the MainWindow class.
  */
 namespace TingenTransmorger;
 
@@ -76,26 +76,5 @@ public partial class MainWindow : Window
         DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
     }
 
-    /* EVENT HANDLERS */
 
-    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent(btnSearchToggle.Content.ToString());
-    private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
-    private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowPhoneDetails();
-    private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e) => ShowEmailDetails();
-
-
-
-
-
-
-
-
-
-
-
-    private void dgPatientMeetings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => MeetingSelected();
-
-    private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsGeneralClicked();
-    private void btnCopyMeetingDetailsPatient_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsPatientClicked();
-    private void btnCopyMeetingDetailsProvider_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsProviderClicked();
 }

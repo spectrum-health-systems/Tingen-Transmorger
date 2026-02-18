@@ -9,6 +9,7 @@
   - MainWindow.Events.cs
   - MainWindow.UserInterface.cs
 - Fixed the UI reset when changing search modes
+- Cleaned up the copied details
 
 ## 0.9.27.1
 
