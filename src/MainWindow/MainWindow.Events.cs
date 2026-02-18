@@ -34,14 +34,14 @@ public partial class MainWindow : Window
     /// <summary>btnSearchToggle_clicked() => SearchToggleClicked().</summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The event data.</param>
-    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SearchToggleClicked();
+    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent(btnSearchToggle.Content.ToString());
 
-    /// <summary>Set the search mode and clear the UI.</summary>
-    private void SearchToggleClicked()
-    {
-        SetSearchToggleContent(btnSearchToggle.Content.ToString());
-        ClearUi();
-    }
+    ///////// <summary>Set the search mode and clear the UI.</summary>
+    //////private void SearchToggleClicked()
+    //////{
+    //////    SetSearchToggleContent(btnSearchToggle.Content.ToString());
+    //////    ClearUi();
+    //////}
 
     /* txbxSearch */
 
@@ -98,6 +98,24 @@ public partial class MainWindow : Window
         DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
     }
 
+    /* btnPhoneDetails */
+
+    /// <summary>btnPhoneDetails_Click() => ShowPhoneDetails().</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data.</param>
+    private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowPhoneDetails();
+
+
+
+    /// <summary>btnEmailDetails_Click() => ShowEmailDetails().</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data.</param>
+    private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e) => ShowEmailDetails();
+
+
+
+
+
     /* EVENT HANDLERS */
 
 
@@ -105,8 +123,7 @@ public partial class MainWindow : Window
 
 
     private void dgPatientMeetings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => MeetingSelected();
-    private void btnPhoneDetails_Click(object sender, RoutedEventArgs e) => PhoneDetailsClicked();
-    private void btnEmailDetails_Click(object sender, RoutedEventArgs e) => EmailDetailsClicked();
+
     private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsGeneralClicked();
     private void btnCopyMeetingDetailsPatient_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsPatientClicked();
     private void btnCopyMeetingDetailsProvider_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsProviderClicked();

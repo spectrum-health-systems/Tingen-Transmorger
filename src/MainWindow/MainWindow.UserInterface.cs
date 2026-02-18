@@ -37,6 +37,87 @@ public partial class MainWindow : Window
         spnlMeetingDetailsComponents.Visibility  = Visibility.Collapsed;
     }
 
+    private void ShowPhoneDetails()
+    {
+        var messageHistoryWindow = new Database.MessageHistoryWindow(_smsFailures, _smsDeliveries);
+        messageHistoryWindow.Owner = this;
+        messageHistoryWindow.ShowDialog();
+    }
+    /// <summary>Updates the btnPhoneDetails button appearance based on SMS failure and delivery records.</summary>
+    private void UpdatePhoneDetailsButton()
+    {
+        bool hasFailures = _smsFailures.Count > 0;
+        bool hasDeliveries = _smsDeliveries.Count > 0;
+
+        if (!hasFailures && !hasDeliveries)
+        {
+            // No records: gray background, disabled
+            btnPhoneDetails.Background = System.Windows.Media.Brushes.Gray;
+            btnPhoneDetails.IsEnabled = false;
+        }
+        else if (hasFailures && hasDeliveries)
+        {
+            // Both: yellow background, enabled
+            btnPhoneDetails.Background = System.Windows.Media.Brushes.Yellow;
+            btnPhoneDetails.IsEnabled = true;
+        }
+        else if (hasFailures)
+        {
+            // Only failures: red background, enabled
+            btnPhoneDetails.Background = System.Windows.Media.Brushes.Red;
+            btnPhoneDetails.IsEnabled = true;
+        }
+        else
+        {
+            // Only deliveries: green background, enabled
+            btnPhoneDetails.Background = System.Windows.Media.Brushes.Green;
+            btnPhoneDetails.IsEnabled = true;
+        }
+    }
+
+
+    /// <summary>Handles the email details button click event.</summary>
+    private void ShowEmailDetails()
+    {
+        var emailHistoryWindow = new Database.MessageHistoryWindow(_emailFailures, _emailDeliveries, Database.MessageHistoryType.Email);
+        emailHistoryWindow.Owner = this;
+        emailHistoryWindow.ShowDialog();
+    }
+
+
+
+    /// <summary>Updates the btnEmailDetails button appearance based on email failure and delivery records.</summary>
+    private void UpdateEmailDetailsButton()
+    {
+        bool hasFailures = _emailFailures.Count > 0;
+        bool hasDeliveries = _emailDeliveries.Count > 0;
+
+        if (!hasFailures && !hasDeliveries)
+        {
+            // No records: gray background, disabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Gray;
+            btnEmailDetails.IsEnabled = false;
+        }
+        else if (hasFailures && hasDeliveries)
+        {
+            // Both: yellow background, enabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Yellow;
+            btnEmailDetails.IsEnabled = true;
+        }
+        else if (hasFailures)
+        {
+            // Only failures: red background, enabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Red;
+            btnEmailDetails.IsEnabled = true;
+        }
+        else
+        {
+            // Only deliveries: green background, enabled
+            btnEmailDetails.Background = System.Windows.Media.Brushes.Green;
+            btnEmailDetails.IsEnabled = true;
+        }
+    }
+
     private void SetupPatientDetailUi(string patientName, string patientId)
     {
 
@@ -79,6 +160,9 @@ public partial class MainWindow : Window
                 btnSearchToggle.Content = "Patient Search";
                 break;
         }
+
+        ClearUi();
+
     }
 
 
@@ -90,6 +174,9 @@ public partial class MainWindow : Window
     /// <param name="searchText">Contents of the search box.</param>
     private void DisplaySearchResults(string searchType, string searchText)
     {
+
+
+
         List<string> searchResults;
 
         if (searchType.Contains("patient", StringComparison.OrdinalIgnoreCase))

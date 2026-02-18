@@ -328,7 +328,7 @@
                                         Width="32"
                                         Height="30"
                                         Margin="0,0,0,4"
-                                        Click="btnPhoneDetails_Click">
+                                        Click="btnPhoneDetails_Clicked">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="0,5,5,0" />
@@ -386,7 +386,7 @@
                                         Width="32"
                                         Height="30"
                                         Margin="0,0,0,0"
-                                        Click="btnEmailDetails_Click">
+                                        Click="btnEmailDetails_Clicked">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="0,5,5,0" />
