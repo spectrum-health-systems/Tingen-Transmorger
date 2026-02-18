@@ -29,20 +29,6 @@ namespace TingenTransmorger;
  */
 public partial class MainWindow : Window
 {
-    /* btnSearchToggle */
-
-    /// <summary>btnSearchToggle_clicked() => SearchToggleClicked().</summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">The event data.</param>
-    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent(btnSearchToggle.Content.ToString());
-
-    ///////// <summary>Set the search mode and clear the UI.</summary>
-    //////private void SearchToggleClicked()
-    //////{
-    //////    SetSearchToggleContent(btnSearchToggle.Content.ToString());
-    //////    ClearUi();
-    //////}
-
     /* txbxSearch */
 
     /// <summary>txbxSearch_TextChanged() => SearchTextChanged().</summary>
@@ -65,14 +51,6 @@ public partial class MainWindow : Window
 
         DisplaySearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
     }
-
-    /* rbtnSearchBy */
-
-    /// <summary>rbtnSearchByName_clicked()/rbtnSearchById_clicked() => SearchTextChanged()</summary>
-    /// <remarks>When either rbtnSearchByName or rbtnSearchById is checked, clear the UI.</remarks>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">The event data.</param>
-    private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
 
     /* lstbxSearchResults */
 
@@ -98,25 +76,18 @@ public partial class MainWindow : Window
         DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
     }
 
-    /* btnPhoneDetails */
+    /* EVENT HANDLERS */
 
-    /// <summary>btnPhoneDetails_Click() => ShowPhoneDetails().</summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">The event data.</param>
+    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent(btnSearchToggle.Content.ToString());
+    private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
     private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowPhoneDetails();
-
-
-
-    /// <summary>btnEmailDetails_Click() => ShowEmailDetails().</summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">The event data.</param>
     private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e) => ShowEmailDetails();
 
 
 
 
 
-    /* EVENT HANDLERS */
+
 
 
 

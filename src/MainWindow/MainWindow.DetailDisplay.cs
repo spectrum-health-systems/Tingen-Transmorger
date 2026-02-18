@@ -88,7 +88,7 @@ public partial class MainWindow : Window
         System.Diagnostics.Debug.WriteLine($"Total email failures: {_emailFailures.Count}, Total email deliveries: {_emailDeliveries.Count}");
 
         // Update btnEmailDetails button based on email records
-        UpdateEmailDetailsButton();
+        UpdatePhoneEmailDetailsButton(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnEmailDetails);
 
         // Display meetings
         var meetingRows = new List<PatientMeetingRow>();
@@ -302,7 +302,7 @@ public partial class MainWindow : Window
 
         System.Diagnostics.Debug.WriteLine($"Total failures: {_smsFailures.Count}, Total deliveries: {_smsDeliveries.Count}");
 
-        UpdatePhoneDetailsButton();
+        UpdatePhoneEmailDetailsButton(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
     }
 
     /// <summary>Displays provider details in the UI.</summary>
