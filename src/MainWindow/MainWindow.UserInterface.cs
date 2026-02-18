@@ -26,7 +26,7 @@ public partial class MainWindow : Window
     /// <summary>Clears user interface components.</summary>
     private void ClearUi()
     {
-        txbxSearchBox.Text = string.Empty;
+        txbxSearchBox.Text = string.Empty; // This will fire off the TextChanged event
 
         lstbxSearchResults.Items.Clear();
 

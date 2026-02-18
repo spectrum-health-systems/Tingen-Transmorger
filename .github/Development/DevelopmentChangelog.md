@@ -1,5 +1,14 @@
 # Tingen Transmorger: Changelog
 
+## 0.9.27.2 - 0.9.27.x
+
+- Cleanup of:
+  - MainWindow.asmx.cs
+  - MainWindow.AdminMode.cs
+  - MainWindow.DetailDisplay.cs
+  - MainWindow.Events.cs
+  - MainWindow.UserInterface.cs
+
 ## 0.9.27.1
 
 - Code/comment cleanup

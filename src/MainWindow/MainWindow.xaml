@@ -131,7 +131,7 @@
                                     Width="116"
                                     Margin="5,12,0,0"
                                     VerticalContentAlignment="Center"
-                                    Checked="rbtnSearch_Checked"
+                                    Checked="rbtnSearchBy_Checked"
                                     Content="By name"
                                     FontSize="14" />
 
@@ -140,7 +140,7 @@
                                     Width="116"
                                     Margin="5,5,0,0"
                                     VerticalContentAlignment="Center"
-                                    Checked="rbtnSearch_Checked"
+                                    Checked="rbtnSearchBy_Checked"
                                     Content="By ID"
                                     FontSize="14" />
                             </StackPanel>
