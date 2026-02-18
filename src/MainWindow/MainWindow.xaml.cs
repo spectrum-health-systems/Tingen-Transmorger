@@ -146,6 +146,9 @@ public partial class MainWindow : Window
     private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e)
         => ShowEmailDetails();
 
+    private void SearchResultSelected()
+        => DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
+
     private void dgPatientMeetings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         => MeetingSelected();
 

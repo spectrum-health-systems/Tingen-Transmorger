@@ -81,7 +81,6 @@ public partial class MainWindow : Window
         {
             var sb = new System.Text.StringBuilder();
 
-
             sb.AppendLine("    MEETING DETAILS");
             sb.AppendLine("    ---------------");
             sb.AppendLine("  Participant Names: " + txtProviderParticipantNames.Text);
@@ -94,5 +93,4 @@ public partial class MainWindow : Window
             MessageBox.Show(this, $"Failed to copy meeting details: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
-
 }

@@ -5,13 +5,8 @@ using System.Text.Json;
 using System.Windows;
 using TingenTransmorger.Models;
 
-/* MainWindow classes are in MainWindow/ to keep the code organized.
- * Namespace is TingenTransmorger to avoid confusion with the MainWindow class.
- */
 namespace TingenTransmorger;
 
-/* Partial class MainWindow.DetailDisplay.cs.
- */
 public partial class MainWindow : Window
 {
     /// <summary> Currently selected patient name.</summary>

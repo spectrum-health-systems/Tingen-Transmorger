@@ -345,6 +345,11 @@ public partial class MainWindow : Window
 
     private void DisplaySomeDeets(string searchMode, string selectedItem)
     {
+        if (lstbxSearchResults.SelectedItem == null)
+        {
+            return;
+        }
+
         var lastParenIndex = selectedItem.LastIndexOf('(');
         var name           = selectedItem.Substring(0, lastParenIndex).Trim();
         var id             = selectedItem.Substring(lastParenIndex + 1).TrimEnd(')').Trim();
@@ -360,7 +365,6 @@ public partial class MainWindow : Window
                 break;
         }
     }
-
 
     private void SetSearchToggleContent(string buttonContent)
     {
@@ -379,7 +383,6 @@ public partial class MainWindow : Window
 
     }
 
-
     /// <summary>Display search results..</summary>
     /// <remarks>
     ///     This method is called when the user types in the search text box. It filters and displays results based on
@@ -388,6 +391,15 @@ public partial class MainWindow : Window
     /// <param name="searchText">Contents of the search box.</param>
     private void DisplaySearchResults(string searchType, string searchText)
     {
+        /* This is here so we don't hit a weird loop with ClearUi(). We'll also clear the result list if txbxSearchBox
+         * is blank, which also avoids a weird loop with ClearUi().
+         */
+        if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
+        {
+            lstbxSearchResults.Items.Clear();
+
+            return;
+        }
 
 
 

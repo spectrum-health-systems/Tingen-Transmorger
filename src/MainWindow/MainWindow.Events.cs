@@ -34,23 +34,23 @@ public partial class MainWindow : Window
     /// <summary>txbxSearch_TextChanged() => SearchTextChanged().</summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The event data.</param>
-    private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => SearchTextChanged();
+    private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => DisplaySearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
 
-    /// <summary>The text in the search box was changed.</summary>
-    private void SearchTextChanged()
-    {
-        /* This is here so we don't hit a weird loop with ClearUi(). We'll also clear the result list if txbxSearchBox
-         * is blank, which also avoids a weird loop with ClearUi().
-         */
-        if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
-        {
-            lstbxSearchResults.Items.Clear();
+    ///// <summary>The text in the search box was changed.</summary>
+    //private void SearchTextChanged()
+    //{
+    //    /* This is here so we don't hit a weird loop with ClearUi(). We'll also clear the result list if txbxSearchBox
+    //     * is blank, which also avoids a weird loop with ClearUi().
+    //     */
+    //    if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
+    //    {
+    //        lstbxSearchResults.Items.Clear();
 
-            return;
-        }
+    //        return;
+    //    }
 
-        DisplaySearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
-    }
+    //    DisplaySearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
+    //}
 
     /* lstbxSearchResults */
 
@@ -64,17 +64,8 @@ public partial class MainWindow : Window
     ///     This method is called when the user selects a patient or provider from the search results.
     ///     It retrieves the full details and displays them in the details panel.
     /// </remarks>
-    private void SearchResultSelected()
-    {
-        /* This is here so we don't hit a weird loop with ClearUi().
-         */
-        if (lstbxSearchResults.SelectedItem == null)
-        {
-            return;
-        }
 
-        DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
-    }
+
 
 
 }
