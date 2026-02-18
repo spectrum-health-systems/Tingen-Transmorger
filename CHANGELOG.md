@@ -1,5 +1,9 @@
 # Tingen Transmorger: Changelog
 
+## 0.9.27.0
+
+- `MODIFIED` Cleaned up MainWindow.axml
+
 ## 0.9.26.0
 
 - `ADDED` MainWindow/

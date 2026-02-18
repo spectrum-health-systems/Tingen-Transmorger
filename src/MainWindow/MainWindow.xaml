@@ -1,6 +1,6 @@
 ﻿<!--
-    260217_code
-    260217_documentation
+    260218_code
+    260218_documentation
 -->
 
 <!--
@@ -1242,18 +1242,23 @@
                                 BorderThickness="1"
                                 CornerRadius="5">
 
-                                <!-- STOPPED HERE -->
-
-                                <StackPanel x:Name="spnlMeetingDetailsProvider"
+                                <!-- Contains the provider-specific meeting details components -->
+                                <StackPanel x:Name="spnlMeetingDetailsProviderComponents"
                                     Margin="8">
-                                    <StackPanel
+
+                                    <!-- Top section of the provider-specific meeting details -->
+                                    <StackPanel x:Name="spnlMeetingDetailsProviderTop"
                                         Margin="0,0,0,4"
                                         Orientation="Horizontal">
-                                        <TextBlock
+
+                                        <!-- Header for the provider-specific meeting details -->
+                                        <TextBlock x:Name="txbkMeetingDetailsProviderHeader"
                                             Margin="0,5,0,0"
                                             FontSize="12"
                                             FontWeight="SemiBold"
                                             Text="Meeting Details (Provider)" />
+
+                                        <!-- Copy button for the provider-specific meeting details -->
                                         <Button x:Name="btnCopyMeetingDetailsProvider"
                                             Width="24"
                                             Height="24"
@@ -1272,11 +1277,16 @@
                                     </StackPanel>
 
                                     <!-- Participant Names - Spanning full width -->
-                                    <StackPanel Margin="0,8,0,0">
-                                        <TextBlock
+                                    <StackPanel x:Name="spnlProviderParticipantNames"
+                                        Margin="0,8,0,0">
+
+                                        <!-- Header for the participant names section -->
+                                        <TextBlock x:Name="txbkProviderParticipantNamesHeader"
                                             FontSize="11"
                                             FontWeight="SemiBold"
                                             Text="Participant Names:" />
+
+                                        <!-- TextBlock for displaying participant names -->
                                         <TextBlock x:Name="txtProviderParticipantNames"
                                             Margin="0,2,0,0"
                                             FontSize="11"

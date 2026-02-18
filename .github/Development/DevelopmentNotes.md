@@ -47,26 +47,84 @@ Open excel files for detailed research
 
 
 
-<!-- Left column: Meeting ID, Title, Status, Joins, Duration, Service code -->
-<StackPanel x:Name="spnlMeetingDetailsGeneralLeftComponents"
-    Grid.Column="0"
-    Margin="0,0,10,0">
+<!-- Meeting Details (Patient) -->
+<!--
+    This visible only in patient search mode.
+-->
+<Border x:Name="brdrMeetingDetailsPatientContainer"
+    Margin="0,10,20,0"
+    BorderBrush="Black"
+    BorderThickness="1"
+    CornerRadius="5">
 
-    <!-- Meeting ID -->
-    <StackPanel x:Name="spnlMeetingId"
-        Margin="0,2"
-        Orientation="Horizontal">
+    <!-- Contains the patient-specific meeting details components -->
+    <StackPanel x:Name="spnlMeetingDetailsPatientComponent"
+        Margin="8">
 
-        <!-- Meeting ID label -->
-        <TextBlock x:Name="txbkMeetingIdKey"
-            Width="80"
-            FontSize="11"
-            FontWeight="SemiBold"
-            Text="Meeting ID:" />
+        <!-- StackPanel containing the header and copy button -->
+        <StackPanel x:Name="spnlMeetingDetailsPatientTop"
+            Margin="0,0,0,4"
+            Orientation="Horizontal">
 
+            <!-- Header -->
+            <TextBlock x:Name="txbkMeetingDetailsPatientHeader"
+                Margin="0,5,0,0"
+                FontSize="12"
+                FontWeight="SemiBold"
+                Text="Meeting Details (Patient)" />
 
+            <!-- Copy button -->
+            <Button x:Name="btnCopyMeetingDetailsPatient"
+                Width="24"
+                Height="24"
+                Margin="10,0,0,0"
+                BorderThickness="0"
+                Click="btnCopyMeetingDetailsPatient_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3" />
+                    </Style>
+                </Button.Resources>
+                <Button.Background>
+                    <ImageBrush ImageSource="/AppData/Image/Control/Button/Copy-40x40.png" />
+                </Button.Background>
+            </Button>
+        </StackPanel>
 
-                                                                                            <!-- Left column: Meeting ID, Title, Status, Joins, Duration, Service code -->
-                                        <StackPanel x:Name="spnlMeetingDetailsGeneralLeftComponents"
-                                            Grid.Column="0"
-                                            Margin="0,0,10,0">
+        <!-- Definitions for the meeting details (patient) grid -->
+        <Grid x:Name="grdMeetingDetailsPatientDefinitions"
+            Margin="0,4,0,0">
+            <Grid.ColumnDefinitions>
+                <!-- Left column -->
+                <ColumnDefinition x:Name="colMeetingDetailsPatientLeft"
+                    Width="201*" />
+                <ColumnDefinition Width="49*" />
+                <!-- Center column -->
+                <ColumnDefinition x:Name="colMeetingDetailsPatientCenter"
+                    Width="250*" />
+                <!-- Right column -->
+                <ColumnDefinition x:Name="colMeetingDetailsPatientRight"
+                    Width="250*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left column: Patient arrived, Patient dropped, Duration, Rating -->
+            <StackPanel x:Name="spnlMeetingDetailsPatientLeftComponents"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,10,0">
+
+                <!-- Patient Arrived -->
+                <StackPanel x:Name="spnlPatientArrived"
+                    Margin="0,2"
+                    Orientation="Horizontal">
+
+                    <!-- Patient Arrived key -->
+                    <TextBlock x:Name="txbkPatientArrivedKey"
+                        Width="90"
+                        FontSize="11"
+                        FontWeight="SemiBold"
+                        Text="Patient arrived:" />
+
+                    <!-- Patient Arrived value -->
+                    <TextBlock x:Name="txbkPatientArrivedValue"
+                        FontSize="11"
