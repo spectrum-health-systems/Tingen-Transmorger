@@ -2,6 +2,7 @@
 // 260219_documentation
 
 using System.Windows;
+using System.Windows.Controls;
 
 namespace TingenTransmorger;
 
@@ -46,10 +47,35 @@ public partial class MainWindow : Window
     /// <summary>Toggle the search type button text.</summary>
     private void SetSearchToggleUi()
     {
-        btnSearchToggle.Content = btnSearchToggle.Content.ToString()=="Patient Search"
+        btnSearchToggle.Content = btnSearchToggle.Content.ToString() == "Patient Search"
             ? "Provider Search"
             : "Patient Search";
 
         ClearUi();
+    }
+
+    /// <summary>Updates the btnPhoneDetails and btnEmailDetails button appearance based on SMS failure and delivery records.</summary>
+    private static void UpdateDetailsButtonColor(bool hasFailures, bool hasDeliveries, Button theButton)
+    {
+        theButton.IsEnabled = true;
+
+        if (hasFailures && hasDeliveries)
+        {
+            theButton.Background = System.Windows.Media.Brushes.Yellow;
+        }
+        else if (hasDeliveries)
+        {
+            theButton.Background = System.Windows.Media.Brushes.Green;
+        }
+        else if (hasFailures)
+        {
+            theButton.Background = System.Windows.Media.Brushes.Red;
+        }
+        else
+        {
+            // No records: gray background, disabled
+            theButton.Background = System.Windows.Media.Brushes.Gray;
+            theButton.IsEnabled = false;
+        }
     }
 }
