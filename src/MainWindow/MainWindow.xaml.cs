@@ -116,12 +116,12 @@ public partial class MainWindow : Window
 
     /* EVENT HANDLERS
      */
-    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent(btnSearchToggle.Content.ToString());
+    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent();
     private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
-    private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => ModifySearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
+    private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => ModifySearchResults();
     private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowPhoneDetails();
     private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e) => ShowEmailDetails();
-    private void lstbxSearchResults_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => DisplayDetails(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
+    private void lstbxSearchResults_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => ModifyDetails();
     //private void SearchResultSelected() => DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
     private void dgPatientMeetings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => MeetingSelected();
     private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyGeneralMeetingDetails();

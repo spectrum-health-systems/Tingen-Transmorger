@@ -596,25 +596,7 @@
         <member name="F:TingenTransmorger.MainWindow._currentPatientId">
             <summary>Currently selected patient ID.</summary>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.DisplayPatientDetails(System.String,System.String)">
-            <summary>Displays patient details in the UI.</summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.DisplayPhoneNumber(System.Nullable{System.Text.Json.JsonElement})">
-             <summary>
-            
-             </summary>
-             <param name="patientDetails"></param>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.DisplayProviderDetails(System.String,System.String)">
-            <summary>Displays provider details in the UI.</summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.SetupInitialUi">
-            <summary>Setup the initial user interface.</summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.ClearUi">
-            <summary>Clears user interface components.</summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.ModifySearchResults(System.String,System.String)">
+        <member name="M:TingenTransmorger.MainWindow.ModifySearchResults">
             <summary>Modifies the search results based on the current search type and search text.</summary>
             <param name="searchType">The type of search.</param>
             <param name="searchText">Contents of the search box.</param>
@@ -629,6 +611,24 @@
             <summary>Display search results.</summary>
             <param name="searchResults">The list of search results to display.</param>
         </member>
+        <member name="M:TingenTransmorger.MainWindow.DisplayPatientDetails(System.String,System.String)">
+            <summary>Displays patient details in the UI.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.UpdateDetailsButtonColor(System.Boolean,System.Boolean,System.Windows.Controls.Button)">
+            <summary>Updates the btnPhoneDetails button appearance based on SMS failure and delivery records.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ShowEmailDetails">
+            <summary>Handles the email details button click event.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.DisplayProviderDetails(System.String,System.String)">
+            <summary>Displays provider details in the UI.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.SetupInitialUi">
+            <summary>Setup the initial user interface.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ClearUi">
+            <summary>Clears user interface components.</summary>
+        </member>
         <member name="M:TingenTransmorger.MainWindow.MeetingSelected">
             <summary>Handles the selection changed event for the meetings DataGrid.</summary>
             <remarks>
@@ -637,12 +637,6 @@
             It retrieves the full meeting details and displays them in the details section.
             </para>
             </remarks>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.UpdateDetailsButtonColor(System.Boolean,System.Boolean,System.Windows.Controls.Button)">
-            <summary>Updates the btnPhoneDetails button appearance based on SMS failure and delivery records.</summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.ShowEmailDetails">
-            <summary>Handles the email details button click event.</summary>
         </member>
         <member name="P:TingenTransmorger.MainWindow.TmDb">
             <summary>The Transmorger database.</summary>

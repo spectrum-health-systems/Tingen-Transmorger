@@ -3,6 +3,7 @@
 
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Controls;
 using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
@@ -29,6 +30,91 @@ public partial class MainWindow : Window
     /// <summary>Currently selected patient ID.</summary>
     private string _currentPatientId = string.Empty;
 
+    /* SEARCH RESULTS */
+
+    /// <summary>Modifies the search results based on the current search type and search text.</summary>
+    /// <param name="searchType">The type of search.</param>
+    /// <param name="searchText">Contents of the search box.</param>
+    private void ModifySearchResults()
+    {
+        var searchResults = GetSearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
+        DisplaySearchResults(searchResults);
+    }
+
+    /// <summary>Get a list of patient/provider search results.</summary>
+    /// <param name="searchType">The type of search.</param>
+    /// <param name="searchText">Contents of the search box.</param>
+    /// <returns>The search results.</returns>
+    private List<string> GetSearchResults(string searchType, string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
+        {
+            return [];
+        }
+
+        /* If the search box contains only an asterisk, treat it as a wildcard to return all results
+         */
+        if (txbxSearchBox.Text == "*")
+        {
+            searchText = string.Empty;
+        }
+
+        return searchType.Contains("patient", StringComparison.OrdinalIgnoreCase)
+            ? rbtnSearchByName.IsChecked == true
+                ? Database.SearchFor.PatientByName(searchText, TmDb)
+                : Database.SearchFor.PatientById(searchText, TmDb)
+            : searchType.Contains("provider", StringComparison.OrdinalIgnoreCase)
+                ? rbtnSearchByName.IsChecked == true
+                            ? Database.SearchFor.ProviderByName(searchText, TmDb)
+                            : Database.SearchFor.ProviderById(searchText, TmDb)
+                : [];
+    }
+
+    /// <summary>Display search results.</summary>
+    /// <param name="searchResults">The list of search results to display.</param>
+    private void DisplaySearchResults(List<string> searchResults)
+    {
+        lstbxSearchResults.Items.Clear();
+
+        if (searchResults.Count != 0)
+        {
+            foreach (string result in searchResults)
+            {
+                lstbxSearchResults.Items.Add(result);
+            }
+        }
+    }
+
+    /* DETAILS */
+
+    private void ModifyDetails()
+    {
+        var selectedItem = lstbxSearchResults.SelectedItem as string;
+
+        /* This is here so we don't try and get details when there are not search results.
+        */
+        if (lstbxSearchResults.Items.Count == 0)
+        {
+            return;
+        }
+
+        var lastParenIndex = selectedItem.LastIndexOf('(');
+        var name           = selectedItem.Substring(0, lastParenIndex).Trim();
+        var id             = selectedItem.Substring(lastParenIndex + 1).TrimEnd(')').Trim();
+
+        if (btnSearchToggle.Content.ToString().Contains("patient", StringComparison.OrdinalIgnoreCase))
+        {
+            DisplayPatientDetails(name, id);
+        }
+        else if (btnSearchToggle.Content.ToString().Contains("provider", StringComparison.OrdinalIgnoreCase))
+        {
+            DisplayProviderDetails(name, id);
+        }
+    }
+
+
+    /* PATIENT DETAILS */
+
     /// <summary>Displays patient details in the UI.</summary>
     private void DisplayPatientDetails(string patientName, string patientId)
     {
@@ -44,10 +130,18 @@ public partial class MainWindow : Window
 
         SetupPatientDetailUi(patientName, patientId);
 
-        DisplayPhoneNumber(patientDetails);
+        DisplayPatientPhoneNumber(patientDetails);
+
+        DisplayPatientEmailAddress(patientDetails);
+
+        DisplayPatientMeetings(patientDetails);
+    }
 
 
+    private void DisplayPatientEmailAddress(JsonElement? patientDetails)
+    {
         // Display email addresses
+
         var emailAddresses = new List<string>();
         if (patientDetails.Value.TryGetProperty("EmailAddresses", out var emailAddressesArray))
         {
@@ -97,11 +191,74 @@ public partial class MainWindow : Window
             }
         }
 
-        System.Diagnostics.Debug.WriteLine($"Total email failures: {_emailFailures.Count}, Total email deliveries: {_emailDeliveries.Count}");
 
         // Update btnEmailDetails button based on email records
         UpdateDetailsButtonColor(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnEmailDetails);
+    }
 
+    private void DisplayPatientPhoneNumber(JsonElement? patientDetails)
+    {
+        var phoneNumbers     = new List<string>();
+        var normalizedPhones = new List<string>();
+
+        if (patientDetails?.TryGetProperty("PhoneNumbers", out var phoneNumbersArray) == true
+            && phoneNumbersArray.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var phoneEntry in phoneNumbersArray.EnumerateArray())
+            {
+                if (phoneEntry.TryGetProperty("Number", out var numberElem))
+                {
+                    var number = numberElem.GetString();
+
+                    if (!string.IsNullOrWhiteSpace(number))
+                    {
+                        var digits = new string(number.Where(char.IsDigit).ToArray()); // Remove non-digits
+
+                        if (digits.Length == 10)
+                        {
+                            number = $"{digits.Substring(0, 3)}-{digits.Substring(3, 3)}-{digits.Substring(6, 4)}"; // Format as ###-###-#### if 10 digits
+                            normalizedPhones.Add(digits);
+                        }
+                        else
+                        {
+                            normalizedPhones.Add(digits);
+                        }
+
+                        phoneNumbers.Add(number);
+                    }
+                }
+            }
+        }
+
+        lblPatientPhoneValue.Content = phoneNumbers.Count > 0
+            ? string.Join(", ", phoneNumbers)
+            : "No phone numbers on file";
+
+        // Query SMS failure and delivery stats for all patient phone numbers
+        _smsFailures.Clear();
+        _smsDeliveries.Clear();
+
+        for (int i = 0; i < normalizedPhones.Count; i++)
+        {
+            if (normalizedPhones[i].Length == 10)
+            {
+                // Query SMS failures
+                var failures = TmDb.GetSmsFailureStats(normalizedPhones[i]);
+                _smsFailures.AddRange(failures);
+
+                // Query message deliveries
+                var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhones[i]);
+                _smsDeliveries.AddRange(deliveries);
+            }
+        }
+
+        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
+    }
+
+
+
+    private void DisplayPatientMeetings(JsonElement? patientDetails)
+    {
         // Display meetings
         var meetingRows = new List<PatientMeetingRow>();
         if (patientDetails.Value.TryGetProperty("Meetings", out var meetingsArray))
@@ -250,72 +407,77 @@ public partial class MainWindow : Window
         spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="patientDetails"></param>
-    private void DisplayPhoneNumber(JsonElement? patientDetails)
+
+
+    private void ShowPhoneDetails()
     {
-        var phoneNumbers     = new List<string>();
-        var normalizedPhones = new List<string>();
-
-        if (patientDetails.Value.TryGetProperty("PhoneNumbers", out var phoneNumbersArray))
+        var messageHistoryWindow = new Database.MessageHistoryWindow(_smsFailures, _smsDeliveries)
         {
-            if (phoneNumbersArray.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var phoneEntry in phoneNumbersArray.EnumerateArray())
-                {
-                    if (phoneEntry.TryGetProperty("Number", out var numberElem))
-                    {
-                        var number = numberElem.GetString();
+            Owner = this
+        };
 
-                        if (!string.IsNullOrWhiteSpace(number))
-                        {
-                            var digits = new string(number.Where(char.IsDigit).ToArray()); // Remove non-digits
-
-                            if (digits.Length == 10)
-                            {
-                                number = $"{digits.Substring(0, 3)}-{digits.Substring(3, 3)}-{digits.Substring(6, 4)}"; // Format as ###-###-#### if 10 digits
-                                normalizedPhones.Add(digits);
-                            }
-                            else
-                            {
-                                normalizedPhones.Add(digits);
-                            }
-
-                            phoneNumbers.Add(number);
-                        }
-                    }
-                }
-            }
-        }
-
-        lblPatientPhoneValue.Content = phoneNumbers.Count > 0
-            ? string.Join(", ", phoneNumbers)
-            : "No phone numbers on file";
-
-        // Query SMS failure and delivery stats for all patient phone numbers
-        _smsFailures.Clear();
-        _smsDeliveries.Clear();
-
-        for (int i = 0; i < normalizedPhones.Count; i++)
-        {
-            if (normalizedPhones[i].Length == 10)
-            {
-                // Query SMS failures
-                var failures = TmDb.GetSmsFailureStats(normalizedPhones[i]);
-                _smsFailures.AddRange(failures);
-
-                // Query message deliveries
-                var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhones[i]);
-                _smsDeliveries.AddRange(deliveries);
-            }
-        }
-
-        System.Diagnostics.Debug.WriteLine($"Total failures: {_smsFailures.Count}, Total deliveries: {_smsDeliveries.Count}");
-
-        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
+        messageHistoryWindow.ShowDialog();
     }
+
+
+
+
+    /// <summary>Updates the btnPhoneDetails button appearance based on SMS failure and delivery records.</summary>
+    private void UpdateDetailsButtonColor(bool hasFailures, bool hasDeliveries, Button theButton)
+    {
+        theButton.IsEnabled = true;
+
+        if (hasFailures && hasDeliveries)
+        {
+            theButton.Background = System.Windows.Media.Brushes.Yellow;
+        }
+        else if (hasDeliveries)
+        {
+            theButton.Background = System.Windows.Media.Brushes.Green;
+        }
+        else if (hasFailures)
+        {
+            theButton.Background = System.Windows.Media.Brushes.Red;
+        }
+        else
+        {
+            // No records: gray background, disabled
+            theButton.Background = System.Windows.Media.Brushes.Gray;
+            theButton.IsEnabled = false;
+        }
+    }
+
+
+    /// <summary>Handles the email details button click event.</summary>
+    private void ShowEmailDetails()
+    {
+        var emailHistoryWindow = new Database.MessageHistoryWindow(_emailFailures, _emailDeliveries)
+        {
+            Owner = this
+        };
+
+        emailHistoryWindow.ShowDialog();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /// <summary>Displays provider details in the UI.</summary>
     private void DisplayProviderDetails(string providerName, string providerId)

@@ -3,7 +3,6 @@
 
 using System.Text.Json;
 using System.Windows;
-using System.Windows.Controls;
 using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
@@ -23,6 +22,17 @@ public partial class MainWindow : Window
         spnlMeetingDetailsComponents.Visibility          = Visibility.Collapsed;
     }
 
+    private void SetupPatientDetailUi(string patientName, string patientId)
+    {
+
+        lblPatientProviderKey.Content                   = "PATIENT";
+        lblPatientProviderNameValue.Content             = patientName;
+        lblPatientProviderIdValue.Content               = patientId;
+        spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
+        spnlPatientPhoneComponents.Visibility           = Visibility.Visible;
+        spnlPatientEmailComponents.Visibility           = Visibility.Visible;
+    }
+
     /// <summary>Clears user interface components.</summary>
     private void ClearUi()
     {
@@ -33,101 +43,8 @@ public partial class MainWindow : Window
         spnlMeetingDetailsComponents.Visibility          = Visibility.Collapsed;
     }
 
-    /// <summary>Modifies the search results based on the current search type and search text.</summary>
-    /// <param name="searchType">The type of search.</param>
-    /// <param name="searchText">Contents of the search box.</param>
-    private void ModifySearchResults(string searchType, string searchText)
-    {
-        var searchResults = GetSearchResults(searchType, searchText);
-        DisplaySearchResults(searchResults);
-    }
-
-    /// <summary>Get a list of patient/provider search results.</summary>
-    /// <param name="searchType">The type of search.</param>
-    /// <param name="searchText">Contents of the search box.</param>
-    /// <returns>The search results.</returns>
-    private List<string> GetSearchResults(string searchType, string searchText)
-    {
-        if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
-        {
-            return [];
-        }
-
-        /* If the search box contains only an asterisk, treat it as a wildcard to return all results
-         */
-        if (txbxSearchBox.Text == "*")
-        {
-            searchText = string.Empty;
-        }
-
-        return searchType.Contains("patient", StringComparison.OrdinalIgnoreCase)
-            ? rbtnSearchByName.IsChecked == true
-                ? Database.SearchFor.PatientByName(searchText, TmDb)
-                : Database.SearchFor.PatientById(searchText, TmDb)
-            : searchType.Contains("provider", StringComparison.OrdinalIgnoreCase)
-                ? rbtnSearchByName.IsChecked == true
-                            ? Database.SearchFor.ProviderByName(searchText, TmDb)
-                            : Database.SearchFor.ProviderById(searchText, TmDb)
-                : [];
-    }
-
-    /// <summary>Display search results.</summary>
-    /// <param name="searchResults">The list of search results to display.</param>
-    private void DisplaySearchResults(List<string> searchResults)
-    {
-        lstbxSearchResults.Items.Clear();
-
-        if (searchResults.Count == 0)
-        {
-            lstbxSearchResults.Items.Add("No results found.");
-        }
-        else
-        {
-            foreach (string result in searchResults)
-            {
-                lstbxSearchResults.Items.Add(result);
-            }
-        }
-    }
 
 
-
-    private void DisplayDetails(string searchMode, string selectedItem)
-    {
-        /* This is here so we don't hit a weird loop with ClearUi().
-        */
-        if (lstbxSearchResults.Items.Count == 0)
-        {
-            return;
-        }
-
-        var lastParenIndex = selectedItem.LastIndexOf('(');
-        var name           = selectedItem.Substring(0, lastParenIndex).Trim();
-        var id             = selectedItem.Substring(lastParenIndex + 1).TrimEnd(')').Trim();
-
-        switch (btnSearchToggle.Content.ToString())
-        {
-            case "Patient Search":
-                DisplayPatientDetails(name, id);
-                break;
-
-            case "Provider Search":
-                DisplayProviderDetails(name, id);
-                break;
-        }
-    }
-
-
-
-    private void ShowPhoneDetails()
-    {
-        var messageHistoryWindow = new Database.MessageHistoryWindow(_smsFailures, _smsDeliveries)
-        {
-            Owner = this
-        };
-
-        messageHistoryWindow.ShowDialog();
-    }
 
 
     /// <summary>Handles the selection changed event for the meetings DataGrid.</summary>
@@ -371,63 +288,17 @@ public partial class MainWindow : Window
 
 
 
-    /// <summary>Updates the btnPhoneDetails button appearance based on SMS failure and delivery records.</summary>
-    private void UpdateDetailsButtonColor(bool hasFailures, bool hasDeliveries, Button theButton)
+
+
+
+
+
+
+
+
+    private void SetSearchToggleContent()
     {
-        theButton.IsEnabled = true;
-
-        if (hasFailures && hasDeliveries)
-        {
-            theButton.Background = System.Windows.Media.Brushes.Yellow;
-        }
-        else if (hasDeliveries)
-        {
-            theButton.Background = System.Windows.Media.Brushes.Green;
-        }
-        else if (hasFailures)
-        {
-            theButton.Background = System.Windows.Media.Brushes.Red;
-        }
-        else
-        {
-            // No records: gray background, disabled
-            theButton.Background = System.Windows.Media.Brushes.Gray;
-            theButton.IsEnabled = false;
-        }
-    }
-
-
-    /// <summary>Handles the email details button click event.</summary>
-    private void ShowEmailDetails()
-    {
-        var emailHistoryWindow = new Database.MessageHistoryWindow(_emailFailures, _emailDeliveries)
-        {
-            Owner = this
-        };
-
-        emailHistoryWindow.ShowDialog();
-    }
-
-
-
-
-
-    private void SetupPatientDetailUi(string patientName, string patientId)
-    {
-
-        lblPatientProviderKey.Content      = "PATIENT";
-        lblPatientProviderNameValue.Content   = patientName;
-        lblPatientProviderIdValue.Content     = patientId;
-        spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
-        spnlPatientPhoneComponents.Visibility   = Visibility.Visible;
-        spnlPatientEmailComponents.Visibility   = Visibility.Visible;
-    }
-
-
-
-    private void SetSearchToggleContent(string buttonContent)
-    {
-        switch (buttonContent)
+        switch (btnSearchToggle.Content.ToString())
         {
             case "Patient Search":
                 btnSearchToggle.Content = "Provider Search";
