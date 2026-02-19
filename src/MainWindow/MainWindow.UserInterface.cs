@@ -1,22 +1,20 @@
-﻿// 260212_code
-// 260212_documentation
-
+﻿// 260219_code
+// 260219_documentation
 
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using TingenTransmorger.Models;
 
-/* MainWindow classes are in MainWindow/ to keep the code organized.
- * Namespace is TingenTransmorger to avoid confusion with the MainWindow class.
- */
 namespace TingenTransmorger;
 
-/* Partial class MainWindow.UserInterface.cs.
+/* The MainWindow.UserInterface partial class contains logic specific to the user interface, such as showing/hiding components,
+ * updating button colors, and displaying search results. This is separate from the logic for displaying meeting details and copying data,
+ * which are in their own partial classes, to keep the code organized and easier to navigate.
  */
 public partial class MainWindow : Window
 {
-    /// <summary>Setup the initial user interface so the right panel is blank.</summary>
+    /// <summary>Setup the initial user interface.</summary>
     private void SetupInitialUi()
     {
         rbtnSearchByName.IsChecked                       = true;
@@ -28,7 +26,9 @@ public partial class MainWindow : Window
     /// <summary>Clears user interface components.</summary>
     private void ClearUi()
     {
-        txbxSearchBox.Text = string.Empty; // This will fire off the TextChanged event
+        /*
+         */
+        txbxSearchBox.Text = string.Empty;
 
         /* The lstbxSearchResults control is cleared in SearchTextChanged(), which avoids a weird loop with ClearUi().
          */

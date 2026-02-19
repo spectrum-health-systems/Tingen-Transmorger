@@ -7,6 +7,9 @@ using TingenTransmorger.Database;
 
 namespace TingenTransmorger;
 
+/* The MainWindow.AdminMode partial class contains logic related to the admin mode of the application, which is
+ * currently focused on rebuilding the Transmorger database.
+ */
 public partial class MainWindow : Window
 {
     /// <summary>Handles admin mode operations.</summary>

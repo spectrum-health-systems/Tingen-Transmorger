@@ -5,6 +5,8 @@ using System.Windows;
 
 namespace TingenTransmorger;
 
+/* The MainWindow.DataCopy partial class contains logic related to copying meeting details to the clipboard.
+ */
 public partial class MainWindow : Window
 {
     /// <summary>Copy general meeting details to the clipboard.</summary>

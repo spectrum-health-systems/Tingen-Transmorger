@@ -7,8 +7,22 @@ using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
 
+/* The MainWindow.DetailDisplay partial class contains logic related to displaying patient/provider details in the UI.
+ */
 public partial class MainWindow : Window
 {
+    /// <summary>SMS failure records for the current patient's phone numbers.</summary>
+    private List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> _smsFailures = new();
+
+    /// <summary>Message delivery records for the current patient's phone numbers.</summary>
+    private List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _smsDeliveries = new();
+
+    /// <summary>Email failure records for the current patient's email addresses.</summary>
+    private List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> _emailFailures = new();
+
+    /// <summary>Email delivery records for the current patient's email addresses.</summary>
+    private List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _emailDeliveries = new();
+
     /// <summary> Currently selected patient name.</summary>
     private string _currentPatientName = string.Empty;
 
