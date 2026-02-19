@@ -3,13 +3,14 @@
 ## 0.9.27.2 - 0.9.27.11
 
 - Cleanup of:
-  - MainWindow.asmx.cs
+  - MainWindow.xaml.cs
   - MainWindow.AdminMode.cs
   - MainWindow.DetailDisplay.cs
-  - MainWindow.Events.cs
   - MainWindow.UserInterface.cs
+- Added MainWindow.DataCopy.cs
 - Fixed the UI reset when changing search modes
 - Cleaned up the copied details
+- Removed MainWindow.Events.cs
 
 ## 0.9.27.1
 
@@ -17,16 +18,16 @@
 
 ## 0.9.27.0
 
-- Finalized MainWindow.axml cleanup
+- Finalized MainWindow.xaml cleanup
 
 ## 0.9.26.1 - 0.9.26.7
 
-- Continued to clean up MainWindow.axml
+- Continued to clean up MainWindow.xaml
 
 ## 0.9.26.0
 
 - Removed Settings button
-- Started to cleanup MainWindow.axml
+- Started to cleanup MainWindow.xaml
 
 ## 0.9.25.8
 
@@ -39,7 +40,7 @@
 ## 0.9.25.5 - 0.9.25.6
 
 - Made significant changes to the following classes:
-  - MainWindow.asmx.cs
+  - MainWindow.xaml.cs
   - MainWindow.AdminMode.cs
   - TransmorgerDatabase.cs
 
@@ -49,7 +50,7 @@
   - Moved MainWindow classes to MainWindow/
 - MainWindow.UserInterface.cs
 - Made significant changes to the following classes:
-  - MainWindow.asmx.cs
+  - MainWindow.xaml.cs
   - MainWindow.AdminMode.cs
   - TransmorgerDatabase.cs
 
