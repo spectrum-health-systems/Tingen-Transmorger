@@ -12,7 +12,7 @@ namespace TingenTransmorger;
 public partial class MainWindow : Window
 {
     /// <summary>Setup the initial user interface.</summary>
-    private void SetupInitialUi()
+    private void SetInitialUi()
     {
         rbtnSearchByName.IsChecked                       = true;
         spnlPatientProviderDetailsComponents.Visibility  = Visibility.Collapsed;
@@ -20,9 +20,11 @@ public partial class MainWindow : Window
         spnlMeetingDetailsComponents.Visibility          = Visibility.Collapsed;
     }
 
-    private void SetupPatientDetailUi(string patientName, string patientId)
+    /// <summary>Setup the user interface for displaying patient details.</summary>
+    /// <param name="patientName">The name of the patient.</param>
+    /// <param name="patientId">The ID of the patient.</param>
+    private void SetPatientDetailUi(string patientName, string patientId)
     {
-
         lblPatientProviderKey.Content                   = "PATIENT";
         lblPatientProviderNameValue.Content             = patientName;
         lblPatientProviderIdValue.Content               = patientId;
@@ -42,7 +44,7 @@ public partial class MainWindow : Window
     }
 
     /// <summary>Toggle the search type button text.</summary>
-    private void SetSearchToggleContent()
+    private void SetSearchToggleUi()
     {
         btnSearchToggle.Content = btnSearchToggle.Content.ToString()=="Patient Search"
             ? "Provider Search"

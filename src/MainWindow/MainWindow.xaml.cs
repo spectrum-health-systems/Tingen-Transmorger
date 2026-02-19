@@ -90,7 +90,7 @@ public partial class MainWindow : Window
         // TODO: Make sure that is this fails, the app exits and doesn't continue.
         TmDb = Database.TransmorgerDatabase.Load(localDbPath);
 
-        SetupInitialUi();
+        SetInitialUi();
     }
 
     /// <summary>Stops the application.</summary>
@@ -116,7 +116,7 @@ public partial class MainWindow : Window
 
     /* EVENT HANDLERS
      */
-    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleContent();
+    private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleUi();
     private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
     private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => ModifySearchResults();
     private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowPhoneDetails();

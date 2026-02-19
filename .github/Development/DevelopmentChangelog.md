@@ -3,13 +3,34 @@
 ## 0.9.27.2 - 0.9.27.11
 
 - Cleanup of:
-  - MainWindow.xaml.cs
-  - MainWindow.AdminMode.cs
+
+
   - MainWindow.DetailDisplay.cs
-  - MainWindow.UserInterface.cs
-- Added MainWindow.DataCopy.cs
+
+- MainWindow.xaml
+  - Verified all controls are named
+  - Commented all controls
+- MainWindow.xaml.cs
+  - Moved most stuff out to other partial classes
+- MainWindow.AdminMode.cs
+
+- MainWindow.MeetingDetails.cs
+
+- MainWindow.PatientDetails.cs
+
+- MainWindow.ProviderDetails.cs
+
+- MainWindow.Search.cs (new)
+
+- MainWindow.UserInterface.cs
+
+- MainWindow.DataCopy.cs (new)
+  - Catalog information for copies to the clipboard
+
+
 - Fixed the UI reset when changing search modes
 - Cleaned up the copied details
+- Removed MainWindow.DisplayDetails.cs
 - Removed MainWindow.Events.cs
 
 ## 0.9.27.1

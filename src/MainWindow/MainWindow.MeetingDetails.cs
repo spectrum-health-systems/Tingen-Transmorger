@@ -1,5 +1,5 @@
-﻿// 260218_code
-// 260218_documentation
+﻿// 260219_code
+// 260219_documentation
 
 using System.Text.Json;
 using System.Windows;
@@ -8,7 +8,7 @@ using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
 
-/* The MainWindow.DetailDisplay partial class contains logic related to displaying patient/provider details in the UI.
+/* The MainWindow.Details partial class contains logic related to displaying patient/provider details in the UI.
  */
 public partial class MainWindow : Window
 {
@@ -29,59 +29,6 @@ public partial class MainWindow : Window
 
     /// <summary>Email failure records for the current patient's email addresses.</summary>
     private List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> _emailFailures = [];
-
-    /* SEARCH RESULTS */
-
-    /// <summary>Modifies the search results based on the current search type and search text.</summary>
-    private void ModifySearchResults()
-    {
-        var searchResults = GetSearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
-        DisplaySearchResults(searchResults);
-    }
-
-    /// <summary>Get a list of patient/provider search results.</summary>
-    /// <param name="searchType">The type of search.</param>
-    /// <param name="searchText">Contents of the search box.</param>
-    /// <returns>The search results.</returns>
-    private List<string> GetSearchResults(string searchType, string searchText)
-    {
-        if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
-        {
-            return [];
-        }
-
-        /* If the search box contains only an asterisk, treat it as a wildcard to return all results
-         */
-        if (txbxSearchBox.Text == "*")
-        {
-            searchText = string.Empty;
-        }
-
-        return searchType.Contains("patient", StringComparison.OrdinalIgnoreCase)
-            ? rbtnSearchByName.IsChecked == true
-                ? Database.SearchFor.PatientByName(searchText, TmDb)
-                : Database.SearchFor.PatientById(searchText, TmDb)
-            : searchType.Contains("provider", StringComparison.OrdinalIgnoreCase)
-                ? rbtnSearchByName.IsChecked == true
-                            ? Database.SearchFor.ProviderByName(searchText, TmDb)
-                            : Database.SearchFor.ProviderById(searchText, TmDb)
-                : [];
-    }
-
-    /// <summary>Display search results.</summary>
-    /// <param name="searchResults">The list of search results to display.</param>
-    private void DisplaySearchResults(List<string> searchResults)
-    {
-        lstbxSearchResults.Items.Clear();
-
-        if (searchResults.Count != 0)
-        {
-            foreach (string result in searchResults)
-            {
-                lstbxSearchResults.Items.Add(result);
-            }
-        }
-    }
 
     /* DETAILS */
 
@@ -113,7 +60,7 @@ public partial class MainWindow : Window
     /* PATIENT DETAILS */
 
     /// <summary>Displays patient details in the UI.</summary>
-    private void DisplayPatientDetails(string patientName, string patientId)
+    private void ModifyPatientDetails(string patientName, string patientId)
     {
         _currentPatientName = patientName;
         _currentPatientId   = patientId;
@@ -125,7 +72,7 @@ public partial class MainWindow : Window
             StopApp($"Critical error! [ERR-8151]");
         }
 
-        SetupPatientDetailUi(patientName, patientId);
+        SetPatientDetailUi(patientName, patientId);
         DisplayPatientPhoneNumber(patientDetails);
         DisplayPatientEmailAddress(patientDetails);
         DisplayMeetingResults(patientDetails);
