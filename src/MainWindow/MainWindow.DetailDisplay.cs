@@ -33,8 +33,6 @@ public partial class MainWindow : Window
     /* SEARCH RESULTS */
 
     /// <summary>Modifies the search results based on the current search type and search text.</summary>
-    /// <param name="searchType">The type of search.</param>
-    /// <param name="searchText">Contents of the search box.</param>
     private void ModifySearchResults()
     {
         var searchResults = GetSearchResults(btnSearchToggle.Content.ToString(), txbxSearchBox.Text?.Trim());
@@ -112,7 +110,6 @@ public partial class MainWindow : Window
         }
     }
 
-
     /* PATIENT DETAILS */
 
     /// <summary>Displays patient details in the UI.</summary>
@@ -129,14 +126,78 @@ public partial class MainWindow : Window
         }
 
         SetupPatientDetailUi(patientName, patientId);
-
-        DisplayPatientPhoneNumber(patientDetails);
-
+        ModifyPatientPhoneNumber(patientDetails);
         DisplayPatientEmailAddress(patientDetails);
-
         DisplayPatientMeetings(patientDetails);
     }
 
+    private void ModifyPatientPhoneNumber(JsonElement? patientDetails)
+    {
+        var phoneNumbers = GetPatientPhoneNumbers(patientDetails);
+        DisplayPatientPhoneNumber(phoneNumbers);
+        GetSmsStats(phoneNumbers);
+        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
+    }
+
+    private static List<string> GetPatientPhoneNumbers(JsonElement? patientDetails)
+    {
+        var phoneNumbers = new List<string>();
+
+        if (patientDetails?.TryGetProperty("PhoneNumbers", out var phoneNumbersArray) == true && phoneNumbersArray.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var phoneNumberEntry in phoneNumbersArray.EnumerateArray())
+            {
+                if (phoneNumberEntry.TryGetProperty("Number", out var number))
+                {
+                    var phoneNumber = number.GetString();
+
+                    if (!string.IsNullOrWhiteSpace(phoneNumber))
+                    {
+                        var phoneNumberDigits = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+                        if (phoneNumberDigits.Length == 10)
+                        {
+                            phoneNumber = $"{phoneNumberDigits.Substring(0, 3)}-{phoneNumberDigits.Substring(3, 3)}-{phoneNumberDigits.Substring(6, 4)}"; // Format as ###-###-#### if 10 digits
+                        }
+
+                        phoneNumbers.Add(phoneNumber);
+                    }
+                }
+            }
+        }
+
+        return phoneNumbers;
+    }
+
+    private void DisplayPatientPhoneNumber(List<string> phoneNumbers)
+    {
+        lblPatientPhoneValue.Content = phoneNumbers.Count > 0
+            ? string.Join(", ", phoneNumbers)
+            : "No phone numbers on file";
+    }
+
+    private void GetSmsStats(List<string> phoneNumbers)
+    {
+        // Query SMS failure and delivery stats for all patient phone numbers
+        _smsFailures.Clear();
+        _smsDeliveries.Clear();
+
+        for (int i = 0; i < phoneNumbers.Count; i++)
+        {
+            var normalizedPhoneNumber = new string(phoneNumbers[i].Where(char.IsDigit).ToArray()).Trim();
+
+            if (normalizedPhoneNumber.Length == 10)
+            {
+                // Query SMS failures
+                var failures = TmDb.GetSmsFailureStats(normalizedPhoneNumber);
+                _smsFailures.AddRange(failures);
+
+                // Query message deliveries
+                var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhoneNumber);
+                _smsDeliveries.AddRange(deliveries);
+            }
+        }
+    }
 
     private void DisplayPatientEmailAddress(JsonElement? patientDetails)
     {
@@ -196,64 +257,6 @@ public partial class MainWindow : Window
         UpdateDetailsButtonColor(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnEmailDetails);
     }
 
-    private void DisplayPatientPhoneNumber(JsonElement? patientDetails)
-    {
-        var phoneNumbers     = new List<string>();
-        var normalizedPhones = new List<string>();
-
-        if (patientDetails?.TryGetProperty("PhoneNumbers", out var phoneNumbersArray) == true
-            && phoneNumbersArray.ValueKind == JsonValueKind.Array)
-        {
-            foreach (var phoneEntry in phoneNumbersArray.EnumerateArray())
-            {
-                if (phoneEntry.TryGetProperty("Number", out var numberElem))
-                {
-                    var number = numberElem.GetString();
-
-                    if (!string.IsNullOrWhiteSpace(number))
-                    {
-                        var digits = new string(number.Where(char.IsDigit).ToArray()); // Remove non-digits
-
-                        if (digits.Length == 10)
-                        {
-                            number = $"{digits.Substring(0, 3)}-{digits.Substring(3, 3)}-{digits.Substring(6, 4)}"; // Format as ###-###-#### if 10 digits
-                            normalizedPhones.Add(digits);
-                        }
-                        else
-                        {
-                            normalizedPhones.Add(digits);
-                        }
-
-                        phoneNumbers.Add(number);
-                    }
-                }
-            }
-        }
-
-        lblPatientPhoneValue.Content = phoneNumbers.Count > 0
-            ? string.Join(", ", phoneNumbers)
-            : "No phone numbers on file";
-
-        // Query SMS failure and delivery stats for all patient phone numbers
-        _smsFailures.Clear();
-        _smsDeliveries.Clear();
-
-        for (int i = 0; i < normalizedPhones.Count; i++)
-        {
-            if (normalizedPhones[i].Length == 10)
-            {
-                // Query SMS failures
-                var failures = TmDb.GetSmsFailureStats(normalizedPhones[i]);
-                _smsFailures.AddRange(failures);
-
-                // Query message deliveries
-                var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhones[i]);
-                _smsDeliveries.AddRange(deliveries);
-            }
-        }
-
-        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
-    }
 
 
 

@@ -598,8 +598,6 @@
         </member>
         <member name="M:TingenTransmorger.MainWindow.ModifySearchResults">
             <summary>Modifies the search results based on the current search type and search text.</summary>
-            <param name="searchType">The type of search.</param>
-            <param name="searchText">Contents of the search box.</param>
         </member>
         <member name="M:TingenTransmorger.MainWindow.GetSearchResults(System.String,System.String)">
             <summary>Get a list of patient/provider search results.</summary>

@@ -122,7 +122,6 @@ public partial class MainWindow : Window
     private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowPhoneDetails();
     private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e) => ShowEmailDetails();
     private void lstbxSearchResults_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => ModifyDetails();
-    //private void SearchResultSelected() => DisplaySomeDeets(btnSearchToggle.Content.ToString(), lstbxSearchResults.SelectedItem as string);
     private void dgPatientMeetings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => MeetingSelected();
     private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyGeneralMeetingDetails();
     private void btnCopyMeetingDetailsPatient_Click(object sender, RoutedEventArgs e) => CopyPatientMeetingDetails();
