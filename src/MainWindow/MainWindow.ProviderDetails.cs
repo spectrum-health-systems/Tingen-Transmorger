@@ -33,64 +33,9 @@ public partial class MainWindow : Window
 
         SetProviderDetailUi(providerName, providerId);
 
-        /* This is taken care of */
-        //////////// Show provider details section
-        //////////spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
-
-        //////////// Set header to PROVIDER
-        //////////lblPatientProviderKey.Content = "PROVIDER";
-
-        //////////// Display provider name and ID
-        //////////lblPatientProviderNameValue.Content = providerName;
-        //////////lblPatientProviderIdValue.Content = providerId;
-
-        //////////// Hide phone and email sections for providers
-        //////////spnlPatientPhoneComponents.Visibility = Visibility.Collapsed;
-        //////////spnlPatientEmailComponents.Visibility = Visibility.Collapsed;
-
-
-
-        // Still collect email data in the background (hidden from UI)
-        // Display email addresses (hidden from user but still processed)
-        var emailAddresses = new List<string>();
-
-        if (providerDetails.Value.TryGetProperty("EmailAddresses", out var emailAddressesArray))
-        {
-            if (emailAddressesArray.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var emailEntry in emailAddressesArray.EnumerateArray())
-                {
-                    if (emailEntry.TryGetProperty("Address", out var addressElem))
-                    {
-                        var address = addressElem.GetString();
-                        if (!string.IsNullOrWhiteSpace(address))
-                        {
-                            emailAddresses.Add(address);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Query email failure and delivery stats for all provider email addresses (background processing)
-        _emailFailures.Clear();
-        _emailDeliveries.Clear();
-
-        foreach (var emailAddress in emailAddresses)
-        {
-            if (emailAddress != "No email addresses on file")
-            {
-                // DEBUG: Show what we're searching for
-
-                // Query email failures
-                var failures = TmDb.GetEmailFailureStats(emailAddress);
-                _emailFailures.AddRange(failures);
-
-                // Query email deliveries
-                var deliveries = TmDb.GetEmailDeliveryStats(emailAddress);
-                _emailDeliveries.AddRange(deliveries);
-            }
-        }
+        /* There isn't a way to easily match providers to their email addresses, so we aren't going to do that for now.
+         * Eventually we should, and this is (probably) where that logic should go.
+         */
 
         // Display meetings for this provider
         var meetingRows = new List<PatientMeetingRow>();

@@ -42,7 +42,7 @@ public partial class MainWindow : Window
         lblPatientProviderIdValue.Content               = providerId;
         spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
         spnlPatientPhoneComponents.Visibility           = Visibility.Collapsed;
-        spnlPatientEmailComponents.Visibility           = Visibility.Collapsed;
+        spnlPatientEmailComponents.Visibility           = Visibility.Visible;
     }
 
 
