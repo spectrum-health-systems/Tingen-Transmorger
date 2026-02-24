@@ -1,9 +1,8 @@
-﻿// 260219_code
-// 260219_documentation
+﻿// 260224_code
+// 260224_documentation
 
 using System.Text.Json;
 using System.Windows;
-using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
 
@@ -32,136 +31,138 @@ public partial class MainWindow : Window
         }
 
         SetProviderDetailUi(providerName, providerId);
-
+        DisplayPatientMeetingResults(providerDetails);
         /* There isn't a way to easily match providers to their email addresses, so we aren't going to do that for now.
          * Eventually we should, and this is (probably) where that logic should go.
          */
 
-        // Display meetings for this provider
-        var meetingRows = new List<PatientMeetingRow>();
-        if (providerDetails.Value.TryGetProperty("Meetings", out var meetingsElement))
-        {
-            if (meetingsElement.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var meetingIdElement in meetingsElement.EnumerateArray())
-                {
-                    var meetingId = meetingIdElement.GetString();
-                    if (string.IsNullOrWhiteSpace(meetingId))
-                        continue;
 
-                    // Get meeting details from MeetingDetail
-                    var meetingDetail = TmDb.GetMeetingDetail(meetingId);
-                    if (meetingDetail == null)
-                        continue;
+        //////    // Display meetings for this provider
+        //////    var meetingRows = new List<PatientMeetingRow>();
+        //////    if (providerDetails.Value.TryGetProperty("Meetings", out var meetingsElement))
+        //////    {
+        //////        if (meetingsElement.ValueKind == JsonValueKind.Array)
+        //////        {
+        //////            foreach (var meetingIdElement in meetingsElement.EnumerateArray())
+        //////            {
+        //////                var meetingId = meetingIdElement.GetString();
+        //////                if (string.IsNullOrWhiteSpace(meetingId))
+        //////                    continue;
 
-                    // Get meeting information
-                    var scheduledStart = meetingDetail.Value.TryGetProperty("ScheduledStart", out var startElem)
-                        ? startElem.GetString() : string.Empty;
-                    var status = meetingDetail.Value.TryGetProperty("Status", out var statusElem)
-                        ? statusElem.GetString() : string.Empty;
-                    var duration = meetingDetail.Value.TryGetProperty("Duration", out var durationElem)
-                        ? durationElem.GetString() : string.Empty;
+        //////                // Get meeting details from MeetingDetail
+        //////                var meetingDetail = TmDb.GetMeetingDetail(meetingId);
+        //////                if (meetingDetail == null)
+        //////                    continue;
 
-                    // For providers, we don't have patient-specific arrival/drop times
-                    string ReplaceNull(string value)
-                    {
-                        if (string.IsNullOrWhiteSpace(value))
-                            return "---";
+        //////                // Get meeting information
+        //////                var scheduledStart = meetingDetail.Value.TryGetProperty("ScheduledStart", out var startElem)
+        //////                    ? startElem.GetString() : string.Empty;
+        //////                var status = meetingDetail.Value.TryGetProperty("Status", out var statusElem)
+        //////                    ? statusElem.GetString() : string.Empty;
+        //////                var duration = meetingDetail.Value.TryGetProperty("Duration", out var durationElem)
+        //////                    ? durationElem.GetString() : string.Empty;
 
-                        var result = System.Text.RegularExpressions.Regex.Replace(
-                            value,
-                            @"\bnull\b",
-                            "<<NULL>>",
-                            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        //////                // For providers, we don't have patient-specific arrival/drop times
+        //////                string ReplaceNull(string value)
+        //////                {
+        //////                    if (string.IsNullOrWhiteSpace(value))
+        //////                        return "---";
 
-                        if (result.Contains("<<NULL>>"))
-                        {
-                            var cleanedResult = result.Replace("<<NULL>>", "").Trim().Trim(',').Trim(';').Trim();
-                            if (string.IsNullOrWhiteSpace(cleanedResult))
-                            {
-                                return "---";
-                            }
-                            result = result.Replace("<<NULL>>", "---");
-                        }
+        //////                    var result = System.Text.RegularExpressions.Regex.Replace(
+        //////                        value,
+        //////                        @"\bnull\b",
+        //////                        "<<NULL>>",
+        //////                        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        return string.IsNullOrWhiteSpace(result) ? "---" : result;
-                    }
+        //////                    if (result.Contains("<<NULL>>"))
+        //////                    {
+        //////                        var cleanedResult = result.Replace("<<NULL>>", "").Trim().Trim(',').Trim(';').Trim();
+        //////                        if (string.IsNullOrWhiteSpace(cleanedResult))
+        //////                        {
+        //////                            return "---";
+        //////                        }
+        //////                        result = result.Replace("<<NULL>>", "---");
+        //////                    }
 
-                    // Check if meeting has an error
-                    var hasError = TmDb.HasMeetingError(meetingId);
+        //////                    return string.IsNullOrWhiteSpace(result) ? "---" : result;
+        //////                }
 
-                    // Check status flags
-                    var statusLower = status?.ToLower() ?? string.Empty;
-                    var isCancelled = statusLower.Contains("cancel");
-                    var isCompleted = statusLower.Contains("complete");
+        //////                // Check if meeting has an error
+        //////                var hasError = TmDb.HasMeetingError(meetingId);
 
-                    meetingRows.Add(new PatientMeetingRow
-                    {
-                        MeetingId = meetingId,
-                        Start = ReplaceNull(scheduledStart ?? string.Empty),
-                        Arrived = "N/A",  // Not applicable for provider view
-                        Dropped = "N/A",  // Not applicable for provider view
-                        Duration = ReplaceNull(duration ?? string.Empty),
-                        Status = ReplaceNull(status ?? string.Empty),
-                        HasError = hasError,
-                        IsCancelled = isCancelled,
-                        IsCompleted = isCompleted
-                    });
-                }
-            }
-        }
+        //////                // Check status flags
+        //////                var statusLower = status?.ToLower() ?? string.Empty;
+        //////                var isCancelled = statusLower.Contains("cancel");
+        //////                var isCompleted = statusLower.Contains("complete");
 
-        // Sort meetings by ScheduledStart descending (most recent first)
-        meetingRows = meetingRows
-            .OrderByDescending(m => m.Start)
-            .ToList();
+        //////                meetingRows.Add(new PatientMeetingRow
+        //////                {
+        //////                    MeetingId = meetingId,
+        //////                    Start = ReplaceNull(scheduledStart ?? string.Empty),
+        //////                    Arrived = "N/A",  // Not applicable for provider view
+        //////                    Dropped = "N/A",  // Not applicable for provider view
+        //////                    Duration = ReplaceNull(duration ?? string.Empty),
+        //////                    Status = ReplaceNull(status ?? string.Empty),
+        //////                    HasError = hasError,
+        //////                    IsCancelled = isCancelled,
+        //////                    IsCompleted = isCompleted
+        //////                });
+        //////            }
+        //////        }
+        //////    }
 
-        // Count meetings by status
-        var totalCount = meetingRows.Count;
-        var completedCount = meetingRows.Count(m => m.IsCompleted);
-        var cancelledCount = meetingRows.Count(m => m.IsCancelled);
+        //////    // Sort meetings by ScheduledStart descending (most recent first)
+        //////    meetingRows = meetingRows
+        //////        .OrderByDescending(m => m.Start)
+        //////        .ToList();
 
-        var inProgressCount = 0;
-        var expiredCount = 0;
-        var scheduledCount = 0;
+        //////    // Count meetings by status
+        //////    var totalCount = meetingRows.Count;
+        //////    var completedCount = meetingRows.Count(m => m.IsCompleted);
+        //////    var cancelledCount = meetingRows.Count(m => m.IsCancelled);
 
-        foreach (var meeting in meetingRows)
-        {
-            var statusLower = meeting.Status?.ToLower() ?? string.Empty;
+        //////    var inProgressCount = 0;
+        //////    var expiredCount = 0;
+        //////    var scheduledCount = 0;
 
-            if (meeting.IsCompleted || meeting.IsCancelled)
-                continue;
+        //////    foreach (var meeting in meetingRows)
+        //////    {
+        //////        var statusLower = meeting.Status?.ToLower() ?? string.Empty;
 
-            if (statusLower.Contains("in progress") || statusLower.Contains("in-progress"))
-                inProgressCount++;
-            else if (statusLower.Contains("expired"))
-                expiredCount++;
-            else if (statusLower.Contains("scheduled"))
-                scheduledCount++;
-        }
+        //////        if (meeting.IsCompleted || meeting.IsCancelled)
+        //////            continue;
 
-        // Update the header with the detailed count
-        txbkTotalMeetingsValue.Text = $"{totalCount} MEETINGS";
-        txbkCompletedMeetingsValue.Text = $"{completedCount} Completed";
-        txbkMeetingsInProgressValue.Text = $"{inProgressCount} In-Progress";
-        txbkMeetingsExpiredValue.Text = $"{expiredCount} Expired";
-        txbkMeetingsCancelledValue.Text = $"{cancelledCount} Cancelled";
-        txbkMeetingsScheduledValue.Text = $"{scheduledCount} Scheduled";
+        //////        if (statusLower.Contains("in progress") || statusLower.Contains("in-progress"))
+        //////            inProgressCount++;
+        //////        else if (statusLower.Contains("expired"))
+        //////            expiredCount++;
+        //////        else if (statusLower.Contains("scheduled"))
+        //////            scheduledCount++;
+        //////    }
 
-        // Bind to DataGrid
-        dgrdMeetingResults.ItemsSource = meetingRows;
+        //////    // Update the header with the detailed count
+        //////    txbkTotalMeetingsValue.Text = $"{totalCount} MEETINGS";
+        //////    txbkCompletedMeetingsValue.Text = $"{completedCount} Completed";
+        //////    txbkMeetingsInProgressValue.Text = $"{inProgressCount} In-Progress";
+        //////    txbkMeetingsExpiredValue.Text = $"{expiredCount} Expired";
+        //////    txbkMeetingsCancelledValue.Text = $"{cancelledCount} Cancelled";
+        //////    txbkMeetingsScheduledValue.Text = $"{scheduledCount} Scheduled";
 
-        // Show meetings section if there are meetings
-        if (meetingRows.Count > 0)
-        {
-            spnlMeetingComponents.Visibility = Visibility.Visible;
-        }
-        else
-        {
-            spnlMeetingComponents.Visibility = Visibility.Collapsed;
-        }
+        //////    // Bind to DataGrid
+        //////    dgrdMeetingResults.ItemsSource = meetingRows;
 
-        // Hide meeting details until a meeting is selected
-        spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
+        //////    // Show meetings section if there are meetings
+        //////    if (meetingRows.Count > 0)
+        //////    {
+        //////        spnlMeetingComponents.Visibility = Visibility.Visible;
+        //////    }
+        //////    else
+        //////    {
+        //////        spnlMeetingComponents.Visibility = Visibility.Collapsed;
+        //////    }
+
+        //////    // Hide meeting details until a meeting is selected
+        //////    spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
+        //////}
     }
 }

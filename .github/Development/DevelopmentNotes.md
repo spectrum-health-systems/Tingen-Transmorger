@@ -14,6 +14,8 @@
 - [ ] Do the MeetingBreakdownComponents need to have text when launching?
 - [ ] What controls have text when launching that don't need text?
 - [ ] Tighter search (e.g., "scott" finds "Scott" or "Scotty", not "Ascott")
+- [ ] Use explicit types when it's not obvious
+- [ ] If a meeting error is over a specific number of chars, truncate
 
 - [ ] Review dgPatientProviderMeetings to make sure the comments work for both patients and providers
 

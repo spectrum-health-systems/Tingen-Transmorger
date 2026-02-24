@@ -1,5 +1,5 @@
-﻿// 260219_code
-// 260219_documentation
+﻿// 260224_code
+// 260224_documentation
 
 using System.Text.Json;
 using System.Windows;
@@ -11,17 +11,12 @@ namespace TingenTransmorger;
  */
 public partial class MainWindow : Window
 {
-
     /// <summary>Handles the selection changed event for the meetings DataGrid.</summary>
-    /// <remarks>
-    /// <para>
-    /// This method is called when the user selects a meeting from the meetings table.
-    /// It retrieves the full meeting details and displays them in the details section.
-    /// </para>
-    /// </remarks>
     private void MeetingSelected()
     {
-        // Don't process selection if database is not yet initialized
+        /* Don't process selection if database is not yet initialized
+         * TODO: Move
+         */
         if (TmDb == null)
         {
             spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
@@ -29,19 +24,23 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Get the selected meeting
-        var selectedMeeting = dgrdMeetingResults.SelectedItem as PatientMeetingRow;
-
-        if (selectedMeeting == null || string.IsNullOrWhiteSpace(selectedMeeting.MeetingId))
+        /* Verify the selected DataGrid item is a valid PatientMeetingRow with a non-empty MeetingId.  If the selection
+         * is invalid or the MeetingId is missing, collapse the meeting details panel and exit early.
+         * TODO: Move
+         */
+        if (dgrdMeetingResults.SelectedItem is not PatientMeetingRow selectedMeeting || string.IsNullOrWhiteSpace(selectedMeeting.MeetingId))
         {
             spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
 
             return;
         }
 
-        // Get meeting details from database
-        var meetingDetail = TmDb.GetMeetingDetail(selectedMeeting.MeetingId);
+        JsonElement? meetingDetail = TmDb.GetMeetingDetail(selectedMeeting.MeetingId);
 
+        /* If the meeting detail could not be retrieved from the database, collapse the meeting details panel and exit
+         * early.
+         * TODO: Move
+         */
         if (meetingDetail == null)
         {
             spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
@@ -49,238 +48,13 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Helper function to replace null values
-        string ReplaceNull(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return "---";
-            }
-
-            var result = System.Text.RegularExpressions.Regex.Replace(value, @"\bnull\b", "<<NULL>>",  System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-            if (result.Contains("<<NULL>>"))
-            {
-                var cleanedResult = result.Replace("<<NULL>>", "").Trim().Trim(',').Trim(';').Trim();
-
-                if (string.IsNullOrWhiteSpace(cleanedResult))
-                {
-                    return "---";
-                }
-
-                result = result.Replace("<<NULL>>", "---");
-            }
-
-            return string.IsNullOrWhiteSpace(result) ? "---" : result;
-        }
-
-        // Extract meeting detail properties
-        // Use MeetingId directly from selectedMeeting since we already have it
+        /* Extract generic meeting detail properties. Use MeetingId directly from selectedMeeting since we already have it
+         */
         var meetingId = selectedMeeting.MeetingId;
 
-        var status = meetingDetail.Value.TryGetProperty("Status", out var statusElem)
-            ? (statusElem.GetString() ?? string.Empty)
-            : string.Empty;
+        DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
 
-        var initiatedBy = meetingDetail.Value.TryGetProperty("InitiatedBy", out var initiatedByElem)
-            ? (initiatedByElem.GetString() ?? string.Empty)
-            : string.Empty;
 
-        var scheduledStart = meetingDetail.Value.TryGetProperty("ScheduledStart", out var scheduledStartElem)
-            ? (scheduledStartElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var actualStart = meetingDetail.Value.TryGetProperty("ActualStart", out var actualStartElem)
-            ? (actualStartElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var scheduledEnd = meetingDetail.Value.TryGetProperty("ScheduledEnd", out var scheduledEndElem)
-            ? (scheduledEndElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var actualEnd = meetingDetail.Value.TryGetProperty("ActualEnd", out var actualEndElem)
-            ? (actualEndElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var endedBy = meetingDetail.Value.TryGetProperty("EndedBy", out var endedByElem)
-            ? (endedByElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var joins = meetingDetail.Value.TryGetProperty("Joins", out var joinsElem)
-            ? (joinsElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var duration = meetingDetail.Value.TryGetProperty("Duration", out var durationElem)
-            ? (durationElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var meetingTitle = meetingDetail.Value.TryGetProperty("MeetingTitle", out var meetingTitleElem)
-            ? (meetingTitleElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var serviceCode = meetingDetail.Value.TryGetProperty("ServiceCode", out var serviceCodeElem)
-            ? (serviceCodeElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        // Extract workflow, program, and front desk check-in
-        var workflow = meetingDetail.Value.TryGetProperty("Workflow", out var workflowElem)
-            ? (workflowElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var program = meetingDetail.Value.TryGetProperty("Program", out var programElem)
-            ? (programElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        var checkedInByFrontDesk = meetingDetail.Value.TryGetProperty("CheckedInByFrontDesk", out var checkedInElem)
-            ? (checkedInElem.GetString() ?? string.Empty)
-            : string.Empty;
-
-        // Populate labels with null-safe values
-        txbkMeetingIdValue.Text     = ReplaceNull(meetingId ?? string.Empty);
-        txbkMeetingStatusValue.Text = ReplaceNull(status ?? string.Empty);
-        txbkMeetingTitleValue.Text  = ReplaceNull(meetingTitle ?? string.Empty);
-
-        // Populate meeting detail TextBlocks
-        txbkMeetingStartedByValue.Text      = ReplaceNull(initiatedBy ?? string.Empty);
-        txbkMeetingScheduledStartValue.Text = ReplaceNull(scheduledStart ?? string.Empty);
-        txbkMeetingActualStartValue.Text    = ReplaceNull(actualStart ?? string.Empty);
-        txbkMeetingScheduledEndValue.Text   = ReplaceNull(scheduledEnd ?? string.Empty);
-        txbkMeetingActualEndValue.Text      = ReplaceNull(actualEnd ?? string.Empty);
-        txbkMeetingEndedByValue.Text        = ReplaceNull(endedBy ?? string.Empty);
-        txbkMeetingJoins.Text               = ReplaceNull(joins ?? string.Empty);
-        txbkMeetingDurationValue.Text       = ReplaceNull(duration ?? string.Empty);
-        txbkMeetingServiceCodeValue.Text    = ReplaceNull(serviceCode ?? string.Empty);
-
-        // Populate additional information TextBlocks
-        txbkMeetingWorkflowValue.Text             = ReplaceNull(workflow ?? string.Empty);
-        txbkMeetingProgram.Text                   = ReplaceNull(program ?? string.Empty);
-        txbkMeetingCheckedInByFrontDeskValue.Text = ReplaceNull(checkedInByFrontDesk ?? string.Empty);
-
-        // Get and display meeting error if it exists
-        var meetingError = TmDb.GetMeetingError(selectedMeeting.MeetingId);
-
-        if (meetingError != null)
-        {
-            var kind = meetingError.Value.TryGetProperty("Kind", out var kindElem)
-                ? (kindElem.GetString() ?? string.Empty)
-                : string.Empty;
-
-            var reason = meetingError.Value.TryGetProperty("Reason", out var reasonElem)
-                ? (reasonElem.GetString() ?? string.Empty)
-                : string.Empty;
-
-            txbkMeetingErrorValue.Text =(!string.IsNullOrWhiteSpace(kind) || !string.IsNullOrWhiteSpace(reason))
-                ? $"{kind}\n{reason}"
-                : "---";
-        }
-        else
-        {
-            txbkMeetingErrorValue.Text = "---";
-        }
-
-        // Get and display participant meeting quality data from Patients.Meetings
-        var qualityData     = string.Empty;
-        var arrived         = string.Empty;
-        var dropped         = string.Empty;
-        var patientDuration = string.Empty;
-        var rating          = string.Empty;
-        var checkInViaChat  = string.Empty;
-        var checkInWait     = string.Empty;
-        var waitForCareTeam = string.Empty;
-        var waitForProvider = string.Empty;
-        var checkOutWait    = string.Empty;
-        var device          = string.Empty;
-        var os              = string.Empty;
-        var browser = string.Empty;
-
-        // Retrieve the patient details to access the meetings array
-        var patientDetailsForQuality = TmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
-
-        if (patientDetailsForQuality != null && patientDetailsForQuality.Value.TryGetProperty("Meetings", out var meetingsArray))
-        {
-            if (meetingsArray.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var meeting in meetingsArray.EnumerateArray())
-                {
-                    var mtgId = meeting.TryGetProperty("MeetingId", out var mtgIdElem)
-                        ? mtgIdElem.GetString()
-                        : null;
-
-                    if (mtgId == selectedMeeting.MeetingId)
-                    {
-                        // Get all the patient meeting data
-                        qualityData = meeting.TryGetProperty("QualityData", out var qualityDataElem)
-                            ? (qualityDataElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        arrived = meeting.TryGetProperty("Arrived", out var arrivedElem)
-                            ? (arrivedElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        dropped = meeting.TryGetProperty("Dropped", out var droppedElem)
-                            ? (droppedElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        patientDuration = meeting.TryGetProperty("Duration", out var patientDurationElem)
-                            ? (patientDurationElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        rating = meeting.TryGetProperty("Rating", out var ratingElem)
-                            ? (ratingElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        checkInViaChat = meeting.TryGetProperty("CheckInViaChat", out var checkInViaChatElem)
-                            ? (checkInViaChatElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        checkInWait = meeting.TryGetProperty("CheckInWait", out var checkInWaitElem)
-                            ? (checkInWaitElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        waitForCareTeam = meeting.TryGetProperty("WaitForCareTeamMember", out var waitForCareTeamElem)
-                            ? (waitForCareTeamElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        waitForProvider = meeting.TryGetProperty("WaitForProvider", out var waitForProviderElem)
-                            ? (waitForProviderElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        checkOutWait = meeting.TryGetProperty("CheckOutWait", out var checkOutWaitElem)
-                            ? (checkOutWaitElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        device = meeting.TryGetProperty("Device", out var deviceElem)
-                            ? (deviceElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        os = meeting.TryGetProperty("Os", out var osElem)
-                            ? (osElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        browser = meeting.TryGetProperty("Browser", out var browserElem)
-                            ? (browserElem.GetString() ?? string.Empty)
-                            : string.Empty;
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Populate patient meeting detail fields
-        txbkPatientArrivedValue.Text     = ReplaceNull(arrived);
-        txbkPatientDroppedValue.Text     = ReplaceNull(dropped);
-        txbkPatientDurationValue.Text    = ReplaceNull(patientDuration);
-        txbkPatientRatingValue.Text      = ReplaceNull(rating);
-        txbkCheckedInViaChatValue.Text   = ReplaceNull(checkInViaChat);
-        txbkCheckInWaitValue.Text        = ReplaceNull(checkInWait);
-        txbkWaitForCareTeamValue.Text    = ReplaceNull(waitForCareTeam);
-        txbkWaitForProviderValue.Text    = ReplaceNull(waitForProvider);
-        txbkCheckOutWaitValue.Text       = ReplaceNull(checkOutWait);
-        txbkPatientDeviceValue.Text      = ReplaceNull(device);
-        txbkPatientOsValue.Text          = ReplaceNull(os);
-        txbkPatientBrowserValue.Text     = ReplaceNull(browser);
-        txbkMeetingQualityDataValue.Text = ReplaceNull(qualityData);
 
         // Show/hide patient-specific and provider-specific meeting details based on current view mode
         // If we're viewing a provider, hide the patient-specific section and show provider section
@@ -297,10 +71,11 @@ public partial class MainWindow : Window
                 participantNames = participantNamesElem.GetString() ?? string.Empty;
             }
 
-            txtProviderParticipantNames.Text = ReplaceNull(participantNames);
+            txtProviderParticipantNames.Text = ReplaceNullValues(participantNames);
         }
         else
         {
+            DisplayPatientMeetingDetails(selectedMeeting);
             brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Visible;
             brdrMeetingDetailsProviderContainer.Visibility = Visibility.Collapsed;
         }
@@ -310,7 +85,42 @@ public partial class MainWindow : Window
     }
 
 
-    private void DisplayMeetingResults(JsonElement? patientDetails)
+    /// <summary></summary>
+    /// <param name="selectedMeeting"></param>
+    /// <param name="meetingDetail"></param>
+    /// <param name="meetingId"></param>
+    private void DisplayGeneralDetails(PatientMeetingRow selectedMeeting, JsonElement? meetingDetail, string meetingId)
+    {
+        /* This is pretty dense, but it does cut down on the amount of repetitive code, and the underlying logic is
+         * fairly simple:
+         * 
+         * The <c>whatever.Text</c> value is set to the result of the <c>propertyName</c> if it exists, and converted
+         * to "---" if it does not.
+         */
+        txbkMeetingIdValue.Text                   = ReplaceNullValues(meetingId);
+        txbkMeetingStatusValue.Text               = ReplaceNullValues(GetStringProperty("Status", meetingDetail));
+        txbkMeetingTitleValue.Text                = ReplaceNullValues(GetStringProperty("MeetingTitle", meetingDetail));
+        txbkMeetingStartedByValue.Text            = ReplaceNullValues(GetStringProperty("InitiatedBy", meetingDetail));
+        txbkMeetingScheduledStartValue.Text       = ReplaceNullValues(GetStringProperty("ScheduledStart", meetingDetail));
+        txbkMeetingActualStartValue.Text          = ReplaceNullValues(GetStringProperty("ActualStart", meetingDetail));
+        txbkMeetingScheduledEndValue.Text         = ReplaceNullValues(GetStringProperty("ScheduledEnd", meetingDetail));
+        txbkMeetingActualEndValue.Text            = ReplaceNullValues(GetStringProperty("ActualEnd", meetingDetail));
+        txbkMeetingEndedByValue.Text              = ReplaceNullValues(GetStringProperty("EndedBy", meetingDetail));
+        txbkMeetingJoins.Text                     = ReplaceNullValues(GetStringProperty("Joins", meetingDetail));
+        txbkMeetingDurationValue.Text             = ReplaceNullValues(GetStringProperty("Duration", meetingDetail));
+        txbkMeetingServiceCodeValue.Text          = ReplaceNullValues(GetStringProperty("ServiceCode", meetingDetail));
+        txbkMeetingWorkflowValue.Text             = ReplaceNullValues(GetStringProperty("Workflow", meetingDetail));
+        txbkMeetingProgram.Text                   = ReplaceNullValues(GetStringProperty("Program", meetingDetail));
+        txbkMeetingCheckedInByFrontDeskValue.Text = ReplaceNullValues(GetStringProperty("CheckedInByFrontDesk", meetingDetail));
+
+        /* Display the meeting error, if it exists.
+         */
+        DisplayMeetingError(selectedMeeting);
+    }
+
+
+
+    private void DisplayPatientMeetingResults(JsonElement? patientDetails)
     {
         // Display meetings
         var meetingRows = new List<PatientMeetingRow>();
@@ -472,30 +282,173 @@ public partial class MainWindow : Window
 
 
 
+    /*
+     * me
+     */
 
 
+    private void DisplayPatientMeetingDetails(PatientMeetingRow selectedMeeting)
+    {
+        // Get and display participant meeting quality data from Patients.Meetings
+        var qualityData     = string.Empty;
+        var arrived         = string.Empty;
+        var dropped         = string.Empty;
+        var patientDuration = string.Empty;
+        var rating          = string.Empty;
+        var checkInViaChat  = string.Empty;
+        var checkInWait     = string.Empty;
+        var waitForCareTeam = string.Empty;
+        var waitForProvider = string.Empty;
+        var checkOutWait    = string.Empty;
+        var device          = string.Empty;
+        var os              = string.Empty;
+        var browser = string.Empty;
+
+        // Retrieve the patient details to access the meetings array
+        var patientDetailsForQuality = TmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
+
+        if (patientDetailsForQuality != null && patientDetailsForQuality.Value.TryGetProperty("Meetings", out var meetingsArray))
+        {
+            if (meetingsArray.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var meeting in meetingsArray.EnumerateArray())
+                {
+                    var mtgId = meeting.TryGetProperty("MeetingId", out var mtgIdElem)
+                        ? mtgIdElem.GetString()
+                        : null;
+
+                    if (mtgId == selectedMeeting.MeetingId)
+                    {
+                        // Get all the patient meeting data
+                        qualityData = meeting.TryGetProperty("QualityData", out var qualityDataElem)
+                            ? (qualityDataElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        arrived = meeting.TryGetProperty("Arrived", out var arrivedElem)
+                            ? (arrivedElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        dropped = meeting.TryGetProperty("Dropped", out var droppedElem)
+                            ? (droppedElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        patientDuration = meeting.TryGetProperty("Duration", out var patientDurationElem)
+                            ? (patientDurationElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        rating = meeting.TryGetProperty("Rating", out var ratingElem)
+                            ? (ratingElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        checkInViaChat = meeting.TryGetProperty("CheckInViaChat", out var checkInViaChatElem)
+                            ? (checkInViaChatElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        checkInWait = meeting.TryGetProperty("CheckInWait", out var checkInWaitElem)
+                            ? (checkInWaitElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        waitForCareTeam = meeting.TryGetProperty("WaitForCareTeamMember", out var waitForCareTeamElem)
+                            ? (waitForCareTeamElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        waitForProvider = meeting.TryGetProperty("WaitForProvider", out var waitForProviderElem)
+                            ? (waitForProviderElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        checkOutWait = meeting.TryGetProperty("CheckOutWait", out var checkOutWaitElem)
+                            ? (checkOutWaitElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        device = meeting.TryGetProperty("Device", out var deviceElem)
+                            ? (deviceElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        os = meeting.TryGetProperty("Os", out var osElem)
+                            ? (osElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        browser = meeting.TryGetProperty("Browser", out var browserElem)
+                            ? (browserElem.GetString() ?? string.Empty)
+                            : string.Empty;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Populate patient meeting detail fields
+        txbkPatientArrivedValue.Text     = ReplaceNullValues(arrived);
+        txbkPatientDroppedValue.Text     = ReplaceNullValues(dropped);
+        txbkPatientDurationValue.Text    = ReplaceNullValues(patientDuration);
+        txbkPatientRatingValue.Text      = ReplaceNullValues(rating);
+        txbkCheckedInViaChatValue.Text   = ReplaceNullValues(checkInViaChat);
+        txbkCheckInWaitValue.Text        = ReplaceNullValues(checkInWait);
+        txbkWaitForCareTeamValue.Text    = ReplaceNullValues(waitForCareTeam);
+        txbkWaitForProviderValue.Text    = ReplaceNullValues(waitForProvider);
+        txbkCheckOutWaitValue.Text       = ReplaceNullValues(checkOutWait);
+        txbkPatientDeviceValue.Text      = ReplaceNullValues(device);
+        txbkPatientOsValue.Text          = ReplaceNullValues(os);
+        txbkPatientBrowserValue.Text     = ReplaceNullValues(browser);
+        txbkMeetingQualityDataValue.Text = ReplaceNullValues(qualityData);
+    }
 
 
+    private void DisplayMeetingError(PatientMeetingRow selectedMeeting)
+    {
+        // Get and display meeting error if it exists
+        var meetingError = TmDb.GetMeetingError(selectedMeeting.MeetingId);
+
+        if (meetingError != null)
+        {
+            var kind = meetingError.Value.TryGetProperty("Kind", out var kindElem)
+                ? (kindElem.GetString() ?? string.Empty)
+                : string.Empty;
+
+            var reason = meetingError.Value.TryGetProperty("Reason", out var reasonElem)
+                ? (reasonElem.GetString() ?? string.Empty)
+                : string.Empty;
+
+            txbkMeetingErrorValue.Text = (!string.IsNullOrWhiteSpace(kind) || !string.IsNullOrWhiteSpace(reason))
+                ? $"{kind}\n{reason}"
+                : "---";
+        }
+        else
+        {
+            txbkMeetingErrorValue.Text = "---";
+        }
+    }
 
 
+    private static string GetStringProperty(string propertyName, JsonElement? meetingDetail)
+    {
+        return meetingDetail.Value.TryGetProperty(propertyName, out var elem)
+            ? (elem.GetString() ?? string.Empty)
+            : string.Empty;
+    }
 
+    private static string ReplaceNullValues(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "---";
+        }
 
+        var result = System.Text.RegularExpressions.Regex.Replace(value, @"\bnull\b", "<<NULL>>",  System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
+        if (result.Contains("<<NULL>>"))
+        {
+            var cleanedResult = result.Replace("<<NULL>>", "").Trim().Trim(',').Trim(';').Trim();
 
+            if (string.IsNullOrWhiteSpace(cleanedResult))
+            {
+                return "---";
+            }
 
+            result = result.Replace("<<NULL>>", "---");
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return string.IsNullOrWhiteSpace(result) ? "---" : result;
+    }
 }

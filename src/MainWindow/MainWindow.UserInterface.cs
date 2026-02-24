@@ -1,4 +1,4 @@
-﻿// 260219_code
+﻿// 260224_code
 // 260224_documentation
 
 using System.Windows;
@@ -42,7 +42,7 @@ public partial class MainWindow : Window
         lblPatientProviderIdValue.Content               = providerId;
         spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
         spnlPatientPhoneComponents.Visibility           = Visibility.Collapsed;
-        spnlPatientEmailComponents.Visibility           = Visibility.Visible;
+        spnlPatientEmailComponents.Visibility           = Visibility.Collapsed;
     }
 
 

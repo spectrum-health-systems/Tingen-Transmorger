@@ -15,6 +15,7 @@
 - MainWindow.AdminMode.cs
 
 - MainWindow.MeetingDetails.cs
+  - Moved the '''ReplaceNulls''' helper function to ```ReplaceNullValues()```
 
 - MainWindow.PatientDetails.cs
 

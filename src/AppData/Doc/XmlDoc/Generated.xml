@@ -595,12 +595,12 @@
         </member>
         <member name="M:TingenTransmorger.MainWindow.MeetingSelected">
             <summary>Handles the selection changed event for the meetings DataGrid.</summary>
-            <remarks>
-            <para>
-            This method is called when the user selects a meeting from the meetings table.
-            It retrieves the full meeting details and displays them in the details section.
-            </para>
-            </remarks>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.DisplayGeneralDetails(TingenTransmorger.Models.PatientMeetingRow,System.Nullable{System.Text.Json.JsonElement},System.String)">
+            <summary></summary>
+            <param name="selectedMeeting"></param>
+            <param name="meetingDetail"></param>
+            <param name="meetingId"></param>
         </member>
         <member name="F:TingenTransmorger.MainWindow._currentPatientName">
             <summary> Currently selected patient name.</summary>

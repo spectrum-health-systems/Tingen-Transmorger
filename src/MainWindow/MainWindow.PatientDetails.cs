@@ -1,5 +1,5 @@
-﻿// 260219_code
-// 260219_documentation
+﻿// 260224_code
+// 260224_documentation
 
 using System.Text.Json;
 using System.Windows;
@@ -32,6 +32,7 @@ public partial class MainWindow : Window
     /// <summary>Displays patient details in the UI.</summary>
     private void DisplayPatientDetails(string patientName, string patientId)
     {
+        // TODO: Depreciate these and just pass the actual values.
         _currentPatientName = patientName;
         _currentPatientId   = patientId;
 
@@ -45,7 +46,7 @@ public partial class MainWindow : Window
         SetPatientDetailUi(patientName, patientId);
         DisplayPatientPhoneNumber(patientDetails);
         DisplayPatientEmailAddress(patientDetails);
-        DisplayMeetingResults(patientDetails);
+        DisplayPatientMeetingResults(patientDetails);
     }
 
     /// <summary>Displays the patient's phone numbers in the UI.</summary>
@@ -114,10 +115,10 @@ public partial class MainWindow : Window
 
             if (normalizedPhoneNumber.Length == 10)
             {
-                var failures = TmDb.GetSmsFailureStats(normalizedPhoneNumber);
+                List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> failures = TmDb.GetSmsFailureStats(normalizedPhoneNumber);
                 _smsFailures.AddRange(failures);
 
-                var deliveries = TmDb.GetMessageDeliveryStats(normalizedPhoneNumber);
+                List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> deliveries = TmDb.GetMessageDeliveryStats(normalizedPhoneNumber);
                 _smsDeliveries.AddRange(deliveries);
             }
         }
@@ -180,10 +181,12 @@ public partial class MainWindow : Window
         {
             if (emailAddress != "No email addresses on file")
             {
-                var failures = TmDb.GetEmailFailureStats(emailAddress);
+                List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> failures = TmDb.GetEmailFailureStats(emailAddress);
+
                 _emailFailures.AddRange(failures);
 
-                var deliveries = TmDb.GetEmailDeliveryStats(emailAddress);
+                List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> deliveries = TmDb.GetEmailDeliveryStats(emailAddress);
+
                 _emailDeliveries.AddRange(deliveries);
             }
         }
@@ -205,15 +208,14 @@ public partial class MainWindow : Window
     {
         MessageHistoryWindow messageHistoryWindow;
 
-
         if (messageType == "phone")
         {
-            messageHistoryWindow = new Database.MessageHistoryWindow(_smsFailures, _smsDeliveries) { Owner = this };
+            messageHistoryWindow = new MessageHistoryWindow(_smsFailures, _smsDeliveries) { Owner = this };
             messageHistoryWindow.ShowDialog();
         }
         else if (messageType == "email")
         {
-            messageHistoryWindow = new Database.MessageHistoryWindow(_emailFailures, _emailDeliveries) { Owner = this };
+            messageHistoryWindow = new MessageHistoryWindow(_emailFailures, _emailDeliveries) { Owner = this };
             messageHistoryWindow.ShowDialog();
         }
     }
