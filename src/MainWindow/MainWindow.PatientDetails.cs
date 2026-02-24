@@ -46,7 +46,7 @@ public partial class MainWindow : Window
         SetPatientDetailUi(patientName, patientId);
         DisplayPatientPhoneNumber(patientDetails);
         DisplayPatientEmailAddress(patientDetails);
-        DisplayPatientMeetingResults(patientDetails);
+        DisplayPatientMeetingResults(patientDetails); // The meeting results box
     }
 
     /// <summary>Displays the patient's phone numbers in the UI.</summary>

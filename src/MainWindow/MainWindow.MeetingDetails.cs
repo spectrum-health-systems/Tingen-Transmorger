@@ -52,32 +52,42 @@ public partial class MainWindow : Window
          */
         var meetingId = selectedMeeting.MeetingId;
 
-        DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
+        //DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
 
-
+        //ClearUi();
 
         // Show/hide patient-specific and provider-specific meeting details based on current view mode
         // If we're viewing a provider, hide the patient-specific section and show provider section
         if (lblPatientProviderKey.Content?.ToString() == "PROVIDER")
         {
-            brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Collapsed;
+            //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
+            brdrMeetingDetailsGeneralContainer.Visibility = Visibility.Visible;
             brdrMeetingDetailsProviderContainer.Visibility = Visibility.Visible;
 
-            // Get and display participant names from MeetingDetail
-            var participantNames = string.Empty;
+            DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
 
-            if (meetingDetail.Value.TryGetProperty("ParticipantNames", out var participantNamesElem))
-            {
-                participantNames = participantNamesElem.GetString() ?? string.Empty;
-            }
+            //brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Collapsed;
+            //brdrMeetingDetailsProviderContainer.Visibility = Visibility.Visible;
 
-            txtProviderParticipantNames.Text = ReplaceNullValues(participantNames);
+            //// Get and display participant names from MeetingDetail
+            //var participantNames = string.Empty;
+
+            //if (meetingDetail.Value.TryGetProperty("ParticipantNames", out var participantNamesElem))
+            //{
+            //    participantNames = participantNamesElem.GetString() ?? string.Empty;
+            //}
+
+            //txtProviderParticipantNames.Text = ReplaceNullValues(participantNames);
         }
         else
         {
-            DisplayPatientMeetingDetails(selectedMeeting);
+            //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
+            brdrMeetingDetailsGeneralContainer.Visibility = Visibility.Visible;
             brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Visible;
-            brdrMeetingDetailsProviderContainer.Visibility = Visibility.Collapsed;
+
+            DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
+            DisplayPatientMeetingDetails(selectedMeeting);
+
         }
 
         // Show the meeting details section
@@ -116,6 +126,11 @@ public partial class MainWindow : Window
         /* Display the meeting error, if it exists.
          */
         DisplayMeetingError(selectedMeeting);
+    }
+
+    private void DisplayProviderMeetingResults()
+    {
+        spnlMeetingComponents.Visibility = Visibility.Visible;
     }
 
 
@@ -286,6 +301,11 @@ public partial class MainWindow : Window
      * me
      */
 
+
+    private void DisplayProviderMeetingDetails()
+    {
+
+    }
 
     private void DisplayPatientMeetingDetails(PatientMeetingRow selectedMeeting)
     {
