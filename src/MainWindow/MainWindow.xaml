@@ -1,6 +1,6 @@
 ﻿<!--
-    260218_code
-    260218_documentation
+    260225_code
+    260225_documentation
 -->
 
 <!--
@@ -60,10 +60,10 @@
     mc:Ignorable="d">
 
     <!-- Main -->
-    <Grid x:Name="grdMainContainer">
+    <Grid x:Name="grdMainWindow">
 
         <!-- Holds all of the UI -->
-        <Border x:Name="brdrMainContainer"
+        <Border x:Name="brdrMainWindow"
             Margin="10"
             Background="SteelBlue">
             <Border.Resources>
@@ -73,18 +73,18 @@
             </Border.Resources>
 
             <!-- Defines the two main columns of the UI -->
-            <Grid x:Name="grdMainColumnsDefinition">
+            <Grid x:Name="grdMainWindowColumnsDefinition">
                 <Grid.ColumnDefinitions>
                     <!-- Left column: Search -->
-                    <ColumnDefinition x:Name="colLeftColumnDefinition"
+                    <ColumnDefinition x:Name="colMainWindowLeftColumnDefinition"
                         Width="360" />
                     <!-- Right column: Details -->
-                    <ColumnDefinition x:Name="colRightColumnDefinition"
+                    <ColumnDefinition x:Name="colMainWindowRightColumnDefinition"
                         Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <!-- Left column -->
-                <Border x:Name="brdrLeftColumnContainer"
+                <Border x:Name="brdrLeftColumn"
                     Grid.Column="0"
                     Margin="12,12,4,12"
                     Padding="8"
@@ -92,7 +92,7 @@
                     CornerRadius="6,0,0,6">
 
                     <!-- Search UI -->
-                    <StackPanel x:Name="spnlSearchContainer"
+                    <StackPanel x:Name="spnlSearch"
                         Orientation="Vertical">
 
                         <!-- Search option components -->

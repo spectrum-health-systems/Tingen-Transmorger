@@ -11,5 +11,9 @@ private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e
 private void btnCopyMeetingDetailsPatient_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsPatientClicked();
 private void btnCopyMeetingDetailsProvider_Click(object sender, RoutedEventArgs e) => CopyMeetingDetailsProviderClicked();
    
-   spnlMeetingDetailsComponents
-   brdrMeetingDetailsGeneralContainer
+
+
+
+brdrMeetingDetailsGeneralContainer
+brdrMeetingDetailsPatientContainer
+brdrMeetingDetailsProviderContainer

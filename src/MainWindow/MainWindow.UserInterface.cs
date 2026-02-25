@@ -27,9 +27,13 @@ public partial class MainWindow : Window
         lblPatientProviderKey.Content                   = "PATIENT";
         lblPatientProviderNameValue.Content             = patientName;
         lblPatientProviderIdValue.Content               = patientId;
-        spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
-        spnlPatientPhoneComponents.Visibility           = Visibility.Visible;
-        spnlPatientEmailComponents.Visibility           = Visibility.Visible;
+        spnlPatientProviderDetailsComponents.Visibility  = Visibility.Visible;
+        spnlMeetingComponents.Visibility                = Visibility.Visible;
+        spnlMeetingDetailsComponents.Visibility          = Visibility.Visible;
+        brdrMeetingDetailsGeneralContainer.Visibility   = Visibility.Visible;
+        brdrMeetingDetailsPatientContainer.Visibility   = Visibility.Visible;
+        spnlPatientPhoneAndEmailComponents.Visibility   = Visibility.Visible;
+        brdrMeetingDetailsProviderContainer.Visibility  = Visibility.Collapsed;
     }
 
     /// <summary>Setup the user interface for displaying patient details.</summary>
@@ -40,9 +44,13 @@ public partial class MainWindow : Window
         lblPatientProviderKey.Content                   = "PROVIDER";
         lblPatientProviderNameValue.Content             = providerName;
         lblPatientProviderIdValue.Content               = providerId;
-        spnlPatientProviderDetailsComponents.Visibility = Visibility.Visible;
-        spnlPatientPhoneComponents.Visibility           = Visibility.Collapsed;
-        spnlPatientEmailComponents.Visibility           = Visibility.Collapsed;
+        spnlPatientProviderDetailsComponents.Visibility  = Visibility.Visible;
+        spnlMeetingComponents.Visibility                 = Visibility.Visible;
+        brdrMeetingDetailsProviderContainer.Visibility  = Visibility.Visible;
+        brdrMeetingDetailsGeneralContainer.Visibility   = Visibility.Collapsed;
+        brdrMeetingDetailsPatientContainer.Visibility   = Visibility.Collapsed;
+        spnlPatientPhoneAndEmailComponents.Visibility   = Visibility.Collapsed;
+
     }
 
 
