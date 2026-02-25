@@ -520,33 +520,33 @@
                                 <DataGrid.Columns>
                                     <!-- ID -->
                                     <DataGridTextColumn
-                                        Width="100"
+                                        Width="80"
                                         Binding="{Binding MeetingId}"
                                         CellStyle="{StaticResource MeetingIdCellStyle}"
                                         Header="ID" />
                                     <!-- Scheduled start date/time -->
                                     <DataGridTextColumn
-                                        Width="150"
+                                        Width="135"
                                         Binding="{Binding Start}"
                                         Header="Scheduled Start" />
                                     <!-- Actual start date/time -->
                                     <DataGridTextColumn
-                                        Width="150"
+                                        Width="135"
                                         Binding="{Binding ActualStart}"
                                         Header="Actual Start Time" />
                                     <!-- Scheduled end date/time -->
                                     <DataGridTextColumn
-                                        Width="150"
+                                        Width="135"
                                         Binding="{Binding ScheduledEnd}"
                                         Header="Scheduled End Time" />
                                     <!-- Actual end date/time -->
                                     <DataGridTextColumn
-                                        Width="150"
+                                        Width="135"
                                         Binding="{Binding ActualEnd}"
                                         Header="Actual End Time" />
                                     <!-- Duration -->
                                     <DataGridTextColumn
-                                        Width="110"
+                                        Width="60"
                                         Binding="{Binding Duration}"
                                         Header="Duration" />
                                     <!-- Status -->
