@@ -28,7 +28,7 @@ public partial class MainWindow : Window
          * is invalid or the MeetingId is missing, collapse the meeting details panel and exit early.
          * TODO: Move
          */
-        if (dgrdMeetingResults.SelectedItem is not MeetingRow selectedMeeting || string.IsNullOrWhiteSpace(selectedMeeting.MeetingId))
+        if (dgrdMeetingResult.SelectedItem is not MeetingRow selectedMeeting || string.IsNullOrWhiteSpace(selectedMeeting.MeetingId))
         {
             spnlMeetingDetailsComponents.Visibility = Visibility.Collapsed;
 
@@ -58,7 +58,7 @@ public partial class MainWindow : Window
 
         // Show/hide patient-specific and provider-specific meeting details based on current view mode
         // If we're viewing a provider, hide the patient-specific section and show provider section
-        if (lblPatientProviderKey.Content?.ToString() == "PROVIDER")
+        if (lblUserTypeKey.Content?.ToString() == "PROVIDER")
         {
             //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
             brdrMeetingDetailsGeneralContainer.Visibility = Visibility.Visible;
@@ -152,6 +152,9 @@ public partial class MainWindow : Window
 
                     var meetingDetail  = TmDb.GetMeetingDetail(meetingId);
                     var scheduledStart = string.Empty;
+                    var actualStart    = string.Empty;
+                    var scheduledEnd   = string.Empty;
+                    var actualEnd      = string.Empty;
                     var status         = string.Empty;
                     var duration       = string.Empty;
 
@@ -159,6 +162,18 @@ public partial class MainWindow : Window
                     {
                         scheduledStart = meetingDetail.Value.TryGetProperty("ScheduledStart", out var startElem)
                             ? startElem.GetString()
+                            : string.Empty;
+
+                        actualStart = meetingDetail.Value.TryGetProperty("ActualStart", out var actualStartElem)
+                            ? actualStartElem.GetString()
+                            : string.Empty;
+
+                        scheduledEnd = meetingDetail.Value.TryGetProperty("ScheduledEnd", out var scheduledEndElem)
+                            ? scheduledEndElem.GetString()
+                            : string.Empty;
+
+                        actualEnd = meetingDetail.Value.TryGetProperty("ActualEnd", out var actualEndElem)
+                            ? actualEndElem.GetString()
                             : string.Empty;
 
                         status = meetingDetail.Value.TryGetProperty("Status", out var statusElem)
@@ -177,15 +192,16 @@ public partial class MainWindow : Window
 
                     meetingRows.Add(new MeetingRow
                     {
-                        MeetingId   = meetingId,
-                        Start       = ReplaceNullValues(scheduledStart ?? string.Empty),
-                        Arrived     = "---",
-                        Dropped     = "---",
-                        Duration    = ReplaceNullValues(duration ?? string.Empty),
-                        Status      = ReplaceNullValues(status ?? string.Empty),
-                        HasError    = hasError,
-                        IsCancelled = isCancelled,
-                        IsCompleted = isCompleted
+                        MeetingId    = meetingId,
+                        Start        = ReplaceNullValues(scheduledStart ?? string.Empty),
+                        ActualStart  = ReplaceNullValues(actualStart   ?? string.Empty),
+                        ScheduledEnd = ReplaceNullValues(scheduledEnd  ?? string.Empty),
+                        ActualEnd    = ReplaceNullValues(actualEnd     ?? string.Empty),
+                        Duration     = ReplaceNullValues(duration      ?? string.Empty),
+                        Status       = ReplaceNullValues(status        ?? string.Empty),
+                        HasError     = hasError,
+                        IsCancelled  = isCancelled,
+                        IsCompleted  = isCompleted
                     });
                 }
             }
@@ -231,9 +247,9 @@ public partial class MainWindow : Window
         txbkMeetingsCancelledValue.Text  = $"{cancelledCount} Cancelled";
         txbkMeetingsScheduledValue.Text  = $"{scheduledCount} Scheduled";
 
-        dgrdMeetingResults.ItemsSource = meetingRows;
+        dgrdMeetingResult.ItemsSource = meetingRows;
 
-        spnlMeetingComponents.Visibility = meetingRows.Count > 0
+        spnlMeetingDetail.Visibility = meetingRows.Count > 0
             ? Visibility.Visible
             : Visibility.Collapsed;
 
@@ -276,15 +292,30 @@ public partial class MainWindow : Window
                         ? (durationElem.GetString() ?? string.Empty)
                         : string.Empty;
 
-                    // Get ScheduledStart and Status from MeetingDetail
+                    // Get ScheduledStart, ActualStart, ScheduledEnd, ActualEnd, and Status from MeetingDetail
                     var meetingDetail  = TmDb.GetMeetingDetail(meetingId);
                     var scheduledStart = string.Empty;
+                    var actualStart    = string.Empty;
+                    var scheduledEnd   = string.Empty;
+                    var actualEnd      = string.Empty;
                     var status         = string.Empty;
 
                     if (meetingDetail != null)
                     {
                         scheduledStart = meetingDetail.Value.TryGetProperty("ScheduledStart", out var startElem)
                             ? startElem.GetString()
+                            : string.Empty;
+
+                        actualStart = meetingDetail.Value.TryGetProperty("ActualStart", out var actualStartElem)
+                            ? actualStartElem.GetString()
+                            : string.Empty;
+
+                        scheduledEnd = meetingDetail.Value.TryGetProperty("ScheduledEnd", out var scheduledEndElem)
+                            ? scheduledEndElem.GetString()
+                            : string.Empty;
+
+                        actualEnd = meetingDetail.Value.TryGetProperty("ActualEnd", out var actualEndElem)
+                            ? actualEndElem.GetString()
                             : string.Empty;
 
                         status = meetingDetail.Value.TryGetProperty("Status", out var statusElem)
@@ -331,15 +362,16 @@ public partial class MainWindow : Window
 
                     meetingRows.Add(new MeetingRow
                     {
-                        MeetingId   = meetingId,
-                        Start       = ReplaceNull(scheduledStart ?? string.Empty),
-                        Arrived     = ReplaceNull(arrived ?? string.Empty),
-                        Dropped     = ReplaceNull(dropped ?? string.Empty),
-                        Duration    = ReplaceNull(duration ?? string.Empty),
-                        Status      = ReplaceNull(status ?? string.Empty),
-                        HasError    = hasError,
-                        IsCancelled = isCancelled,
-                        IsCompleted = isCompleted
+                        MeetingId    = meetingId,
+                        Start        = ReplaceNull(scheduledStart ?? string.Empty),
+                        ActualStart  = ReplaceNull(actualStart    ?? string.Empty),
+                        ScheduledEnd = ReplaceNull(scheduledEnd   ?? string.Empty),
+                        ActualEnd    = ReplaceNull(actualEnd      ?? string.Empty),
+                        Duration     = ReplaceNull(duration       ?? string.Empty),
+                        Status       = ReplaceNull(status         ?? string.Empty),
+                        HasError     = hasError,
+                        IsCancelled  = isCancelled,
+                        IsCompleted  = isCompleted
                     });
                 }
             }
@@ -391,10 +423,10 @@ public partial class MainWindow : Window
         txbkMeetingsScheduledValue.Text  = $"{scheduledCount} Scheduled";
 
         // Bind to DataGrid
-        dgrdMeetingResults.ItemsSource = meetingRows;
+        dgrdMeetingResult.ItemsSource = meetingRows;
 
         // Show meetings section if there are meetings
-        spnlMeetingComponents.Visibility = meetingRows.Count > 0
+        spnlMeetingDetail.Visibility = meetingRows.Count > 0
             ? Visibility.Visible
             : Visibility.Collapsed;
 

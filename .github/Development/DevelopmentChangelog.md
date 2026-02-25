@@ -8,7 +8,7 @@
   - MainWindow.Detail.cs
 
 - MainWindow.xaml
-  - Verified all controls are named
+  - Verified all controls are named correctly
   - Commented all controls
 - MainWindow.xaml.cs
   - Moved most stuff out to other partial classes

@@ -12,6 +12,15 @@ public class MeetingRow
     /// <summary>Gets or sets the scheduled start time.</summary>
     public string Start { get; set; } = string.Empty;
 
+    /// <summary>Gets or sets the actual start time.</summary>
+    public string ActualStart { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the scheduled end time.</summary>
+    public string ScheduledEnd { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the actual end time.</summary>
+    public string ActualEnd { get; set; } = string.Empty;
+
     /// <summary>Gets or sets the time the patient arrived.</summary>
     public string Arrived { get; set; } = string.Empty;
 

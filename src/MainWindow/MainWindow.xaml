@@ -162,7 +162,7 @@
                     </StackPanel>
 
                     <!-- This space is reserved for future use and additional information. -->
-                    
+
                 </Border>
 
                 <!-- Right column border -->
@@ -177,23 +177,25 @@
                         Details panel
                         Contains all of the components related to patient/provider/meetings details.
                     -->
-                    <StackPanel x:Name="spnlDetails">
+                    <StackPanel x:Name="spnlDetail">
 
-                        <!-- Patient/provider name, and patient phone/email components. -->
-                        <StackPanel x:Name="spnlUserDetails"
+                        <!--
+                            User detail panel
+                            Contains the patient/provider name and ID.
+                            Contains the patient phone and email information.
+                        -->
+                        <StackPanel x:Name="spnlUserDetail"
                             Height="65"
                             Margin="0"
                             Background="White"
                             Orientation="Horizontal">
 
-                            <!-- Patient/provider label -->
                             <!--
-                                This value components of this label are: "lblPatientProviderNameValue" and
-                                "lblPatientProviderIdValue".
-                                
+                                User type label
+                                The UserType is either "PATIENT" or "PROVIDER", depending on the search mode
                                 This label will either say "PATIENT" or "PROVIDER", depending on the search mode.
                             -->
-                            <Label x:Name="lblPatientProviderKey"
+                            <Label x:Name="lblUserTypeKey"
                                 Width="100"
                                 Height="64"
                                 Margin="0,-1,0,0"
@@ -213,12 +215,12 @@
                                 </Label.Resources>
                             </Label>
 
-                            <!-- Patient/provider name and ID components -->
-                            <StackPanel x:Name="spnlPatientProviderNameAndIdComponents"
+                            <!-- User name and ID panel -->
+                            <StackPanel x:Name="spnlUserNameAndId"
                                 Orientation="vertical">
 
-                                <!-- Patient/provider Name -->
-                                <Label x:Name="lblPatientProviderNameValue"
+                                <!-- User Name -->
+                                <Label x:Name="lblUserNameValue"
                                     Width="250"
                                     Height="32"
                                     Margin="0,0,0,0"
@@ -236,8 +238,8 @@
                                     </Label.Resources>
                                 </Label>
 
-                                <!-- Patient/provider ID -->
-                                <Label x:Name="lblPatientProviderIdValue"
+                                <!-- User ID -->
+                                <Label x:Name="lblUserIdValue"
                                     Width="250"
                                     Height="32"
                                     Margin="0,0,0,0"
@@ -258,19 +260,21 @@
                                 </Label>
                             </StackPanel>
 
-                            <!-- Patient phone and email components -->
                             <!--
-                                This is only visible in patient search mode.
+                                User contacts panel
+                                Shows any phone/email details for the user.
+                                Currently this is only visible in patient search mode, but I'm naming it "User" in case
+                                I want to add provider contact information in the future.
                             -->
-                            <StackPanel x:Name="spnlPatientPhoneAndEmailComponents"
+                            <StackPanel x:Name="spnlUserContacts"
                                 Orientation="Vertical">
 
-                                <!-- Patient phone components -->
-                                <StackPanel x:Name="spnlPatientPhoneComponents"
+                                <!-- User phone panel -->
+                                <StackPanel x:Name="spnlUserPhone"
                                     Orientation="Horizontal">
 
-                                    <!-- Phone label -->
-                                    <Label x:Name="lblPatientPhoneKey"
+                                    <!-- User phone label -->
+                                    <Label x:Name="lblUserPhoneKey"
                                         Width="60"
                                         Height="30"
                                         Margin="5,0,0,4"
@@ -290,8 +294,8 @@
                                         </Label.Resources>
                                     </Label>
 
-                                    <!-- Phone number -->
-                                    <Label x:Name="lblPatientPhoneValue"
+                                    <!-- User phone number -->
+                                    <Label x:Name="lblUserPhoneValue"
                                         Width="325"
                                         Height="30"
                                         Margin="0,0,0,4"
@@ -310,12 +314,12 @@
                                         </Label.Resources>
                                     </Label>
 
-                                    <!-- View phone details -->
-                                    <Button x:Name="btnPhoneDetails"
+                                    <!-- User phone detail button -->
+                                    <Button x:Name="btnUserPhoneDetail"
                                         Width="32"
                                         Height="30"
                                         Margin="0,0,0,4"
-                                        Click="btnPhoneDetails_Clicked">
+                                        Click="btnUserPhoneDetail_Clicked">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="0,5,5,0" />
@@ -324,12 +328,12 @@
                                     </Button>
                                 </StackPanel>
 
-                                <!-- Patient email components -->
-                                <StackPanel x:Name="spnlPatientEmailComponents"
+                                <!-- User email panel -->
+                                <StackPanel x:Name="spnlUserEmail"
                                     Orientation="Horizontal">
 
-                                    <!-- Email label -->
-                                    <Label x:Name="lblPatientEmailKey"
+                                    <!-- User email label -->
+                                    <Label x:Name="lblUserEmailKey"
                                         Width="60"
                                         Height="30"
                                         Margin="5,0,0,0"
@@ -349,8 +353,8 @@
                                         </Label.Resources>
                                     </Label>
 
-                                    <!-- Email value -->
-                                    <Label x:Name="lblPatientEmailValue"
+                                    <!-- User email value -->
+                                    <Label x:Name="lblUserEmailValue"
                                         Width="325"
                                         Height="30"
                                         Margin="0,0,0,0"
@@ -368,12 +372,12 @@
                                         </Label.Resources>
                                     </Label>
 
-                                    <!-- View email details -->
-                                    <Button x:Name="btnEmailDetails"
+                                    <!-- User email detail button -->
+                                    <Button x:Name="btnUserEmailDetail"
                                         Width="32"
                                         Height="30"
                                         Margin="0,0,0,0"
-                                        Click="btnEmailDetails_Clicked">
+                                        Click="btnUserEmailDetail_Clicked">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="0,5,5,0" />
@@ -384,23 +388,35 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <!-- Meeting components -->
-                        <StackPanel x:Name="spnlMeetingComponents"
+                        <!--
+                            Meeting detail panel
+                            Contains all of the meeting detail components, including the meeting breakdown, the meeting
+                            list, and the three sections of meeting details information.
+                        -->
+                        <StackPanel x:Name="spnlMeetingDetail"
                             Margin="0,10,0,0">
 
-                            <!-- Meetings breakdown components -->
-                            <StackPanel x:Name="spnlMeetingsBreakdownComponents"
+                            <!--
+                                Meetings breakdown panel
+                                Displays a breakdown of the meetings for the selected user.
+                            -->
+                            <StackPanel x:Name="spnlMeetingBreakdown"
                                 Margin="0,0,0,8"
                                 Orientation="Horizontal">
 
-                                <!-- Total meetings -->
+                                <!-- Total meetings textbox -->
                                 <TextBlock x:Name="txbkTotalMeetingsValue"
                                     Margin="0,0,5,0"
                                     FontSize="16"
                                     FontWeight="Bold"
                                     Text="Meetings" />
 
-                                <!-- Completed meetings -->
+                                <!-- Separator -->
+                                <TextBlock x:Name="txbkMeetingsSeparator0"
+                                    FontSize="16"
+                                    Text="- " />
+
+                                <!-- Completed meetings textbox -->
                                 <TextBlock x:Name="txbkCompletedMeetingsValue"
                                     FontSize="16"
                                     Foreground="Green"
@@ -411,7 +427,7 @@
                                     FontSize="16"
                                     Text=" / " />
 
-                                <!-- In-progress meetings -->
+                                <!-- In-progress meetings textbox -->
                                 <TextBlock x:Name="txbkMeetingsInProgressValue"
                                     FontSize="16"
                                     Foreground="Orange"
@@ -422,7 +438,7 @@
                                     FontSize="16"
                                     Text=" / " />
 
-                                <!-- Expired meetings -->
+                                <!-- Expired meetings textbox -->
                                 <TextBlock x:Name="txbkMeetingsExpiredValue"
                                     FontSize="16"
                                     Foreground="Red"
@@ -433,7 +449,7 @@
                                     FontSize="16"
                                     Text=" / " />
 
-                                <!-- Cancelled meetings -->
+                                <!-- Cancelled meetings textbox -->
                                 <TextBlock x:Name="txbkMeetingsCancelledValue"
                                     FontSize="16"
                                     Foreground="Black"
@@ -444,15 +460,18 @@
                                     FontSize="16"
                                     Text=" / " />
 
-                                <!-- Scheduled meetings -->
+                                <!-- Scheduled meetings textbox -->
                                 <TextBlock x:Name="txbkMeetingsScheduledValue"
                                     FontSize="16"
                                     Foreground="Gray"
                                     Text="0 Scheduled" />
                             </StackPanel>
 
-                            <!-- Meeting list -->
-                            <DataGrid x:Name="dgrdMeetingResults"
+                            <!--
+                                Meeting result list datagrid
+                                Displays the user meeting with some special effects.
+                            -->
+                            <DataGrid x:Name="dgrdMeetingResult"
                                 Height="120"
                                 MaxHeight="120"
                                 AutoGenerateColumns="False"
@@ -510,21 +529,26 @@
                                         Width="150"
                                         Binding="{Binding Start}"
                                         Header="Scheduled Start" />
-                                    <!-- Patient arrived date/time -->
+                                    <!-- Actual start date/time -->
                                     <DataGridTextColumn
                                         Width="150"
-                                        Binding="{Binding Arrived}"
-                                        Header="Patient Arrived" />
-                                    <!-- Patient dropped date/time -->
+                                        Binding="{Binding ActualStart}"
+                                        Header="Actual Start Time" />
+                                    <!-- Scheduled end date/time -->
                                     <DataGridTextColumn
                                         Width="150"
-                                        Binding="{Binding Dropped}"
-                                        Header="Patient Dropped" />
-                                    <!-- Patient duration -->
+                                        Binding="{Binding ScheduledEnd}"
+                                        Header="Scheduled End Time" />
+                                    <!-- Actual end date/time -->
+                                    <DataGridTextColumn
+                                        Width="150"
+                                        Binding="{Binding ActualEnd}"
+                                        Header="Actual End Time" />
+                                    <!-- Duration -->
                                     <DataGridTextColumn
                                         Width="110"
                                         Binding="{Binding Duration}"
-                                        Header="Patient Duration" />
+                                        Header="Duration" />
                                     <!-- Status -->
                                     <DataGridTextColumn
                                         Width="*"

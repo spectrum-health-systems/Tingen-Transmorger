@@ -131,8 +131,8 @@ public partial class MainWindow : Window
     private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleUi();
     private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
     private void txbxSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => ModifySearchResults();
-    private void btnPhoneDetails_Clicked(object sender, RoutedEventArgs e) => ShowMessageDetails("phone");
-    private void btnEmailDetails_Clicked(object sender, RoutedEventArgs e) => ShowMessageDetails("email");
+    private void btnUserPhoneDetail_Clicked(object sender, RoutedEventArgs e) => ShowMessageDetails("phone");
+    private void btnUserEmailDetail_Clicked(object sender, RoutedEventArgs e) => ShowMessageDetails("email");
     private void lstbxSearchResults_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => DisplayDetails(); // Patient from list clicked.
     private void dgMeetingResults_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => MeetingSelected(); // Meeting from list is clicked.
     private void btnCopyMeetingDetailsGeneral_Click(object sender, RoutedEventArgs e) => CopyGeneralMeetingDetails();

@@ -18,6 +18,9 @@
 - [ ] If a meeting error is over a specific number of chars, truncate
 - [ ] Make the meetings whatever/whatever/whatever look nicer
 
+- [ ] {} provider ids
+- [ ] No list of patients in meeting, all "---"
+
 - [ ] Review dgPatientProviderMeetings to make sure the comments work for both patients and providers
 
 - [ ] Make sure all of this is accurate:

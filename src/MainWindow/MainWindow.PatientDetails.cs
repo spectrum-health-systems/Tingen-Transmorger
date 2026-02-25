@@ -57,7 +57,7 @@ public partial class MainWindow : Window
 
         ShowPatientPhoneNumber(phoneNumbers);
         GetSmsStats(phoneNumbers);
-        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnPhoneDetails);
+        UpdateDetailsButtonColor(_smsFailures.Count > 0, _smsDeliveries.Count > 0, btnUserPhoneDetail);
     }
 
     /// <summary>Get a list of formatted phone numbers for a patient.</summary>
@@ -97,7 +97,7 @@ public partial class MainWindow : Window
     /// <param name="phoneNumbers">A list of formatted phone numbers for the patient.</param>
     private void ShowPatientPhoneNumber(List<string> phoneNumbers)
     {
-        lblPatientPhoneValue.Content = phoneNumbers.Count > 0
+        lblUserPhoneValue.Content = phoneNumbers.Count > 0
             ? string.Join(", ", phoneNumbers)
             : "No phone numbers on file";
     }
@@ -132,7 +132,7 @@ public partial class MainWindow : Window
 
         ShowPatientEmailAddress(emailAddresses);
         GetEmailStats(emailAddresses);
-        UpdateDetailsButtonColor(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnEmailDetails);
+        UpdateDetailsButtonColor(_emailFailures.Count > 0, _emailDeliveries.Count > 0, btnUserEmailDetail);
     }
 
     /// <summary>
@@ -201,7 +201,7 @@ public partial class MainWindow : Window
             emailAddresses.Add("No email addresses on file");
         }
 
-        lblPatientEmailValue.Content = string.Join(", ", emailAddresses);
+        lblUserEmailValue.Content = string.Join(", ", emailAddresses);
     }
 
     private void ShowMessageDetails(string messageType)

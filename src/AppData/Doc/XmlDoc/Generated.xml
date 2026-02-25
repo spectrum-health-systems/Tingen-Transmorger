@@ -744,6 +744,15 @@
         <member name="P:TingenTransmorger.Models.MeetingRow.Start">
             <summary>Gets or sets the scheduled start time.</summary>
         </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ActualStart">
+            <summary>Gets or sets the actual start time.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ScheduledEnd">
+            <summary>Gets or sets the scheduled end time.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ActualEnd">
+            <summary>Gets or sets the actual end time.</summary>
+        </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.Arrived">
             <summary>Gets or sets the time the patient arrived.</summary>
         </member>
