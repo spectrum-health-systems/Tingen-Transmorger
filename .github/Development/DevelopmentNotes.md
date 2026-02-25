@@ -17,7 +17,7 @@
 - [ ] Use explicit types when it's not obvious
 - [ ] If a meeting error is over a specific number of chars, truncate
 - [ ] Make the meetings whatever/whatever/whatever look nicer
-
+- [ ] Are the borders/panels for general/patient/provider meeting details the same? Looks like patient is different.
 - [ ] {} provider ids
 - [ ] No list of patients in meeting, all "---"
 

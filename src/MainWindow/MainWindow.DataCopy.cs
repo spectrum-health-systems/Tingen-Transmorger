@@ -24,7 +24,7 @@ public partial class MainWindow : Window
             sb.AppendLine("         Meeting ID: " + txbkMeetingIdValue.Text);
             sb.AppendLine("              Title: " + txbkMeetingTitleValue.Text);
             sb.AppendLine("             Status: " + txbkMeetingStatusValue.Text);
-            sb.AppendLine("              Joins: " + txbkMeetingJoins.Text);
+            sb.AppendLine("              Joins: " + txbkMeetingJoinsValue.Text);
             sb.AppendLine("           Duration: " + txbkMeetingDurationValue.Text);
             sb.AppendLine("       Service code: " + txbkMeetingServiceCodeValue.Text);
             sb.AppendLine("         Started by: " + txbkMeetingStartedByValue.Text);
@@ -68,7 +68,7 @@ public partial class MainWindow : Window
             sb.AppendLine("             Device: " + txbkPatientDeviceValue.Text);
             sb.AppendLine("                 OS: " + txbkPatientOsValue.Text);
             sb.AppendLine("            Browser: " + txbkPatientBrowserValue.Text);
-            sb.AppendLine("       Quality Data: " + txbkMeetingQualityDataValue.Text);
+            sb.AppendLine("       Quality Data: " + txbkPatientMeetingQualityDataValue.Text);
 
             Clipboard.SetText(sb.ToString());
             MessageBox.Show(this, "Meeting details copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);

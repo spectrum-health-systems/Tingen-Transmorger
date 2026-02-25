@@ -31,9 +31,9 @@ public partial class MainWindow : Window
         spnlMeeting.Visibility                = Visibility.Visible;
         spnlMeetingDetail.Visibility          = Visibility.Visible;
         brdrGeneralMeetingDetail.Visibility   = Visibility.Visible;
-        brdrMeetingDetailsPatientContainer.Visibility   = Visibility.Visible;
+        brdrPatientMeetingDetail.Visibility   = Visibility.Visible;
         spnlUserContacts.Visibility   = Visibility.Visible;
-        brdrMeetingDetailsProviderContainer.Visibility  = Visibility.Collapsed;
+        brdrProviderMeetingDetail.Visibility  = Visibility.Collapsed;
     }
 
     /// <summary>Setup the user interface for displaying patient details.</summary>
@@ -48,7 +48,7 @@ public partial class MainWindow : Window
         spnlMeeting.Visibility                = Visibility.Visible;
         spnlMeetingDetail.Visibility          = Visibility.Visible;
         brdrGeneralMeetingDetail.Visibility   = Visibility.Collapsed;
-        brdrMeetingDetailsPatientContainer.Visibility   = Visibility.Collapsed;
+        brdrPatientMeetingDetail.Visibility   = Visibility.Collapsed;
         spnlUserContacts.Visibility   = Visibility.Collapsed;
 
     }

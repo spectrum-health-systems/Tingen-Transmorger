@@ -62,7 +62,7 @@ public partial class MainWindow : Window
         {
             //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
             brdrGeneralMeetingDetail.Visibility = Visibility.Visible;
-            brdrMeetingDetailsProviderContainer.Visibility = Visibility.Visible;
+            brdrProviderMeetingDetail.Visibility = Visibility.Visible;
 
             DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
 
@@ -83,7 +83,7 @@ public partial class MainWindow : Window
         {
             //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
             brdrGeneralMeetingDetail.Visibility = Visibility.Visible;
-            brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Visible;
+            brdrPatientMeetingDetail.Visibility  = Visibility.Visible;
 
             DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
             DisplayPatientMeetingDetails(selectedMeeting);
@@ -116,7 +116,7 @@ public partial class MainWindow : Window
         txbkMeetingScheduledEndValue.Text         = ReplaceNullValues(GetStringProperty("ScheduledEnd", meetingDetail));
         txbkMeetingActualEndValue.Text            = ReplaceNullValues(GetStringProperty("ActualEnd", meetingDetail));
         txbkMeetingEndedByValue.Text              = ReplaceNullValues(GetStringProperty("EndedBy", meetingDetail));
-        txbkMeetingJoins.Text                     = ReplaceNullValues(GetStringProperty("Joins", meetingDetail));
+        txbkMeetingJoinsValue.Text                = ReplaceNullValues(GetStringProperty("Joins", meetingDetail));
         txbkMeetingDurationValue.Text             = ReplaceNullValues(GetStringProperty("Duration", meetingDetail));
         txbkMeetingServiceCodeValue.Text          = ReplaceNullValues(GetStringProperty("ServiceCode", meetingDetail));
         txbkMeetingWorkflowValue.Text             = ReplaceNullValues(GetStringProperty("Workflow", meetingDetail));
@@ -550,7 +550,7 @@ public partial class MainWindow : Window
         txbkPatientDeviceValue.Text      = ReplaceNullValues(device);
         txbkPatientOsValue.Text          = ReplaceNullValues(os);
         txbkPatientBrowserValue.Text     = ReplaceNullValues(browser);
-        txbkMeetingQualityDataValue.Text = ReplaceNullValues(qualityData);
+        txbkPatientMeetingQualityDataValue.Text = ReplaceNullValues(qualityData);
     }
 
 

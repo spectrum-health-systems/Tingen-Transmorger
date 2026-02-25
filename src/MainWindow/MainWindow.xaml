@@ -567,8 +567,8 @@
                             Margin="0,10,20,0"
                             Orientation="Vertical">
 
-                            <!-- 
-                                General Meeting detail border 
+                            <!--
+                                General meeting detail border
                                 This visible for both patient and provider search modes.
                             -->
                             <Border x:Name="brdrGeneralMeetingDetail"
@@ -577,29 +577,34 @@
                                 BorderThickness="1"
                                 CornerRadius="5">
 
-                                <!-- Contains the general meeting details components -->
-                                <StackPanel x:Name="spnlMeetingDetailsGeneralComponents"
+                                <!--
+                                    General meeting detail panel
+                                -->
+                                <StackPanel x:Name="spnlGeneralMeetingDetail"
                                     Margin="5,5,0,0">
 
-                                    <!-- StackPanel containing the header and copy button -->
-                                    <StackPanel x:Name="spnlMeetingDetailsGeneralTop"
+                                    <!--
+                                        General meeting detail top panel
+                                        Contains the header and copy button for the general meeting details section.
+                                    -->
+                                    <StackPanel x:Name="spnlGeneralMeetingDetailTop"
                                         Margin="0,0,0,4"
                                         Orientation="Horizontal">
 
-                                        <!-- Header -->
-                                        <TextBlock x:Name="txtMeetingDetailsGeneralHeader"
+                                        <!-- General meeting detail header -->
+                                        <TextBlock x:Name="txbkGeneralMeetingDetailHeader"
                                             Margin="0,5,0,0"
                                             FontSize="12"
                                             FontWeight="SemiBold"
-                                            Text="Meeting Details (General)" />
+                                            Text="Meeting Details" />
 
-                                        <!-- Copy button -->
-                                        <Button x:Name="btnCopyMeetingDetailsGeneral"
+                                        <!-- General meeting detail copy button -->
+                                        <Button x:Name="btnCopyGeneralMeetingDetail"
                                             Width="24"
                                             Height="24"
                                             Margin="10,0,0,0"
                                             BorderThickness="0"
-                                            Click="btnCopyMeetingDetailsGeneral_Click">
+                                            Click="btnCopyGeneralMeetingDetail_Click">
                                             <Button.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="3" />
@@ -611,27 +616,32 @@
                                         </Button>
                                     </StackPanel>
 
-                                    <!-- Definitions for the meeting details (general) grid -->
-                                    <Grid x:Name="grdMeetingDetailsGeneralDefinitions"
+                                    <!--
+                                        General meeting detail grid column definitions
+                                        Left column: Meeting ID, Title, Status, Joins, Duration, Service code
+                                        Center column: Started by, Scheduled start, Actual start, Ended by, Scheduled end, Actual end
+                                        Right column: Workflow, Program, Front Desk Check-in, Meeting error
+                                    -->
+                                    <Grid x:Name="grdGeneralMeetingDetailColumnDefinitions"
                                         Margin="0,4,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <!-- Left column -->
-                                            <ColumnDefinition x:Name="colMeetingDetailsGeneralLeft"
+                                            <!-- Left column definition -->
+                                            <ColumnDefinition x:Name="colGeneralMeetingDetailLeftColumnDefinition"
                                                 Width="*" />
-                                            <!-- Center column -->
-                                            <ColumnDefinition x:Name="colMeetingDetailsGeneralCenter"
+                                            <!-- Center column definition -->
+                                            <ColumnDefinition x:Name="colGeneralMeetingDetailCenterColumnDefinition"
                                                 Width="*" />
-                                            <!-- Right column -->
-                                            <ColumnDefinition x:Name="colMeetingDetailsGeneralRight"
+                                            <!-- Right column definition -->
+                                            <ColumnDefinition x:Name="colGeneralMeetingDetailRightColumnDefinition"
                                                 Width="*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <!-- Left column: Meeting ID, Title, Status, Joins, Duration, Service code -->
-                                        <StackPanel x:Name="spnlMeetingDetailsGeneralLeftComponents"
+                                        <!-- Left column panel -->
+                                        <StackPanel x:Name="spnlGeneralMeetingDetailLeftColumn"
                                             Grid.Column="0"
                                             Margin="0,0,10,0">
 
-                                            <!-- Meeting ID -->
+                                            <!-- Meeting ID panel -->
                                             <StackPanel x:Name="spnlMeetingId"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -649,44 +659,44 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Meeting Title -->
+                                            <!-- Meeting title panel -->
                                             <StackPanel x:Name="spnlMeetingTitle"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
 
-                                                <!-- Meeting Title label -->
+                                                <!-- Meeting title label -->
                                                 <TextBlock x:Name="txbkMeetingTitleKey"
                                                     Width="80"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Title:" />
 
-                                                <!-- Meeting Title value -->
+                                                <!-- Meeting title value -->
                                                 <TextBlock x:Name="txbkMeetingTitleValue"
                                                     FontSize="11"
                                                     Text="---"
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
 
-                                            <!-- Meeting Status -->
+                                            <!-- Meeting status panel -->
                                             <StackPanel x:Name="spnlMeetingStatus"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
 
-                                                <!-- Meeting Status label -->
+                                                <!-- Meeting status label -->
                                                 <TextBlock x:Name="txbkMeetingStatusKey"
                                                     Width="80"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Status:" />
 
-                                                <!-- Meeting Status value -->
+                                                <!-- Meeting status value -->
                                                 <TextBlock x:Name="txbkMeetingStatusValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Meeting joins -->
+                                            <!-- Meeting joins panel -->
                                             <StackPanel x:Name="spnlMeetingJoins"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -699,12 +709,12 @@
                                                     Text="Joins:" />
 
                                                 <!-- Meeting joins value -->
-                                                <TextBlock x:Name="txbkMeetingJoins"
+                                                <TextBlock x:Name="txbkMeetingJoinsValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Meeting duration -->
+                                            <!-- Meeting duration panel -->
                                             <StackPanel x:Name="spnlMeetingDuration"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -722,7 +732,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Service Code -->
+                                            <!-- Service code panel -->
                                             <StackPanel x:Name="spnlMeetingServiceCode"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -741,12 +751,12 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Center column: Started by, Scheduled start, Actual start, Ended by, Scheduled end, Actual end -->
-                                        <StackPanel x:Name="spnlMeetingDetailsGeneralCenterComponents"
+                                        <!-- Center column -->
+                                        <StackPanel x:Name="spnlGeneralMeetingDetailCenterColumn"
                                             Grid.Column="1"
                                             Margin="0,0,10,0">
 
-                                            <!-- Started by -->
+                                            <!-- Started by panel -->
                                             <StackPanel x:Name="spnlMeetingStartedBy"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -764,7 +774,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Scheduled start -->
+                                            <!-- Scheduled start panel -->
                                             <StackPanel x:Name="spnlMeetingScheduledStart"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -782,7 +792,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Actual start -->
+                                            <!-- Actual start panel -->
                                             <StackPanel x:Name="spnlMeetingActualStart"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -800,7 +810,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Ended by -->
+                                            <!-- Ended by panel -->
                                             <StackPanel x:Name="spnlMeetingEndedBy"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -812,13 +822,13 @@
                                                     FontWeight="SemiBold"
                                                     Text="Ended by:" />
 
-                                                <!--  -->
+                                                <!-- Ended by value -->
                                                 <TextBlock x:Name="txbkMeetingEndedByValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Scheduled end -->
+                                            <!-- Scheduled end panel -->
                                             <StackPanel x:Name="spnlMeetingScheduledEnd"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -836,7 +846,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Actual end -->
+                                            <!-- Actual end panel -->
                                             <StackPanel
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -855,10 +865,11 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Right column: Workflow, Program, Front Desk Check-in, Meeting error -->
-                                        <StackPanel Grid.Column="2">
+                                        <!-- Right column -->
+                                        <StackPanel x:Name="spnlGeneralMeetingDetailRightColumn"
+                                            Grid.Column="2">
 
-                                            <!-- Workflow -->
+                                            <!-- Workflow panel -->
                                             <StackPanel x:Name="spnlMeetingWorkflow"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -876,7 +887,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Program -->
+                                            <!-- Program panel -->
                                             <StackPanel x:Name="spnlMeetingProgram"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -894,34 +905,36 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Front Desk Check-in -->
+                                            <!-- Front Desk Check-in panel -->
                                             <StackPanel x:Name="spnlMeetingFrontDeskCheckIn"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
+
                                                 <!-- Front Desk Check-In label -->
                                                 <TextBlock x:Name="txbkMeetingFrontDeskCheckInKey"
                                                     Width="116"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Front Desk Check-In:" />
+
                                                 <!-- Front Desk Check-In value -->
                                                 <TextBlock x:Name="txbkMeetingCheckedInByFrontDeskValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Meeting Error -->
+                                            <!-- Meeting error panel -->
                                             <StackPanel x:Name="spnlMeetingError"
                                                 Margin="0,2"
                                                 Orientation="Vertical">
 
-                                                <!-- Meeting Error label -->
+                                                <!-- Meeting error label -->
                                                 <TextBlock x:Name="txbkMeetingErrorKey"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Meeting error:" />
 
-                                                <!-- Meeting Error value -->
+                                                <!-- Meeting error value -->
                                                 <TextBlock x:Name="txbkMeetingErrorValue"
                                                     Margin="0,2,0,0"
                                                     FontSize="11"
@@ -933,39 +946,42 @@
                                 </StackPanel>
                             </Border>
 
-                            <!-- Meeting Details (Patient) -->
                             <!--
-                                This visible only in patient search mode.
+                                Patient meeting detail panel
+                                Contains patient-specific meeting details and is visible only in patient search mode.
                             -->
-                            <Border x:Name="brdrMeetingDetailsPatientContainer"
+                            <Border x:Name="brdrPatientMeetingDetail"
                                 Margin="0,10,20,0"
                                 BorderBrush="Black"
                                 BorderThickness="1"
                                 CornerRadius="5">
 
-                                <!-- Contains the patient-specific meeting details components -->
-                                <StackPanel x:Name="spnlMeetingDetailsPatientComponent"
+                                <!-- Patient meeting details panel -->
+                                <StackPanel x:Name="spnlPatientMeetingDetail"
                                     Margin="8">
 
-                                    <!-- StackPanel containing the header and copy button -->
-                                    <StackPanel x:Name="spnlMeetingDetailsPatientTop"
+                                    <!--
+                                        Patient meeting detail top panel
+                                        Contains the header and copy button for the patient meeting details section.
+                                    -->
+                                    <StackPanel x:Name="spnlPatientMeetingDetailTop"
                                         Margin="0,0,0,4"
                                         Orientation="Horizontal">
 
                                         <!-- Header -->
-                                        <TextBlock x:Name="txbkMeetingDetailsPatientHeader"
+                                        <TextBlock x:Name="txbkPatientMeetingDetailHeader"
                                             Margin="0,5,0,0"
                                             FontSize="12"
                                             FontWeight="SemiBold"
                                             Text="Meeting Details (Patient)" />
 
                                         <!-- Copy button -->
-                                        <Button x:Name="btnCopyMeetingDetailsPatient"
+                                        <Button x:Name="btnCopyPatientMeetingDetail"
                                             Width="24"
                                             Height="24"
                                             Margin="10,0,0,0"
                                             BorderThickness="0"
-                                            Click="btnCopyMeetingDetailsPatient_Click">
+                                            Click="btnCopyPatientMeetingDetail_Click">
                                             <Button.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="3" />
@@ -977,65 +993,70 @@
                                         </Button>
                                     </StackPanel>
 
-                                    <!-- Definitions for the meeting details (patient) grid -->
-                                    <Grid x:Name="grdMeetingDetailsPatientDefinitions"
+                                    <!--
+                                        Patient meeting detail grid column definitions
+                                        Left column: Patient arrived, Patient dropped, Duration, Rating
+                                        Center column: Checked-In via chat, Check-In wait, Wait for Care Team member, Wait for provider, Check out wait
+                                        Right column: Device, Operating System, Browser
+                                    -->
+                                    <Grid x:Name="grdPatientMeetingDetailColumnDefinitions"
                                         Margin="0,4,0,0">
                                         <Grid.ColumnDefinitions>
                                             <!-- Left column -->
-                                            <ColumnDefinition x:Name="colMeetingDetailsPatientLeft"
+                                            <ColumnDefinition x:Name="colPatientMeetingDetailLeftColumnDefinition"
                                                 Width="201*" />
                                             <ColumnDefinition Width="49*" />
                                             <!-- Center column -->
-                                            <ColumnDefinition x:Name="colMeetingDetailsPatientCenter"
+                                            <ColumnDefinition x:Name="colPatientMeetingDetailCenterColumnDefinition"
                                                 Width="250*" />
                                             <!-- Right column -->
-                                            <ColumnDefinition x:Name="colMeetingDetailsPatientRight"
+                                            <ColumnDefinition x:Name="colPatientMeetingDetailRightColumnDefinition"
                                                 Width="250*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <!-- Left column: Patient arrived, Patient dropped, Duration, Rating -->
-                                        <StackPanel x:Name="spnlMeetingDetailsPatientLeftComponents"
+                                        <!-- Left column panel -->
+                                        <StackPanel x:Name="spnlPatientMeetingDetailLeftColumn"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
                                             Margin="0,0,10,0">
 
-                                            <!-- Patient Arrived -->
+                                            <!-- Patient arrived panel -->
                                             <StackPanel x:Name="spnlPatientArrived"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
 
-                                                <!-- Patient Arrived key -->
+                                                <!-- Patient arrived key -->
                                                 <TextBlock x:Name="txbkPatientArrivedKey"
                                                     Width="90"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Patient arrived:" />
 
-                                                <!-- Patient Arrived value -->
+                                                <!-- Patient arrived value -->
                                                 <TextBlock x:Name="txbkPatientArrivedValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Patient Dropped -->
+                                            <!-- Patient dropped panel -->
                                             <StackPanel x:Name="spnlPatientDropped"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
 
-                                                <!-- Patient Dropped key -->
+                                                <!-- Patient dropped key -->
                                                 <TextBlock x:Name="txbkPatientDroppedKey"
                                                     Width="90"
                                                     FontSize="11"
                                                     FontWeight="SemiBold"
                                                     Text="Patient dropped:" />
 
-                                                <!-- Patient Dropped value -->
+                                                <!-- Patient dropped value -->
                                                 <TextBlock x:Name="txbkPatientDroppedValue"
                                                     FontSize="11"
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Duration -->
+                                            <!-- Duration panel -->
                                             <StackPanel x:Name="spnlPatientDuration"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1053,7 +1074,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Rating -->
+                                            <!-- Rating panel -->
                                             <StackPanel x:Name="spnlPatientRating"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1072,12 +1093,12 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Center column: Checked-In via chat, Check-In wait, Wait for Care Team member, Wait for provider, Check out wait -->
-                                        <StackPanel x:Name="spnlMeetingDetailsPatientCenterComponents"
+                                        <!-- Center column panel -->
+                                        <StackPanel x:Name="spnlPatientMeetingDetailCenterColumn"
                                             Grid.Column="2"
                                             Margin="0,0,10,0">
 
-                                            <!-- Checked-In via chat -->
+                                            <!-- Checked-In via chat panel -->
                                             <StackPanel x:Name="spnlCheckedInViaChat"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1095,7 +1116,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Check-In wait -->
+                                            <!-- Check-In wait panel -->
                                             <StackPanel x:Name="spnlCheckInWait"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1113,7 +1134,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Wait for Care Team member -->
+                                            <!-- Wait for Care Team panel -->
                                             <StackPanel x:Name="spnlWaitForCareTeam"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1131,7 +1152,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Wait for provider -->
+                                            <!-- Wait for provider panel -->
                                             <StackPanel x:Name="spnlWaitForProvider"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1149,7 +1170,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Check out wait -->
+                                            <!-- Check out wait panel -->
                                             <StackPanel x:Name="spnlCheckOutWait"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1168,11 +1189,11 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Right column: Device, Operating System, Browser -->
-                                        <StackPanel x:Name="spnlMeetingDetailsPatientRightComponents"
+                                        <!-- Right column panel -->
+                                        <StackPanel x:Name="spnlPatientMeetingDetailRightColumn"
                                             Grid.Column="3">
 
-                                            <!-- Device -->
+                                            <!-- Device panel -->
                                             <StackPanel x:Name="spnlPatientDevice"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1190,7 +1211,7 @@
                                                     Text="---" />
                                             </StackPanel>
 
-                                            <!-- Operating System -->
+                                            <!-- Operating System panel -->
                                             <StackPanel x:Name="spnlPatientOs"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1209,7 +1230,7 @@
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
 
-                                            <!-- Browser -->
+                                            <!-- Browser panel -->
                                             <StackPanel x:Name="spnlPatientBrowser"
                                                 Margin="0,2"
                                                 Orientation="Horizontal">
@@ -1230,21 +1251,21 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <!-- Participant Meeting Quality Data -->
                                     <!--
+                                        Patient Meeting Quality Data panel
                                         This spans all three columns.
                                     -->
-                                    <StackPanel x:Name="spnlMeetingQualityData"
+                                    <StackPanel x:Name="spnlPatientMeetingQualityData"
                                         Margin="0,8,0,0">
 
-                                        <!-- Participant Meeting Quality Data label -->
-                                        <TextBlock x:Name="txbkMeetingQualityDataKey"
+                                        <!-- Patient Meeting Quality Data label -->
+                                        <TextBlock x:Name="txbkPatientMeetingQualityDataKey"
                                             FontSize="11"
                                             FontWeight="SemiBold"
-                                            Text="Participant Meeting Quality Data:" />
+                                            Text="Patient Meeting Quality Data:" />
 
                                         <!-- Participant Meeting Quality Data value -->
-                                        <TextBlock x:Name="txbkMeetingQualityDataValue"
+                                        <TextBlock x:Name="txbkPatientMeetingQualityDataValue"
                                             Margin="0,2,0,0"
                                             FontSize="11"
                                             Text="---"
@@ -1253,40 +1274,42 @@
                                 </StackPanel>
                             </Border>
 
-
-                            <!-- Meeting Details (Provider) -->
                             <!--
-                                This visible only in provider search mode.
+                                Provider meeting detail border
+                                This is only visible for provider search mode.
                             -->
-                            <Border x:Name="brdrMeetingDetailsProviderContainer"
+                            <Border x:Name="brdrProviderMeetingDetail"
                                 Margin="0,10,20,0"
                                 BorderBrush="Black"
                                 BorderThickness="1"
                                 CornerRadius="5">
 
-                                <!-- Contains the provider-specific meeting details components -->
-                                <StackPanel x:Name="spnlMeetingDetailsProviderComponents"
+                                <!-- Provider meeting detail panel -->
+                                <StackPanel x:Name="spnlProviderMeetingDetail"
                                     Margin="8">
 
-                                    <!-- Top section of the provider-specific meeting details -->
-                                    <StackPanel x:Name="spnlMeetingDetailsProviderTop"
+                                    <!--
+                                        Provider meeting detail top panel
+                                        Contains the header and copy button for the provider meeting details section.
+                                    -->
+                                    <StackPanel x:Name="spnlProviderMeetingDetailTop"
                                         Margin="0,0,0,4"
                                         Orientation="Horizontal">
 
-                                        <!-- Header for the provider-specific meeting details -->
-                                        <TextBlock x:Name="txbkMeetingDetailsProviderHeader"
+                                        <!-- Provider meeting detail header -->
+                                        <TextBlock x:Name="txbkProviderMeetingDetailHeader"
                                             Margin="0,5,0,0"
                                             FontSize="12"
                                             FontWeight="SemiBold"
                                             Text="Meeting Details (Provider)" />
 
-                                        <!-- Copy button for the provider-specific meeting details -->
-                                        <Button x:Name="btnCopyMeetingDetailsProvider"
+                                        <!-- Provider meeting details copy button -->
+                                        <Button x:Name="btnCopyProviderMeetingDetail"
                                             Width="24"
                                             Height="24"
                                             Margin="10,0,0,0"
                                             BorderThickness="0"
-                                            Click="btnCopyMeetingDetailsProvider_Click">
+                                            Click="btnCopyProviderMeetingDetail_Click">
                                             <Button.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="3" />
@@ -1298,17 +1321,20 @@
                                         </Button>
                                     </StackPanel>
 
-                                    <!-- Participant Names - Spanning full width -->
+                                    <!--
+                                        Participant names panel
+                                        This spans the full width.
+                                    -->
                                     <StackPanel x:Name="spnlProviderParticipantNames"
                                         Margin="0,8,0,0">
 
-                                        <!-- Header for the participant names section -->
+                                        <!-- Provider participant names header -->
                                         <TextBlock x:Name="txbkProviderParticipantNamesHeader"
                                             FontSize="11"
                                             FontWeight="SemiBold"
                                             Text="Participant Names:" />
 
-                                        <!-- TextBlock for displaying participant names -->
+                                        <!-- Provider participant names textblock -->
                                         <TextBlock x:Name="txtProviderParticipantNames"
                                             Margin="0,2,0,0"
                                             FontSize="11"
