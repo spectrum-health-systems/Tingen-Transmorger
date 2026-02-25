@@ -24,7 +24,7 @@ public partial class MainWindow : Window
     private List<string> GetSearchResults(string searchType, string searchText)
     {
         /* Don't try and get search results when there isn't anything to search against.
-*/
+         */
         if (string.IsNullOrWhiteSpace(txbxSearchBox.Text))
         {
             return [];

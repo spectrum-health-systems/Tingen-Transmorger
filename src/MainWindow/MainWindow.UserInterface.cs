@@ -24,16 +24,16 @@ public partial class MainWindow : Window
     /// <param name="patientId">The ID of the patient.</param>
     private void SetPatientDetailUi(string patientName, string patientId)
     {
-        lblUserTypeKey.Content                   = "PATIENT";
+        lblUserTypeKey.Content               = "PATIENT";
         lblUserNameValue.Content             = patientName;
         lblUserIdValue.Content               = patientId;
-        spnlDetail.Visibility  = Visibility.Visible;
-        spnlMeeting.Visibility                = Visibility.Visible;
-        spnlMeetingDetail.Visibility          = Visibility.Visible;
-        brdrGeneralMeetingDetail.Visibility   = Visibility.Visible;
-        brdrPatientMeetingDetail.Visibility   = Visibility.Visible;
-        spnlUserContacts.Visibility   = Visibility.Visible;
-        brdrProviderMeetingDetail.Visibility  = Visibility.Collapsed;
+        spnlDetail.Visibility                = Visibility.Visible;
+        spnlMeeting.Visibility               = Visibility.Visible;
+        spnlMeetingDetail.Visibility         = Visibility.Visible;
+        brdrGeneralMeetingDetail.Visibility  = Visibility.Visible;
+        brdrPatientMeetingDetail.Visibility  = Visibility.Visible;
+        spnlUserContacts.Visibility          = Visibility.Visible;
+        brdrProviderMeetingDetail.Visibility = Visibility.Collapsed;
     }
 
     /// <summary>Setup the user interface for displaying patient details.</summary>
@@ -41,15 +41,15 @@ public partial class MainWindow : Window
     /// <param name="providerId">The ID of the provider.</param>
     private void SetProviderDetailUi(string providerName, string providerId)
     {
-        lblUserTypeKey.Content                   = "PROVIDER";
-        lblUserNameValue.Content             = providerName;
-        lblUserIdValue.Content               = providerId;
-        spnlDetail.Visibility  = Visibility.Visible;
-        spnlMeeting.Visibility                = Visibility.Visible;
-        spnlMeetingDetail.Visibility          = Visibility.Visible;
-        brdrGeneralMeetingDetail.Visibility   = Visibility.Collapsed;
-        brdrPatientMeetingDetail.Visibility   = Visibility.Collapsed;
-        spnlUserContacts.Visibility   = Visibility.Collapsed;
+        lblUserTypeKey.Content              = "PROVIDER";
+        lblUserNameValue.Content            = providerName;
+        lblUserIdValue.Content              = providerId;
+        spnlDetail.Visibility               = Visibility.Visible;
+        spnlMeeting.Visibility              = Visibility.Visible;
+        spnlMeetingDetail.Visibility        = Visibility.Visible;
+        brdrGeneralMeetingDetail.Visibility = Visibility.Collapsed;
+        brdrPatientMeetingDetail.Visibility = Visibility.Collapsed;
+        spnlUserContacts.Visibility         = Visibility.Collapsed;
 
     }
 
@@ -59,9 +59,10 @@ public partial class MainWindow : Window
     {
         txbxSearchBox.Text = string.Empty;
         lstbxSearchResults.Items.Clear();
-        spnlDetail.Visibility  = Visibility.Collapsed;
-        spnlMeeting.Visibility                 = Visibility.Collapsed;
-        spnlMeetingDetail.Visibility          = Visibility.Collapsed;
+
+        spnlDetail.Visibility        = Visibility.Collapsed;
+        spnlMeeting.Visibility       = Visibility.Collapsed;
+        spnlMeetingDetail.Visibility = Visibility.Collapsed;
     }
 
     /// <summary>Toggle the search type button text.</summary>
