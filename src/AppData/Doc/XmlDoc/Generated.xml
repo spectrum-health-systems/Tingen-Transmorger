@@ -681,6 +681,28 @@
         </member>
         <member name="M:TingenTransmorger.MainWindow.SetInitialUi">
             <summary>Setup the initial user interface.</summary>
+            <remarks>
+                When the user interface is initialized, all interior components are visible, but containers are hidden. This
+                way we can show/hide entire sections of the UI by toggling the container visibility.
+            </remarks>  
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ResetAllComponents">
+            <summary>Reset all of the UI components.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ResetUserDetailUi">
+            <summary>Reset the user detail UI components.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ResetMeetingResultUi">
+            <summary>Reset the meeting result UI components.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ResetGeneralMeetingDetailUi">
+            <summary>Reset the general meeting detail UI components.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ResetPatientMeetingDetailUi">
+            <summary>Reset the patient meeting detail UI components.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.ResetProviderMeetingDetailUi">
+            <summary>Reset the provider meeting details UI components.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.SetPatientDetailUi(System.String,System.String)">
             <summary>Setup the user interface for displaying patient details.</summary>
