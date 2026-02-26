@@ -10,18 +10,9 @@ namespace TingenTransmorger;
  */
 public partial class MainWindow : Window
 {
-    /// <summary> Currently selected provider name.</summary>
-    ///private string _currentProviderName = string.Empty;
-
-    /// <summary>Currently selected provider ID.</summary>
-    ///private string _currentProviderId = string.Empty;
-
     /// <summary>Displays provider details in the UI.</summary>
     private void DisplayProviderDetails(string providerName, string providerId)
     {
-        ///_currentProviderName = providerName;
-        ///_currentProviderId   = providerId;
-
         // Get provider details from database
         JsonElement? providerDetails = TmDb.GetProviderDetails(providerName);
 

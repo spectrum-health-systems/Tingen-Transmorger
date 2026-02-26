@@ -26,7 +26,9 @@
     mc:Ignorable="d">
 
     <!-- MainWindow grid -->
-    <Grid x:Name="grdMainWindow">
+    <Grid x:Name="grdMainWindow"
+        Width="1200"
+        HorizontalAlignment="Right">
 
         <!--
             MainWindow border
@@ -34,7 +36,9 @@
             The background color of this border changes depending on the mode Tingen Transmorger is in.
         -->
         <Border x:Name="brdrMainWindow"
-            Margin="10"
+            Width="1180"
+            Margin="10,10,0,10"
+            HorizontalAlignment="Left"
             Background="SteelBlue">
             <Border.Resources>
                 <Style TargetType="Border">
@@ -51,7 +55,7 @@
                 <Grid.ColumnDefinitions>
                     <!-- Left column definition -->
                     <ColumnDefinition x:Name="colMainWindowLeftColumnDefinition"
-                        Width="360" />
+                        Width="340" />
                     <!-- Right column definition -->
                     <ColumnDefinition x:Name="colMainWindowRightColumnDefinition"
                         Width="*" />
@@ -134,7 +138,7 @@
 
                             <!-- Search box -->
                             <TextBox x:Name="txbxSearchBox"
-                                Width="310"
+                                Width="290"
                                 Height="32"
                                 Margin="10,0,8,0"
                                 Padding="10,0,0,0"
@@ -221,7 +225,7 @@
 
                                 <!-- User Name -->
                                 <Label x:Name="lblUserNameValue"
-                                    Width="250"
+                                    Width="280"
                                     Height="32"
                                     Margin="0,0,0,0"
                                     HorizontalContentAlignment="Center"
@@ -240,7 +244,7 @@
 
                                 <!-- User ID -->
                                 <Label x:Name="lblUserIdValue"
-                                    Width="250"
+                                    Width="280"
                                     Height="32"
                                     Margin="0,0,0,0"
                                     HorizontalContentAlignment="Center"
@@ -563,8 +567,8 @@
                             Contains the general and user meeting detail sections.
                         -->
                         <StackPanel x:Name="spnlMeetingDetail"
-                            Width="788"
-                            Margin="0,10,20,0"
+                            Width="807"
+                            Margin="0,10,0,0"
                             Orientation="Vertical">
 
                             <!--
@@ -572,7 +576,7 @@
                                 This visible for both patient and provider search modes.
                             -->
                             <Border x:Name="brdrGeneralMeetingDetail"
-                                Margin="0,0,20,0"
+                                Margin="0,0,0,0"
                                 BorderBrush="Black"
                                 BorderThickness="1"
                                 CornerRadius="5">
@@ -951,7 +955,7 @@
                                 Contains patient-specific meeting details and is visible only in patient search mode.
                             -->
                             <Border x:Name="brdrPatientMeetingDetail"
-                                Margin="0,10,20,0"
+                                Margin="0,10,0,0"
                                 BorderBrush="Black"
                                 BorderThickness="1"
                                 CornerRadius="5">
@@ -1279,7 +1283,7 @@
                                 This is only visible for provider search mode.
                             -->
                             <Border x:Name="brdrProviderMeetingDetail"
-                                Margin="0,10,20,0"
+                                Margin="0,10,0,0"
                                 BorderBrush="Black"
                                 BorderThickness="1"
                                 CornerRadius="5">

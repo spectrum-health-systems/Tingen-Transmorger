@@ -15,6 +15,7 @@
 - MainWindow.UserDetail.cs (new)
 - MainWindow.UserInterface.cs
 - MainWindow.xaml
+  - Fixed alignments
   - Verified all controls are named correctly
   - Commented all controls
 - MainWindow.xaml.cs

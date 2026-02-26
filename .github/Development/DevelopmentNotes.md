@@ -20,7 +20,9 @@
 - [ ] Are the borders/panels for general/patient/provider meeting details the same? Looks like patient is different.
 - [ ] {} provider ids
 - [ ] No list of patients in meeting, all "---"
-- [ ] Make sure error messages are where they should be.
+- [ ] Make sure error messages are where they should be
+- [ ] Meeting Error should be a popup
+- [ ] Patient Meeting Quality Data should be a popup?
 
 
 - [ ] Review dgPatientProviderMeetings to make sure the comments work for both patients and providers
