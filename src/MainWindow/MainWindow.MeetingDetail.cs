@@ -192,7 +192,7 @@ public partial class MainWindow : Window
                     meetingRows.Add(new MeetingRow
                     {
                         MeetingId    = meetingId,
-                        Start        = ReplaceNull(scheduledStart ?? string.Empty),
+                        ScheuledStart        = ReplaceNull(scheduledStart ?? string.Empty),
                         ActualStart  = ReplaceNull(actualStart    ?? string.Empty),
                         ScheduledEnd = ReplaceNull(scheduledEnd   ?? string.Empty),
                         ActualEnd    = ReplaceNull(actualEnd      ?? string.Empty),
@@ -207,7 +207,7 @@ public partial class MainWindow : Window
         }
 
         // Sort meetings by ScheduledStart descending (most recent first)
-        meetingRows = meetingRows.OrderByDescending(m => m.Start).ToList();
+        meetingRows = meetingRows.OrderByDescending(m => m.ScheuledStart).ToList();
 
         // Count meetings by status
         var totalCount     = meetingRows.Count;
