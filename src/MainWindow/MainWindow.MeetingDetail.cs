@@ -14,10 +14,8 @@ public partial class MainWindow : Window
     /// <summary>Handles the selection changed event for the meetings DataGrid.</summary>
     private void MeetingSelected()
     {
-        //var selectedMeeting = dgrdMeetingList.SelectedItem as MeetingRow;
-
         /* If no valid meeting is selected, or the selected item does not have a MeetingId, collapse the meeting
-         * details panel and exit early.
+         * details panel and continue.
          * TODO: Move / Test
          */
         if (dgrdMeetingList.SelectedItem is not MeetingRow selectedMeeting || string.IsNullOrWhiteSpace(selectedMeeting.MeetingId))
@@ -29,32 +27,32 @@ public partial class MainWindow : Window
 
         JsonElement? meetingDetail = TmDb.GetMeetingDetail(selectedMeeting.MeetingId);
 
-        /* If the meeting detail could not be retrieved from the database, collapse the meeting details panel and exit
-         * early.
+        /* If the meeting detail could not be retrieved from the database, collapse the meeting details panel and
+         * continue.
          * TODO: Move / Test
          */
         if (meetingDetail == null)
         {
-            StopApp($"Meeting details could not be retrieved.{Environment.NewLine}{Environment.NewLine}The application will now exit.");
+            spnlMeetingDetail.Visibility = Visibility.Collapsed;
+
+            return;
         }
 
         /* Extract generic meeting detail properties. Use MeetingId directly from selectedMeeting since we already have it
          */
         var meetingId = selectedMeeting.MeetingId;
 
-        //DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
-
-        //ClearUi();
 
         // Show/hide patient-specific and provider-specific meeting details based on current view mode
         // If we're viewing a provider, hide the patient-specific section and show provider section
         if (lblUserTypeKey.Content?.ToString() == "PROVIDER")
         {
-            //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
-            brdrGeneralMeetingDetail.Visibility  = Visibility.Visible;
-            brdrProviderMeetingDetail.Visibility = Visibility.Visible;
+            ////////spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
+            //////brdrGeneralMeetingDetail.Visibility  = Visibility.Visible;
+            //////brdrProviderMeetingDetail.Visibility = Visibility.Visible;
 
             DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
+            DisplayProviderMeetingDetails(selectedMeeting);
 
             //brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Collapsed;
             //brdrMeetingDetailsProviderContainer.Visibility = Visibility.Visible;
@@ -71,9 +69,9 @@ public partial class MainWindow : Window
         }
         else
         {
-            //spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
-            brdrGeneralMeetingDetail.Visibility = Visibility.Visible;
-            brdrPatientMeetingDetail.Visibility = Visibility.Visible;
+            ////////spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
+            //////brdrGeneralMeetingDetail.Visibility = Visibility.Visible;
+            //////brdrPatientMeetingDetail.Visibility = Visibility.Visible;
 
             DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
             DisplayPatientMeetingDetails(selectedMeeting);
@@ -430,7 +428,7 @@ public partial class MainWindow : Window
      */
 
 
-    private void DisplayProviderMeetingDetails()
+    private void DisplayProviderMeetingDetails(MeetingRow selectedMeeting)
     {
 
     }
