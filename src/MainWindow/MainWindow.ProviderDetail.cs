@@ -58,56 +58,17 @@ public partial class MainWindow : Window
 
                     var meetingDetail  = TmDb.GetMeetingDetail(meetingId);
 
-                    if (meetingDetail != null)
+                    if (meetingDetail == null)
                     {
-                        var statusLower = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Status"))?.ToLower() ?? string.Empty;
-                        var isCancelled = statusLower.Contains("cancel");
-                        var isCompleted = statusLower.Contains("complete");
-
-                        meetingRows.Add(new MeetingRow
-                        {
-                            MeetingId     = meetingId,
-                            ScheuledStart = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ScheduledStart")),
-                            ActualStart   = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualStart")),
-                            ScheduledEnd  = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ScheduledEnd")),
-                            ActualEnd     = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualEnd")),
-                            Duration      = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Duration")),
-                            Status        = statusLower,
-                            HasError      = TmDb.HasMeetingError(meetingId),
-                            IsCancelled   = isCancelled,
-                            IsCompleted   = isCompleted
-                        });
+                        continue;
                     }
 
-                    //////var scheduledStart = GetStringProperty(meetingDetail.Value, "ScheduledStart");
-                    //////var actualStart    = GetStringProperty(meetingDetail.Value, "ActualStart");
-                    //////var scheduledEnd   = GetStringProperty(meetingDetail.Value, "ScheduledEnd");
-                    //////var actualEnd      = GetStringProperty(meetingDetail.Value, "ActualEnd");
-                    //////var status         = GetStringProperty(meetingDetail.Value, "Status");
-                    //////var duration       = GetStringProperty(meetingDetail.Value, "Duration");
+                    var row = GetMeetingRowDetails(meetingId, meetingDetail);
 
-                    //////var hasError    = TmDb.HasMeetingError(meetingId);
-                    ////////var statusLower = status?.ToLower() ?? string.Empty;
-                    ////////var isCancelled = statusLower.Contains("cancel");
-                    ////////var isCompleted = statusLower.Contains("complete");
-
-                    ////var statusLower = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Status"))?.ToLower() ?? string.Empty;
-                    ////var isCancelled = statusLower.Contains("cancel");
-                    ////var isCompleted = statusLower.Contains("complete");
-
-                    ////meetingRows.Add(new MeetingRow
-                    ////{
-                    ////    MeetingId     = meetingId,
-                    ////    ScheuledStart = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ScheduledStart")),
-                    ////    ActualStart   = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualStart")),
-                    ////    ScheduledEnd  = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ScheduledEnd")),
-                    ////    ActualEnd     = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualEnd")),
-                    ////    Duration      = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Duration")),
-                    ////    Status        = statusLower,
-                    ////    HasError      = TmDb.HasMeetingError(meetingId),
-                    ////    IsCancelled   = isCancelled,
-                    ////    IsCompleted   = isCompleted
-                    ////});
+                    if (row != null)
+                    {
+                        meetingRows.Add(row);
+                    }
                 }
             }
         }
@@ -159,5 +120,29 @@ public partial class MainWindow : Window
             : Visibility.Collapsed;
 
         spnlMeetingDetail.Visibility = Visibility.Collapsed;
+    }
+
+    private MeetingRow? GetMeetingRowDetails(string meetingId, JsonElement? meetingDetail)
+    {
+        if (meetingDetail == null)
+        {
+            return null;
+        }
+
+        var statusLower = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Status"))?.ToLower() ?? string.Empty;
+
+        return new MeetingRow
+        {
+            MeetingId     = meetingId,
+            ScheuledStart = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ScheduledStart")),
+            ActualStart   = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualStart")),
+            ScheduledEnd  = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ScheduledEnd")),
+            ActualEnd     = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualEnd")),
+            Duration      = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Duration")),
+            Status        = statusLower,
+            HasError      = TmDb.HasMeetingError(meetingId),
+            IsCancelled   = statusLower.Contains("cancel"),
+            IsCompleted   = statusLower.Contains("complete")
+        };
     }
 }
