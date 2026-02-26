@@ -86,131 +86,7 @@ public partial class MainWindow : Window
         DisplayMeetingError(selectedMeeting);
     }
 
-    private void DisplayProviderMeetingResults(string providerName)
-    {
-        var meetingRows = new List<MeetingRow>();
 
-        // var providerDetails = TmDb.GetProviderDetails(_currentProviderName);
-        var providerDetails = TmDb.GetProviderDetails(providerName);
-
-        if (providerDetails != null && providerDetails.Value.TryGetProperty("Meetings", out var meetingsArray))
-        {
-            if (meetingsArray.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var meetingIdElement in meetingsArray.EnumerateArray())
-                {
-                    var meetingId = meetingIdElement.GetString();
-
-                    if (string.IsNullOrWhiteSpace(meetingId))
-                    {
-                        continue;
-                    }
-
-                    var meetingDetail  = TmDb.GetMeetingDetail(meetingId);
-                    var scheduledStart = string.Empty;
-                    var actualStart    = string.Empty;
-                    var scheduledEnd   = string.Empty;
-                    var actualEnd      = string.Empty;
-                    var status         = string.Empty;
-                    var duration       = string.Empty;
-
-                    if (meetingDetail != null)
-                    {
-                        scheduledStart = meetingDetail.Value.TryGetProperty("ScheduledStart", out var startElem)
-                            ? startElem.GetString()
-                            : string.Empty;
-
-                        actualStart = meetingDetail.Value.TryGetProperty("ActualStart", out var actualStartElem)
-                            ? actualStartElem.GetString()
-                            : string.Empty;
-
-                        scheduledEnd = meetingDetail.Value.TryGetProperty("ScheduledEnd", out var scheduledEndElem)
-                            ? scheduledEndElem.GetString()
-                            : string.Empty;
-
-                        actualEnd = meetingDetail.Value.TryGetProperty("ActualEnd", out var actualEndElem)
-                            ? actualEndElem.GetString()
-                            : string.Empty;
-
-                        status = meetingDetail.Value.TryGetProperty("Status", out var statusElem)
-                            ? statusElem.GetString()
-                            : string.Empty;
-
-                        duration = meetingDetail.Value.TryGetProperty("Duration", out var durationElem)
-                            ? durationElem.GetString()
-                            : string.Empty;
-                    }
-
-                    var hasError    = TmDb.HasMeetingError(meetingId);
-                    var statusLower = status?.ToLower() ?? string.Empty;
-                    var isCancelled = statusLower.Contains("cancel");
-                    var isCompleted = statusLower.Contains("complete");
-
-                    meetingRows.Add(new MeetingRow
-                    {
-                        MeetingId    = meetingId,
-                        Start        = ReplaceNullValues(scheduledStart ?? string.Empty),
-                        ActualStart  = ReplaceNullValues(actualStart   ?? string.Empty),
-                        ScheduledEnd = ReplaceNullValues(scheduledEnd  ?? string.Empty),
-                        ActualEnd    = ReplaceNullValues(actualEnd     ?? string.Empty),
-                        Duration     = ReplaceNullValues(duration      ?? string.Empty),
-                        Status       = ReplaceNullValues(status        ?? string.Empty),
-                        HasError     = hasError,
-                        IsCancelled  = isCancelled,
-                        IsCompleted  = isCompleted
-                    });
-                }
-            }
-        }
-
-        meetingRows = meetingRows.OrderByDescending(m => m.Start).ToList();
-
-        var totalCount     = meetingRows.Count;
-        var completedCount = meetingRows.Count(m => m.IsCompleted);
-        var cancelledCount = meetingRows.Count(m => m.IsCancelled);
-
-        var inProgressCount = 0;
-        var expiredCount    = 0;
-        var scheduledCount  = 0;
-
-        foreach (var meeting in meetingRows)
-        {
-            var statusLower = meeting.Status?.ToLower() ?? string.Empty;
-
-            if (meeting.IsCompleted || meeting.IsCancelled)
-            {
-                continue;
-            }
-
-            if (statusLower.Contains("in progress") || statusLower.Contains("in-progress"))
-            {
-                inProgressCount++;
-            }
-            else if (statusLower.Contains("expired"))
-            {
-                expiredCount++;
-            }
-            else if (statusLower.Contains("scheduled"))
-            {
-                scheduledCount++;
-            }
-        }
-
-        txbkTotalMeetingsValue.Text      = $"{totalCount} MEETINGS";
-        txbkCompletedMeetingsValue.Text  = $"{completedCount} Completed";
-        txbkMeetingsInProgressValue.Text = $"{inProgressCount} In-Progress";
-        txbkMeetingsExpiredValue.Text    = $"{expiredCount} Expired";
-        txbkMeetingsCancelledValue.Text  = $"{cancelledCount} Cancelled";
-        txbkMeetingsScheduledValue.Text  = $"{scheduledCount} Scheduled";
-
-        dgrdMeetingList.ItemsSource = meetingRows;
-
-        spnlMeetingDetail.Visibility = meetingRows.Count > 0
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-
-        spnlMeetingDetail.Visibility = Visibility.Collapsed;
-    }
 
     private void DisplayPatientMeetingResults(JsonElement? patientDetails)
     {
@@ -532,7 +408,7 @@ public partial class MainWindow : Window
         }
     }
 
-
+    // TODO: Move this somewhere more common
     private static string GetStringProperty(string propertyName, JsonElement? meetingDetail)
     {
         return meetingDetail.Value.TryGetProperty(propertyName, out var elem)

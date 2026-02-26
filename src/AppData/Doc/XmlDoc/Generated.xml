@@ -594,10 +594,15 @@
             <summary>Handles the selection changed event for the meetings DataGrid.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.DisplayGeneralDetails(TingenTransmorger.Models.MeetingRow,System.Nullable{System.Text.Json.JsonElement},System.String)">
-            <summary></summary>
-            <param name="selectedMeeting"></param>
-            <param name="meetingDetail"></param>
-            <param name="meetingId"></param>
+            <summary>Displays the general meeting details.</summary>
+            <remarks>
+                This is pretty dense, but it does cut down on the amount of repetitive code, and the underlying logic is
+                fairly simple: the<c> whatever.Text</c> value is set to the result of the <c>propertyName</c> if it exists,
+                and converted to "---" if it does not.
+            </remarks>
+            <param name="selectedMeeting">The selected meeting row.</param>
+            <param name="meetingDetail">The meeting detail JSON element.</param>
+            <param name="meetingId">The meeting ID.</param>
         </member>
         <member name="F:TingenTransmorger.MainWindow._currentPatientName">
             <summary> Currently selected patient name.</summary>
@@ -659,6 +664,9 @@
         <member name="M:TingenTransmorger.MainWindow.ShowPatientEmailAddress(System.Collections.Generic.List{System.String})">
             <summary>Shows the patient's email addresses in the UI.</summary>
             <param name="emailAddresses">A list of email addresses for the patient.</param>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.GetStringProperty(System.Text.Json.JsonElement,System.String)">
+            <summary>Returns the string value of a named property on a <see cref="T:System.Text.Json.JsonElement"/>, or <see cref="F:System.String.Empty"/> if the property is absent or null.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.DisplayProviderDetails(System.String,System.String)">
             <summary>Displays provider details in the UI.</summary>
