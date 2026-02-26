@@ -90,6 +90,7 @@ public partial class MainWindow : Window
         brdrGeneralMeetingDetail.Visibility  = Visibility.Visible;
         brdrPatientMeetingDetail.Visibility  = Visibility.Visible;
 
+        spnlMeetingDetail.Visibility         = Visibility.Visible;
         spnlDetail.Visibility                = Visibility.Visible;
     }
 
@@ -110,6 +111,7 @@ public partial class MainWindow : Window
         spnlUserContacts.Visibility         = Visibility.Collapsed;
         brdrPatientMeetingDetail.Visibility = Visibility.Collapsed;
 
+        spnlMeetingDetail.Visibility        = Visibility.Visible;
         spnlDetail.Visibility               = Visibility.Visible;
     }
 

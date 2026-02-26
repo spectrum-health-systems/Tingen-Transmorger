@@ -38,48 +38,20 @@ public partial class MainWindow : Window
             return;
         }
 
-        /* Extract generic meeting detail properties. Use MeetingId directly from selectedMeeting since we already have it
-         */
-        var meetingId = selectedMeeting.MeetingId;
-
-
-        // Show/hide patient-specific and provider-specific meeting details based on current view mode
-        // If we're viewing a provider, hide the patient-specific section and show provider section
         if (lblUserTypeKey.Content?.ToString() == "PROVIDER")
         {
-            ////////spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
-            //////brdrGeneralMeetingDetail.Visibility  = Visibility.Visible;
-            //////brdrProviderMeetingDetail.Visibility = Visibility.Visible;
-
-            DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
+            DisplayGeneralDetails(selectedMeeting, meetingDetail, selectedMeeting.MeetingId);
             DisplayProviderMeetingDetails(selectedMeeting);
 
-            //brdrMeetingDetailsPatientContainer.Visibility  = Visibility.Collapsed;
-            //brdrMeetingDetailsProviderContainer.Visibility = Visibility.Visible;
-
-            //// Get and display participant names from MeetingDetail
-            //var participantNames = string.Empty;
-
-            //if (meetingDetail.Value.TryGetProperty("ParticipantNames", out var participantNamesElem))
-            //{
-            //    participantNames = participantNamesElem.GetString() ?? string.Empty;
-            //}
-
-            //txtProviderParticipantNames.Text = ReplaceNullValues(participantNames);
+            spnlMeetingDetail.Visibility = Visibility.Visible;
         }
         else
         {
-            ////////spnlMeetingDetailsComponents.Visibility = Visibility.Visible;
-            //////brdrGeneralMeetingDetail.Visibility = Visibility.Visible;
-            //////brdrPatientMeetingDetail.Visibility = Visibility.Visible;
-
-            DisplayGeneralDetails(selectedMeeting, meetingDetail, meetingId);
+            DisplayGeneralDetails(selectedMeeting, meetingDetail, selectedMeeting.MeetingId);
             DisplayPatientMeetingDetails(selectedMeeting);
 
+            spnlMeetingDetail.Visibility = Visibility.Visible;
         }
-
-        // Show the meeting details section
-        spnlMeetingDetail.Visibility = Visibility.Visible;
     }
 
 
