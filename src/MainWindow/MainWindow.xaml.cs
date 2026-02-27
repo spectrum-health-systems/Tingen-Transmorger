@@ -1,61 +1,27 @@
-﻿// 260226_code
-// 260226_documentation
+﻿// 260227_code
+// 260227_documentation
 
+/* I'm not including ns:Transmorger.Database in the using statements because I want it to be very clear when the
+ * namespace is being referenced.
+ */
 using System.IO;
 using System.Windows;
 using TingenTransmorger.Core;
-//using TingenTransmorger.Database; // Not included (for now) so it's clear when using the Database namespace
 
 namespace TingenTransmorger;
 /// <summary>Entry class for Tingen Transmorger.</summary>
 /// <remarks>
-///   The MainWindow class contains the following partial classes:
-///   <list type="bullet">
-///     <item>
-///       <term>MainWindow.asmx</term>
-///       <description>MainWindow XAML markup</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.asmx.cs</term>
-///       <description>StartApp/StopApp logic and event handlers</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.AdminMode.cs</term>
-///       <description>Logic related to the admin mode</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.DataCopy.cs</term>
-///       <description>Details that are copied to the clipboard</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.Details.cs</term>
-///       <description>Logic for displaying information</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.MeetingDetails.cs</term>
-///       <description>Logic for displaying meeting information</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.PatientDetails.cs</term>
-///       <description>Logic for displaying patient information</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.ProviderDetails.cs</term>
-///       <description>Logic for displaying provider information</description>
-///     </item>
-///     <item>
-///       <term>MainWindow.UserInterface.cs</term>
-///       <description>Logic specific to the user interface.</description>
-///     </item>
-///   </list>
-///   All of these partial classes are located in MainWindow/, but are part of the <c>TingenTransmorger</c> namespace,<br/>
-///   not TingenTransmorger.MainWindow, to help keep things clear and organized.
+///     The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple
+///     partial classes. Initially this was done to keep the code organized and maintainable, but over time it has
+///     become somewhat of a monster. Eventually this class should be refactored to separate classes.
+///     
+///     The MainWindow.asmx.cs class is responsible for the main application flow.
 /// </remarks>
 public partial class MainWindow : Window
 {
     /// <summary>The Transmorger database.</summary>
     /// <remarks>Defined here so it can be used throughout the application.</remarks>
-    public Database.TransmorgerDatabase TmDb { get; set; }
+    private Database.TransmorgerDatabase _tmDb { get; set; }
 
     /// <summary>Entry method for Tingen Transmorger.</summary>
     public MainWindow()
@@ -104,7 +70,7 @@ public partial class MainWindow : Window
 
         try
         {
-            TmDb = Database.TransmorgerDatabase.Load(localDbPath);
+            _tmDb = Database.TransmorgerDatabase.Load(localDbPath);
         }
         catch (Exception ex)
         {
@@ -113,7 +79,7 @@ public partial class MainWindow : Window
             // return;
         }
 
-        if (TmDb is null)
+        if (_tmDb is null)
         {
             StopApp("The database could not be loaded. The application will now exit.");
 

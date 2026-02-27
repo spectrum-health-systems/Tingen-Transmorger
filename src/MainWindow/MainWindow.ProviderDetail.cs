@@ -1,5 +1,5 @@
-﻿// 260226_code
-// 260226_documentation
+﻿// 260227_code
+// 260227_documentation
 
 using System.Text.Json;
 using System.Windows;
@@ -19,7 +19,7 @@ public partial class MainWindow : Window
     private void DisplayProviderDetails(string providerName, string providerId)
     {
         // Get provider details from database
-        JsonElement? providerDetails = TmDb.GetProviderDetails(providerName);
+        JsonElement? providerDetails = _tmDb.GetProviderDetails(providerName);
 
         if (providerDetails == null)
         {
@@ -38,7 +38,7 @@ public partial class MainWindow : Window
     {
         var meetingRows = new List<MeetingRow>();
 
-        var providerDetails = TmDb.GetProviderDetails(providerName);
+        var providerDetails = _tmDb.GetProviderDetails(providerName);
 
         /* Verify that provider details exist and contain a "Meetings" property before attempting to enumerate meetings.
          * TryGetProperty returns false if the property is missing, preventing KeyNotFoundException on the JsonElement.
@@ -56,7 +56,7 @@ public partial class MainWindow : Window
                         continue;
                     }
 
-                    var meetingDetail  = TmDb.GetMeetingDetail(meetingId);
+                    var meetingDetail  = _tmDb.GetMeetingDetail(meetingId);
 
                     if (meetingDetail == null)
                     {
@@ -140,7 +140,7 @@ public partial class MainWindow : Window
             ActualEnd     = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "ActualEnd")),
             Duration      = ReplaceNullValues(GetStringProperty(meetingDetail.Value, "Duration")),
             Status        = statusLower,
-            HasError      = TmDb.HasMeetingError(meetingId),
+            HasError      = _tmDb.HasMeetingError(meetingId),
             IsCancelled   = statusLower.Contains("cancel"),
             IsCompleted   = statusLower.Contains("complete")
         };

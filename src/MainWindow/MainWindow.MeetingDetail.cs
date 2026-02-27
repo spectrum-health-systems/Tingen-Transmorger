@@ -1,5 +1,5 @@
-﻿// 260226_code
-// 260226_documentation
+﻿// 260227_code
+// 260227_documentation
 
 using System.Text.Json;
 using System.Windows;
@@ -25,7 +25,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        JsonElement? meetingDetail = TmDb.GetMeetingDetail(selectedMeeting.MeetingId);
+        JsonElement? meetingDetail = _tmDb.GetMeetingDetail(selectedMeeting.MeetingId);
 
         /* If the meeting detail could not be retrieved from the database, collapse the meeting details panel and
          * continue.
@@ -123,7 +123,7 @@ public partial class MainWindow : Window
                         : string.Empty;
 
                     // Get ScheduledStart, ActualStart, ScheduledEnd, ActualEnd, and Status from MeetingDetail
-                    var meetingDetail  = TmDb.GetMeetingDetail(meetingId);
+                    var meetingDetail  = _tmDb.GetMeetingDetail(meetingId);
                     var scheduledStart = string.Empty;
                     var actualStart    = string.Empty;
                     var scheduledEnd   = string.Empty;
@@ -182,7 +182,7 @@ public partial class MainWindow : Window
                     }
 
                     // Check if meeting has an error
-                    var hasError = TmDb.HasMeetingError(meetingId);
+                    var hasError = _tmDb.HasMeetingError(meetingId);
 
                     // Check status flags (case-insensitive)
                     var statusLower = status?.ToLower() ?? string.Empty;
@@ -293,7 +293,7 @@ public partial class MainWindow : Window
         var browser = string.Empty;
 
         // Retrieve the patient details to access the meetings array
-        var patientDetailsForQuality = TmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
+        var patientDetailsForQuality = _tmDb.GetPatientDetails(_currentPatientName, _currentPatientId);
 
         if (patientDetailsForQuality != null && patientDetailsForQuality.Value.TryGetProperty("Meetings", out var meetingsArray))
         {
@@ -386,7 +386,7 @@ public partial class MainWindow : Window
     private void DisplayMeetingError(MeetingRow selectedMeeting)
     {
         // Get and display meeting error if it exists
-        var meetingError = TmDb.GetMeetingError(selectedMeeting.MeetingId);
+        var meetingError = _tmDb.GetMeetingError(selectedMeeting.MeetingId);
 
         if (meetingError != null)
         {

@@ -44,4 +44,73 @@ private void btnCopyMeetingDetailsProvider_Click(object sender, RoutedEventArgs 
     - There are various "copy" buttons that copy different pieces of information to the clipboard.
 
 
+
+// <summary>Entry class for Tingen Transmorger.</summary>
+/// <remarks>
+///   The MainWindow class contains the following partial classes:
+///   <list type="bullet">
+///     <item>
+///       <term>MainWindow.asmx</term>
+///       <description>MainWindow XAML markup</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.asmx.cs</term>
+///       <description>StartApp/StopApp logic and event handlers</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.AdminMode.cs</term>
+///       <description>Logic related to the admin mode</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.DataCopy.cs</term>
+///       <description>Details that are copied to the clipboard</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.Details.cs</term>
+///       <description>Logic for displaying information</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.MeetingDetails.cs</term>
+///       <description>Logic for displaying meeting information</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.PatientDetails.cs</term>
+///       <description>Logic for displaying patient information</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.ProviderDetails.cs</term>
+///       <description>Logic for displaying provider information</description>
+///     </item>
+///     <item>
+///       <term>MainWindow.UserInterface.cs</term>
+///       <description>Logic specific to the user interface.</description>
+///     </item>
+///   </list>
+///   All of these partial classes are located in MainWindow/, but are part of the <c>TingenTransmorger</c> namespace,<br/>
+///   not TingenTransmorger.MainWindow, to help keep things clear and organized.
+/// </remarks>
+public partial class MainWindow : Window
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 StopApp($"Meeting and/or MeetingId is invalid.{Environment.NewLine}{Environment.NewLine}The application will now exit.");

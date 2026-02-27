@@ -1,5 +1,5 @@
-﻿// 260226_code
-// 260226_documentation
+﻿// 260227_code
+// 260227_documentation
 
 using System.Text.Json;
 using System.Windows;
@@ -36,7 +36,7 @@ public partial class MainWindow : Window
         _currentPatientName = patientName;
         _currentPatientId   = patientId;
 
-        JsonElement? patientDetails = TmDb.GetPatientDetails(patientName, patientId);
+        JsonElement? patientDetails = _tmDb.GetPatientDetails(patientName, patientId);
 
         if (patientDetails == null)
         {
@@ -115,10 +115,10 @@ public partial class MainWindow : Window
 
             if (normalizedPhoneNumber.Length == 10)
             {
-                List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> failures = TmDb.GetSmsFailureStats(normalizedPhoneNumber);
+                List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> failures = _tmDb.GetSmsFailureStats(normalizedPhoneNumber);
                 _smsFailures.AddRange(failures);
 
-                List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> deliveries = TmDb.GetMessageDeliveryStats(normalizedPhoneNumber);
+                List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> deliveries = _tmDb.GetMessageDeliveryStats(normalizedPhoneNumber);
                 _smsDeliveries.AddRange(deliveries);
             }
         }
@@ -181,11 +181,11 @@ public partial class MainWindow : Window
         {
             if (emailAddress != "No email addresses on file")
             {
-                List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> failures = TmDb.GetEmailFailureStats(emailAddress);
+                List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> failures = _tmDb.GetEmailFailureStats(emailAddress);
 
                 _emailFailures.AddRange(failures);
 
-                List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> deliveries = TmDb.GetEmailDeliveryStats(emailAddress);
+                List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> deliveries = _tmDb.GetEmailDeliveryStats(emailAddress);
 
                 _emailDeliveries.AddRange(deliveries);
             }

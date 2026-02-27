@@ -1,5 +1,5 @@
-﻿// 260226_code
-// 260226_documentation
+﻿// 260227_code
+// 260227_documentation
 
 using System.Windows;
 
@@ -41,12 +41,12 @@ public partial class MainWindow : Window
 
         return searchType.Contains("patient", StringComparison.OrdinalIgnoreCase)
             ? rbtnSearchByName.IsChecked == true
-                ? Database.SearchFor.PatientByName(searchText, TmDb)
-                : Database.SearchFor.PatientById(searchText, TmDb)
+                ? Database.SearchFor.PatientByName(searchText, _tmDb)
+                : Database.SearchFor.PatientById(searchText, _tmDb)
             : searchType.Contains("provider", StringComparison.OrdinalIgnoreCase)
                 ? rbtnSearchByName.IsChecked == true
-                            ? Database.SearchFor.ProviderByName(searchText, TmDb)
-                            : Database.SearchFor.ProviderById(searchText, TmDb)
+                            ? Database.SearchFor.ProviderByName(searchText, _tmDb)
+                            : Database.SearchFor.ProviderById(searchText, _tmDb)
                 : [];
     }
 
