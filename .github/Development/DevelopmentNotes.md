@@ -26,6 +26,7 @@
 - [ ] Clearing the search box should clear the details panel
 - [ ] Auto close the database rebuild window?
 - [ ] brdrMainWindow is wonky
+- [ ] Make sure all paramater names are the same
 
 
 - [ ] Review dgPatientProviderMeetings to make sure the comments work for both patients and providers
