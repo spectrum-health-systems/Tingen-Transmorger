@@ -2,9 +2,9 @@
 
 ## 0.9.27.2 - **0.9.28.0**
 
-- Cleanup of:
-
 - MainWindow.AdminMode.cs
+  - Fixed admin mode background border color
+  - Refactored a bit
 - MainWindow.DataCopy.cs (new)
   - Catalog information for copies to the clipboard
 - MainWindow.MeetingDetails.cs
@@ -15,6 +15,7 @@
 - MainWindow.UserDetail.cs (new)
 - MainWindow.UserInterface.cs
 - MainWindow.xaml
+  - Modified the background border, but this needs more work.
   - Fixed alignments
   - Verified all controls are named correctly
   - Commented all controls

@@ -37,7 +37,7 @@
         -->
         <Border x:Name="brdrMainWindow"
             Width="1180"
-            Margin="10,10,0,10"
+            Margin="18,10,0,10"
             HorizontalAlignment="Left"
             Background="SteelBlue">
             <Border.Resources>

@@ -1,39 +1,52 @@
 ﻿// 260227_code
 // 260227_documentation
 
-/* I'm not including ns:Transmorger.Database in the using statements because I want it to be very clear when the
- * namespace is being referenced.
- */
 using System.IO;
 using System.Windows;
 using TingenTransmorger.Core;
+using TingenTransmorger.Database;
 
 namespace TingenTransmorger;
 /// <summary>Entry class for Tingen Transmorger.</summary>
 /// <remarks>
-///     The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple
-///     partial classes. Initially this was done to keep the code organized and maintainable, but over time it has
-///     become somewhat of a monster. Eventually this class should be refactored to separate classes.
-///     
-///     The MainWindow.asmx.cs class is responsible for the main application flow.
+/// The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple partial
+/// classes. Initially this was done to keep the code organized and maintainable, but over time it has
+/// become somewhat of a monster. Eventually this class should be refactored to separate classes.<br/>
+/// <br/>
+/// The MainWindow.xaml.cs partial class is responsible for the main application flow.
 /// </remarks>
 public partial class MainWindow : Window
 {
     /// <summary>The Transmorger database.</summary>
-    /// <remarks>Defined here so it can be used throughout the application.</remarks>
-    private Database.TransmorgerDatabase _tmDb { get; set; }
+    private TransmorgerDatabase _tmDb;
 
     /// <summary>Entry method for Tingen Transmorger.</summary>
     public MainWindow()
     {
         InitializeComponent();
 
-        /* Call StartApp() asynchronously.
-         */
         _ = StartApp();
     }
 
-    /// <summary>Starts the application.</summary>
+    /// <summary>Stop the application.</summary>
+    /// <remarks>
+    /// If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
+    /// before the application exits.<br/>
+    /// <br/>
+    /// This method is public because it is called from other methods outside the <see cref="MainWindow"/> class.
+    /// </remarks>
+    /// <param name="msgExit">Optional exit message to display.</param>
+    public static void StopApp(string msgExit = "")
+    {
+        if (!string.IsNullOrEmpty(msgExit))
+        {
+            MessageBox.Show(msgExit, "Exiting Tingen Transmorger", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        Environment.Exit(0);
+    }
+
+    /// <summary>Start the application.</summary>
     private async Task StartApp()
     {
         // TODO: Make sure this is verified properly.
@@ -46,16 +59,15 @@ public partial class MainWindow : Window
          */
         if (string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase))
         {
-            var flowControl = await EnterAdminMode(config.AdminDirectories["Import"],
-                                                   config.AdminDirectories["Tmp"],
-                                                   config.StandardDirectories["MasterDb"]);
+            var flowControl = await EnterAdminMode(config.AdminDirectories["Import"], config.AdminDirectories["Tmp"], config.StandardDirectories["MasterDb"]);
 
             /* If EnterAdminMode returns false, it means the user either failed to authenticate or chose to exit from
-             * the admin mode dialog.  In that case, we should stop the app instead of continuing to load the database
+             * the admin mode dialog. In that case, we should stop the app instead of continuing to load the database
              * and show the main UI.
              */
             if (!flowControl)
             {
+                // TODO: Test this - the app should exit before it even gets to the main UI.
                 return;
             }
         }
@@ -63,52 +75,28 @@ public partial class MainWindow : Window
         string localDbPath  = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
         string masterDbPath = Path.Combine(config.StandardDirectories["MasterDb"], "transmorger.db");
 
-        Database.TransmorgerDatabase.Update(localDbPath, masterDbPath);
+        TransmorgerDatabase.Update(localDbPath, masterDbPath);
 
-        /* TODO: This should probably be moved to Database.TransmorgerDatabase.cs
+        /* TODO: These try...catch/if blocks should probably be moved to Database.TransmorgerDatabase.cs
          */
-
         try
         {
-            _tmDb = Database.TransmorgerDatabase.Load(localDbPath);
+            _tmDb = TransmorgerDatabase.Load(localDbPath);
         }
         catch (Exception ex)
         {
             StopApp($"The database could not be loaded: {ex.Message}{Environment.NewLine}{Environment.NewLine}The application will now exit.");
-
-            // return;
         }
 
         if (_tmDb is null)
         {
             StopApp("The database could not be loaded. The application will now exit.");
-
-            //return;
         }
 
         SetInitialUi();
     }
 
-    /// <summary>Stops the application.</summary>
-    /// <remarks>
-    ///   <para>
-    ///     If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
-    ///     before the application exits.
-    ///   </para>
-    ///   <para>
-    ///     This method is public because it is called from other methods outside the <see cref="MainWindow"/> class.
-    ///   </para>
-    /// </remarks>
-    /// <param name="msgExit">  An optional exit message to display to the user. </param>
-    public static void StopApp(string msgExit = "")
-    {
-        if (!string.IsNullOrEmpty(msgExit))
-        {
-            MessageBox.Show(msgExit, "Exiting Tingen Transmorger", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
 
-        Environment.Exit(0);
-    }
 
     /* EVENT HANDLERS
      */

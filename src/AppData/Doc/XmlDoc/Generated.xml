@@ -517,18 +517,18 @@
         <member name="T:TingenTransmorger.MainWindow">
             <summary>Entry class for Tingen Transmorger.</summary>
             <remarks>
-                The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple
-                partial classes. Initially this was done to keep the code organized and maintainable, but over time it has
-                become somewhat of a monster. Eventually this class should be refactored to separate classes.
-                
-                The MainWindow.asmx.cs class is responsible for the main application flow.
+            The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple partial
+            classes. Initially this was done to keep the code organized and maintainable, but over time it has
+            become somewhat of a monster. Eventually this class should be refactored to separate classes.<br/>
+            <br/>
+            The MainWindow.xaml.cs partial class is responsible for the main application flow.
             </remarks>
             <summary>
             MainWindow
             </summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.EnterAdminMode(System.String,System.String,System.String)">
-            <summary>Handles admin mode operations.</summary>
+            <summary>Handle admin mode operations.</summary>
             <remarks>
                 Currently admin mode is focused on rebuilding the Transmorger database, but I'm leaving this the way it is
                 for now in case we want to add more admin-related operations in the future.
@@ -691,28 +691,24 @@
         <member name="M:TingenTransmorger.MainWindow.UpdateDetailsButtonColor(System.Boolean,System.Boolean,System.Windows.Controls.Button)">
             <summary>Updates the btnPhoneDetails and btnEmailDetails button appearance based on SMS failure and delivery records.</summary>
         </member>
-        <member name="P:TingenTransmorger.MainWindow._tmDb">
+        <member name="F:TingenTransmorger.MainWindow._tmDb">
             <summary>The Transmorger database.</summary>
-            <remarks>Defined here so it can be used throughout the application.</remarks>
         </member>
         <member name="M:TingenTransmorger.MainWindow.#ctor">
             <summary>Entry method for Tingen Transmorger.</summary>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.StartApp">
-            <summary>Starts the application.</summary>
-        </member>
         <member name="M:TingenTransmorger.MainWindow.StopApp(System.String)">
-            <summary>Stops the application.</summary>
+            <summary>Stop the application.</summary>
             <remarks>
-              <para>
-                If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
-                before the application exits.
-              </para>
-              <para>
-                This method is public because it is called from other methods outside the <see cref="T:TingenTransmorger.MainWindow"/> class.
-              </para>
+            If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
+            before the application exits.<br/>
+            <br/>
+            This method is public because it is called from other methods outside the <see cref="T:TingenTransmorger.MainWindow"/> class.
             </remarks>
-            <param name="msgExit">  An optional exit message to display to the user. </param>
+            <param name="msgExit">Optional exit message to display.</param>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.StartApp">
+            <summary>Start the application.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.InitializeComponent">
             <summary>
