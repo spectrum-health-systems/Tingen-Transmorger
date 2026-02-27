@@ -1,6 +1,6 @@
 <div align="center">
 
-  ![Release](https://img.shields.io/badge/version-0.9.26.x-teal)&nbsp;&nbsp;
+  ![Release](https://img.shields.io/badge/version-0.9.28.0-teal)&nbsp;&nbsp;
   ![License](https://img.shields.io/badge/license-apache-blue)
 
 </div>
