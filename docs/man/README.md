@@ -13,35 +13,160 @@
 
 - Introduction
 - Installation
-- Confiuration
+- Initial launch
+- Configuration
 - Admin
 - Standard
 
+# Introduction
 
+This is the Tingen Transmorger Manual.
 
+# Installation
 
-This documentation is not final, is missing a bunch of things, and basically goes over installing Tingen Transmorger.
-
-## Downloading Tingen Transmorger
+Tingen Transmorger is a stand-along, portable application, so it's not *installed* in the tradtional sense. All you need to do is:
 
 1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
 2. Extract the `TingenTransmorger.exe` file to a location of your choice.
 
-## Initial launch of Tingen Transmorger
+That's it!
 
-The first time you run `TingenTransmorger.exe`, you'll get this message:
+# Initial launch
 
-![](.github/Readme/LocalDbNotDefinedError.png)
+The first time you launch Tingen Transmorger, it does a few setup-type things.
 
-This is because while the Transmorger configuration file has been created, it doesn't have any valid settings yet.
+So go ahead and double-click on the `TingenTransmorger.exe` file.
 
-If you look in the location where you extracted `TingenTransmorger-x.x.x.x.zip`, you'll see the following folder/file structure:
+You should get a popup that looks like this:
 
-```text
-\---AppData
-    \---Config
-            transmorger.config
+![](./Images/LocalDbPathDoesNotExistError.png)
+
+The "LocalDb path" is the path that the local Transmorger database will be located. This can be anywhere you want, and can be different for each end-user.
+
+By default, the LocalDb path is `AppData/Database`
+
+If you take a look in the folder where `TingenTransmorger.exe` is, you'll notice there is a new folder named `AppData`. This is where Transmorger will store various data that it needs to function...including the configuration file.
+
+# Configuration
+
+Not only did Tingen Transmorger create the `AppData` folder...it also created the `AppData/Config` folder *and* the `AppData/Config/transmorger.config` configuration file!
+
+Let's take a look at that file, and (potentially) make some changes.
+
+## The default configuration file
+
+The default `transmorger.config` file looks like this:
+
+```json
+{
+  "Mode": "Standard",
+  "StandardDirectories": {
+    "LocalDb": "AppData/Database",
+    "MasterDb": ""
+  },
+  "AdminDirectories": {
+    "Tmp": "AppData/Tmp",
+    "Import": ""
+  }
+}
 ```
+
+Let's look at each component, shall we?
+
+### Mode
+
+There are two modes that Transmorger can run in:
+
+- **Standard**  
+This is the mode that end-users should always use
+
+- **Admin**  
+This mode is used for rebuilding the Transmorger database, and is *not* intended for end-users. You can find more information about this mode [here]().
+
+### Standard directories
+
+Standard mode uses two directories:
+
+- **LocalDb**  
+This is the location for the end-users local Transmorger database. As you can see, when Transmorger is executed for the first time, and the configuration file is created, this is set to the default (and recommended) `AppData/Database`.
+
+- **MasterDb**  
+This is the location for the **master database**. The master database - which is named `transmorger.db`, by the way - is the most up-to-date version of the Transmorger database, and is must be located in a location where all end-users can access it.
+
+### Admin directories
+
+Admin mode uses two **additional** directories:
+
+- **Tmp**  
+Any temporary data that Transmorger needs to function is stored here. When Transmorger is executed for the first time, this is set to `AppData/Tmp`, which is the recommended location.
+
+- **Import**  
+This is the location for the TeleHealth reports that will be ***transmorgified***. This can be anywhere, but for organizational purposes I recommend putting it in the parent folder of the `MasterDb`.
+
+## Modifying the configuration file
+
+Now that we've gone over the contents of the the transmorger.config file, let's make some necessary changes, but not to the existing `LocalDb` and `Tmp` entries - let's leave those at their defaults.
+
+For **standard** users, we are only going to modify the `MasterDb` setting.
+
+For **admin** users, we are going to modify both the `MasterDb` and `Import` settings.
+
+### Modifying the `MasterDb` location
+
+Modify this component of the configuration file to point to where your master database will reside.
+
+So this:
+
+```json
+    "MasterDb": ""
+```
+
+...becomes this:
+
+```json
+    "MasterDb": "path/to/database"
+```
+
+...or a more real-world example:
+
+```json
+    "MasterDb": "Z:/Transmorger/Database"
+```
+
+This change needs to be made for both *standard* and *admin* users.
+
+### Modifying the `Import` location
+
+Modify this component of the configuration file to point to where all TeleHealth reports will downloaded.
+
+So this:
+
+```json
+    "Import": ""
+```
+
+...becomes this:
+
+```json
+    "MasterDb": "path/to/imports"
+```
+
+...or a more real-world example:
+
+```json
+    "MasterDb": "Z:/Transmorger/Import"
+```
+
+This change only needs to be made for both *admin* users.
+
+
+
+
+
+
+
+
+
 
 ## Configuring Tingen Transmorger
 
@@ -137,3 +262,14 @@ Click "Yes", wait a few seconds (hopefully), and then you should get this messag
 Click "Ok", and you'll see the Transmorger Main Window:
 
 ![](.github/Readme/TransmorgerMainWindow.png)
+
+
+
+
+
+
+
+
+And here's a secret: *it doesn't have to be local*. That's right, you 
+
+Tmp/ cleaning

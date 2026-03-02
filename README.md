@@ -25,13 +25,13 @@ Tingen Transmorger is a utility that *aggregates* those reports, ***transmorgifi
 > [!NOTE]
 > Please see the Transmorger [Manual]() for detailed information.
 
-The 50,000-foot view of how Transmorger works is:
+The 50,000-foot view of how Tingen Transmorger works is:
 
 1. TeleHealth reports are (manually) run from the TeleHealth portal
 2. The completed reports are downloaded
-3. Tingen Transmorger takes all of the downloaded reports and *transmorgifies* them into a single, custom database
+3. Transmorger takes all of the downloaded reports and ***transmorgifies*** them into a single, custom database
 4. That custom database is saved in a location that end-users have access to
-5. End-users can use Tingen Transmorger to troubleshoot TeleHealth issues.
+5. End-users can use Transmorger to troubleshoot TeleHealth issues.
 
 # Getting Started
 
