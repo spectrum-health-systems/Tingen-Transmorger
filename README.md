@@ -11,7 +11,7 @@
 
 Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and is not end-user friendly.
 
-Tingen Transmorger is a utility that *aggregates* those reports, **transmorgifies** the data, and makes it easy to find specific patient, provider, or meeting information.
+Tingen Transmorger is a utility that *aggregates* those reports, ***transmorgifies*** the data, and makes it easy to find specific patient, provider, or meeting information.
 
 ## Features
 
@@ -22,17 +22,17 @@ Tingen Transmorger is a utility that *aggregates* those reports, **transmorgifie
 
 # How it works
 
-There is detailed information in the [Transmorger Manual](), but essentially:
+There is detailed information in the Transmorger [Manual](), but essentially:
 
 1. TeleHealth reports are (manually) run from the TeleHealth portal
-2. The completed reports are saved to a location
-3. Tingen Transmorger takes all of the reports in that location and *transmorgifies* it into a custom database containing all of the data from across all reports
+2. The completed reports are downloaded
+3. Tingen Transmorger takes all of the downloaded reports and *transmorgifies* them into a single, custom database
 4. That custom database is saved in a location that end-users have access to
-5. End-users can run Tingen Transmorger
+5. End-users can use Tingen Transmorger to troubleshoot TeleHealth issues.
 
 # Getting Started
 
-Read the [Transmorger Manual]()!
+Read the [Transmorger Manual](./docs/man/README.md)!
 
 # Development
 
