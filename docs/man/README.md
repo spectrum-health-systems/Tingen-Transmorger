@@ -204,6 +204,78 @@ So open the `transmorger.config` file, and change this line:
 
 ...then save the configuration file.
 
+But don't launch Transmorger yet! To build the Transmorger database, we need TeleHealth reports.
+
+## Downloading the TeleHealth reports
+
+So...the TeleHealth reports that Transmorger needs to build its database need to be downloaded manually.
+
+Yeah, not great. But it is what it is.
+
+### The reports
+
+There are four reports Transmorger needs to build the database:
+
+1. Visit Details
+2. Message Failure report
+3. Message Delivery report
+4. Visit Stats report
+
+Each report needs a date range, and the date range should be the same for all reports.
+
+> [!NOTE]
+> All TeleHealth reports in the Import folder are used to create the Transmorger database, so you can download incremental date ranges.
+>
+> For example, running two reports from 1/1/2026-1/15/2015 and 1/16/20206-1/31/2026 will give you the same result as running a single report from 1/1/2026-1/31/2-26.
+
+### Running a report
+
+To run a TeleHealth reports:
+
+1. Login to your TeleHealth portal
+2. Click the "Reports" tab
+3. Choose a report to run
+4. Choose the start and end date of the report
+5. Click "Run Report"
+
+Using the "Message Delivery Report" as an example:
+
+![](./Images/TeleHealthReportDownload-01.jpg)
+
+Some reports take longer than others, and some reports take pretty long.
+
+While the report is being run, you'll see a "Processing" button (that's disabled).
+
+![](./Images/TeleHealthReportDownload-02.jpg)
+
+### Downloading a report
+
+Once the "Processing" button becomes the Download" button (which is enabled), download the report to your "Import" directory.
+
+![](./Images/TeleHealthReportDownload-03.jpg)
+
+Once all reports have been downloaded, we can launch Tingen Transmorger and initialize the database.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
