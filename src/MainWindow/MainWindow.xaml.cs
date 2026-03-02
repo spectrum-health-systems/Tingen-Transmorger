@@ -49,6 +49,8 @@ public partial class MainWindow : Window
     /// <summary>Start the application.</summary>
     private async Task StartApp()
     {
+        Title = $"Tingen Transmorger v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
+
         var config = Configuration.Load();
 
         Framework.Verify(config);

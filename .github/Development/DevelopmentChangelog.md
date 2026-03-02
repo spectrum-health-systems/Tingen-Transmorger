@@ -1,5 +1,9 @@
 # Tingen Transmorger: Development Changelog
 
+## 0.9.29.0
+
+- The application version is now displayed in the title bar
+
 ## 0.9.28.0
 
 - MainWindow.AdminMode.cs
