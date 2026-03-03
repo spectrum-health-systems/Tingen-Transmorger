@@ -34,6 +34,6 @@ Check out the the Tingen Transmorger [Manual](https://github.com/spectrum-health
 
 ## Development
 
-Tingen Transmorger is being actively developed. The current development branch is [here](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
+Tingen Transmorger is being [actively developed](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
 
-You can also take a look at the [roadmap](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/ROADMAP.md), [known issues](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/KNOWN-ISSUES.md), and [changelog](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/CHANGELOG.md)
+You can also take a look at the [roadmap](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/ROADMAP.md), [known issues](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/KNOWN-ISSUES.md), and [changelog](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/CHANGELOG.md).
