@@ -65,7 +65,7 @@ flowchart LR
     %% Layout
     TransmorgerAdminMode -. &nbsp;[1] Rebuild request&nbsp; .-> MasterDb
     TransmorgerEndUser -- [2] Check for update --> MasterDb
-    MasterDb -. [3] Send update .-> LocalDb
+    MasterDb -. [3] Download update .-> LocalDb
     TransmorgerEndUser e1@<--> LocalDb
     LocalDb e2@<-->TransmorgerEndUser
     %% Styles
