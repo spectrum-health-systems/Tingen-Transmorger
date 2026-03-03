@@ -51,10 +51,11 @@ To install Tingen Transmorger, just:
 
 ## Initial launch
 
-The first time you launch Tingen Transmorger, it does a few setup-type things.
+When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
-### Creating the LocalDb path
-When you double-click on the `TingenTransmorger.exe` file, you should get a popup that looks like this:
+### Setup-type thing #1: Creating the LocalDb path
+
+ you should get a popup that looks like this:
 
 ![](./Images/LocalDbPathDoesNotExistError.png)
 
