@@ -77,9 +77,9 @@ flowchart LR
     e2@{ animate: true }
 ```
 
-[1] Transmorger Admin mode can request that the MasterDb be rebuilt  
-[2] When an end-user launches Transmorger, it checks to see if the MasterDb is more current than it's LocalDb  
-[3] If the MasterDb is more current than the LocalDb, the MasterDb is copied to the end-user's machine, overwriting the current LocalDb
+>[1] Transmorger Admin mode can request that the MasterDb be rebuilt  
+>[2] When an end-user launches Transmorger, it checks to see if the MasterDb is more current than it's LocalDb  
+>[3] If the MasterDb is more current than the LocalDb, the MasterDb is copied to the end-user's machine, overwriting the current LocalDb
 
 
 ## Initial launch
