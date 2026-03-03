@@ -1,11 +1,11 @@
 <div align="center">
 
-  ![Logo](.github/Logo/TransmorgerLogo-256x256.png)
+  ![Logo](../../.github/Logo/TransmorgerLogo-256x256.png)
 
   ![Release](https://img.shields.io/badge/version-0.9.28.0-teal)&nbsp;&nbsp;
   ![License](https://img.shields.io/badge/license-apache-blue)
 
-  <h1>MANUAL</h1>
+  <h1>TINGEN TRANSMORGER MANUAL</h1>
 
 </div>
 
