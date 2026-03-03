@@ -66,15 +66,20 @@ Or to put it another way:
 
 ```mermaid
 flowchart LR
-  TransmorgerAdminMode@{ shape: rounded, label: "Transmorger\n[Admin Mode]" }
-  MasterDb@{ shape: cyl, label: "MasterDb" }
-  EndUser@{ shape: rounded, label: "End User" }
-  LocalDb@{ shape: lin-cyl, label: "LocalDb" }
-
-  TransmorgerAdminMode --1. Rebuild--> MasterDb
-  EndUser -.-2. Check for update-.-> MasterDb
-  MasterDb --3. Send update--> EndUser
-  EndUser --4. Update--> LocalDb
+    %% Components
+    TransmorgerAdminMode@{ shape: rounded, label: "Transmorger\n[Admin Mode]" }
+    MasterDb@{ shape: cyl, label: "MasterDb" } 
+    TransmorgerEndUser@{ shape: rounded, label: "Transmorger\n[End User]" }
+    LocalDb@{ shape: lin-cyl, label: "LocalDb" }
+    %% Layout
+    TransmorgerAdminMode -- &nbsp;[1]Rebuild request&nbsp; --o MasterDb
+    TransmorgerEndUser -. [2] Check for update .-o MasterDb
+    MasterDb --[3] Send update --o LocalDb
+    TransmorgerEndUser e1@<--> LocalDb
+    LocalDb e2@<-->TransmorgerEndUser
+    %% Styles
+    e1@{ animate: true }
+    e2@{ animate: true }
 ```
 
 
