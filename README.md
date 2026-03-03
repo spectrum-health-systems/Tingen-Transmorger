@@ -18,22 +18,19 @@ Tingen Transmorger is a utility that *aggregates* those reports, ***transmorgifi
 - Meeting details (start time, participants, etc.)
 - Meeting quality (bandwidth, audio/video quality, etc.)
 
-And most of the information in Tingen Transmorger can easily be copy/pasted into other documentation/emails/tickets.
+And most of the information in Tingen Transmorger can easily be copy/pasted into other documentation, emails, and tickets.
 
 ## The Transmorger database
 
-The heart of Tingen Transmorger is the Transmorger Database, which combines multiple TeleHealth reports into a single, well organized collection of data.
-
-The Transmorger database:
+The heart of Tingen Transmorger is the Transmorger Database, which combines multiple TeleHealth reports into a single, well organized collection of data that:
 
 - Contains data from date ranges *you* choose
-- That data can be added to the database *on-the-fly*
-- The end-user database is updated *automatically*, ensuring users have the latest available data
-- Data can be copied out of Transmorger, and pasted into tickets, emails, etc.
+- Can be added to *on-the-fly*, with dates/date ranges *you* choose
+- Is updated for end-users *automatically*, ensuring users have the latest available data
 
 ## Getting Started
 
-Check out the the Tingen Transmorger [Manual](./docs/man/README.md)!
+Check out the the Tingen Transmorger [Manual](./docs/man/README.md).
 
 ## Development
 
