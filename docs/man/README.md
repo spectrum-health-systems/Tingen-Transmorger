@@ -49,15 +49,30 @@ To install Tingen Transmorger, just:
 1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
 2. Extract the `TingenTransmorger.exe` file to a location of your choice
 
+### A word about the Transmorger database(s)
+
+Tingen Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
+
+Transmorger uses the **LocalDb** to do all of it's work. Each installation should have it's own LocalDb.
+
+The **MasterDb** is only used when Transmorger is running in *Admin mode*. This is the database that is updated/rebuilt, and then distributed to end-users
+
+```mermaid
+flowchart LR
+  TransmorgerAdminMode@{ shape: rounded, label: "Transmorger\n[Admin Mode]" }
+  MasterDb@{ shape: cyl, label: "MasterDb" }
+  EndUser@{ shape: rounded, label: "End User" }
+  LocalDb@{ shape: lin-cyl, label: "LocalDb" }
+
+  TransmorgerAdminMode --Rebuild--> MasterDb
+  EndUser --1. Check for update--> MasterDb
+  MasterDb --2. Send update--> EndUser
+  EndUser --> LocalDb
+```
+
 ## Initial launch
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
-
-> [!NOTE aaa]
-> Tingen Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
->
-> The 
-
 
 ### Setup-type thing #1: Creating the LocalDb path
 
