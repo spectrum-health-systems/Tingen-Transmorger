@@ -12,14 +12,16 @@
 ## Contents
 
 - [Introduction](#introduction)
-- [Requirements](#requirements)
 - [Installation](#installation)
 - [Initial launch](#initial-launch)
 - [Configuration](#configuration)
-- [Initializing the Mastert Transmorger database](#initializing-the-master-transmorger-database)
+- [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)
 - [Using Transmorger]()
 
 ## Introduction
+
+- [Requirements](#requirements)
+- [The Transmorger database(s)](#the-transmorger-databases)
 
 Welcome to the [Tingen Transmorger](https://github.com/spectrum-health-systems/TingenTransmorger) manual!
 
@@ -34,13 +36,13 @@ The 50,000-foot view of how Tingen Transmorger works is:
 - Transmorger automatically downloads/updates the database for end-users
 - End-users can use Transmorger to troubleshoot TeleHealth issues
 
-## Requirements
+### Requirements
 
 Tingen Transmorger requires [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0), so make sure that the .NET Desktop Runtime (or the SDK, if you aren't into the whole brevity thing) is installed.
 
 In addition, Transmorger is a 64-bit application, and will not run on 32-bit machines.
 
-## The transmorger database(s)
+### The Transmorger database(s)
 
 Before we go any further, I would like to briefly describe the Transmorger databases, and how the work/interact with each other.
 
@@ -86,6 +88,9 @@ To install Tingen Transmorger, just:
 2. Extract the `TingenTransmorger.exe` file to a location of your choice
 
 ## Initial launch
+
+- [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
+- [Setup-type thing #2: The MasterDb path](#setup-type-thing-2-the-masterdb-path)
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
@@ -306,13 +311,13 @@ To run a TeleHealth reports:
 
 Using the "Message Delivery Report" as an example:
 
-![](./Images/TeleHealthReportDownload-01.jpg)
+![](./Images/TransmorgerManual-TeleHealthReportDownload-01.jpg)
 
 Some reports take longer than others, and some reports take pretty long.
 
 While the report is being run, you'll see a "Processing" button (that's disabled).
 
-![](./Images/TeleHealthReportDownload-02.jpg)
+![](./Images/TransmorgerManual-TeleHealthReportDownload-02.jpg)
 
 > [!NOTE]
 > All TeleHealth reports in the Import folder are used to create the Transmorger database, so you can download incremental date ranges.
@@ -323,7 +328,7 @@ While the report is being run, you'll see a "Processing" button (that's disabled
 
 Once the "Processing" button becomes the Download" button (which is enabled), download the report to your "Import" directory.
 
-![](./Images/TeleHealthReportDownload-03.jpg)
+![](./Images/TransmorgerManual-TeleHealthReportDownload-03.jpg)
 
 Once all reports have been downloaded, we can launch Tingen Transmorger and initialize the database.
 
