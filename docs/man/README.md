@@ -53,17 +53,23 @@ To install Tingen Transmorger, just:
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
+> [!NOTE]
+> Tingen Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
+>
+> The 
+
+
 ### Setup-type thing #1: Creating the LocalDb path
 
 The first thing you should see when you first launch Transmorger is this popup:
 
 ![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreateYn.png)
 
-The **LocalDb path** is where the *local copy* of the Transmorger database will stored, which is by default to `AppData/Database`.
+The **LocalDb path** is where the *local copy* of the Transmorger database will stored, which is `AppData/Database` by default.
 
 You can change the LocalDb path to any location, and on a per-user basis, via the configuration file (but the default setting is recommended).
 
-When you click **Yes**, Transmorger will create set the LocalDb path to `AppData/Database`, and create the folder.
+When you click **Yes**, Transmorger will set the LocalDb path to `AppData/Database`, and create the folder.
 
 So click **Yes**.
 
@@ -72,6 +78,9 @@ So click **Yes**.
 Another message will popup:
 
 ![](./Images/TransmorgerManual-MasterDbPathIsUndefined.png)
+
+The **MasterDb** is the 
+
 
 We'll fix that next, so for now just click "OK", and Transmorger will exit.
 
