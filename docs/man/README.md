@@ -67,9 +67,9 @@ flowchart LR
     TransmorgerEndUser@{ shape: rounded, label: "Transmorger\n[End User]" }
     LocalDb@{ shape: lin-cyl, label: "LocalDb" }
     %% Layout
-    TransmorgerAdminMode -- &nbsp;[1] Rebuild request&nbsp; --o MasterDb
+    TransmorgerAdminMode -. &nbsp;[1] Rebuild request&nbsp; .-> MasterDb
     TransmorgerEndUser -- [2] Check for update --> MasterDb
-    MasterDb -. [3] Send update .-o LocalDb
+    MasterDb -. [3] Send update .-> LocalDb
     TransmorgerEndUser e1@<--> LocalDb
     LocalDb e2@<-->TransmorgerEndUser
     %% Styles
