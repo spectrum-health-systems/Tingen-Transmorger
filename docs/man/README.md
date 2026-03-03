@@ -40,18 +40,11 @@ Tingen Transmorger requires [.NET 10](https://dotnet.microsoft.com/en-us/downloa
 
 In addition, Transmorger is a 64-bit application, and will not run on 32-bit machines.
 
-## Installation
+## The transmorger database(s)
 
-Tingen Transmorger is a stand-alone, portable, cross-platform (in theory) application.
+Before we go any further, I would like to briefly describe the Transmorger databases, and how the work/interact with each other.
 
-To install Tingen Transmorger, just:
-
-1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
-2. Extract the `TingenTransmorger.exe` file to a location of your choice
-
-### A word about the Transmorger database(s)
-
-Tingen Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
+Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
 
 Transmorger uses the **LocalDb** to do all of it's work, and each installation should have it's own LocalDb.
 
@@ -80,7 +73,17 @@ flowchart LR
 >[1] Transmorger Admin mode can request that the MasterDb be rebuilt  
 >[2] When an end-user launches Transmorger, it checks to see if the MasterDb is more current than it's LocalDb  
 >[3] If the MasterDb is more current than the LocalDb, the MasterDb is copied to the end-user's machine, overwriting the current LocalDb
+>
+> The end-user communicates directly with the LocalDb
 
+## Installation
+
+Tingen Transmorger is a stand-alone, portable, cross-platform (in theory) application.
+
+To install Tingen Transmorger, just:
+
+1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
+2. Extract the `TingenTransmorger.exe` file to a location of your choice
 
 ## Initial launch
 
@@ -90,7 +93,7 @@ When you double-click on the `TingenTransmorger.exe` file, and launch it for the
 
 The first thing you should see when you first launch Transmorger is this popup:
 
-![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreateYn.png)
+![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreatePrompt.png)
 
 The **LocalDb path** is where the *local copy* of the Transmorger database will stored, which is `AppData/Database` by default.
 
@@ -106,16 +109,17 @@ Another message will popup:
 
 ![](./Images/TransmorgerManual-MasterDbPathIsUndefined.png)
 
-The **MasterDb** is the 
-
+The **MasterDb** is the most up-to-date version of the Transmorger database...but it doesn't actually exist yet.
 
 We'll fix that next, so for now just click "OK", and Transmorger will exit.
 
 # Configuring Tingen Transmorger
 
-If you take a look in the folder where `TingenTransmorger.exe` is, you'll notice there is a new folder named `AppData`. This is where Transmorger will store various data that it needs to function.
+If you take a look in the folder where `TingenTransmorger.exe` is, you'll notice there is a folder named `AppData`, which is where Transmorger will store various data that it needs to function.
 
-Transmorger also created two subfolders: `AppData/Database` and `AppData/Config`. We're inteterested in the latter, since it contains the transmorger.config` configuration file.
+You'll also see the `AppData/Database` folder that was created for the [LocalDb](#setup-type-thing-1-creating-the-localdb-path).
+
+We're interested in other folder here: `AppData/Config`, which contains the transmorger.config` configuration file.
 
 Let's take a look at that file, and make some changes.
 
@@ -161,7 +165,7 @@ Standard mode uses two directories:
 This is the location for the end-users local Transmorger database. As you can see, when Transmorger is executed for the first time, and the configuration file is created, this is set to the default (and recommended) `AppData/Database`.
 
 - **MasterDb**  
-This is the location for the **master database**. The master database - which is named `transmorger.db`, by the way - is the most up-to-date version of the Transmorger database, and is must be located in a location where all end-users can access it.
+This is the location for the **master database**. The master database is the most up-to-date version of the Transmorger database, and is must be located in a location where all end-users can access it.
 
 ### Admin directories
 
@@ -336,21 +340,17 @@ Then, launch Transmorger.
 
 You'll get the following popup:
 
-![](./Images/TmpPathDoesNotExistError.png)
-
-Click **Yes** to create the temporary folder.
-
-You will then be 
-
-![](./Images/RebuildDbYn.png)
+![](./Images/TransmorgerManual-MasterDbRebuildPrompt.png)
 
 Click **Yes** to initialize the Transmorger database (which, technically, is just "rebuilding" it for the first time).
 
 While the database is being built, you'll see a progress indicator:
 
-![](./Images/Rebuilding.png)
+![](./Images/TransmorgerManual-RebuildingDbProgress.png)
 
 When the build process is complete, you'll see a popup letting you know there is a database update available.
+
+![](./Images/TransmorgerManual-RebuildingDbProgress.png)
 
 > [!NOTE]
 > When you rebuild the Transmorger database, you are rebuilding the **master** database.
@@ -361,9 +361,17 @@ Since we want that update, click **Yes**
 
 You will then (hopefully) get a popup letting you know the database has been updated.
 
+![](./Images/TransmorgerManual-UpdateDbSuccess.png)
+
 Click "OK", then click the "Close" button on the "Rebuilding Transmorger Database" window.
 
+![](./Images/TransmorgerManual-RebuildDbCompleteClose.png)
+
 Tingen Transmorger will then launch.
+
+
+
+
 
 # Using Transmorger
 
