@@ -12,16 +12,17 @@
 ## Contents
 
 - [Introduction](#introduction)
+  - [Requirements](#requirements)
+  - [The Transmorger database(s)](#the-transmorger-databases)
 - [Installation](#installation)
 - [Initial launch](#initial-launch)
+  - [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
+  - [Setup-type thing #2: The MasterDb path](#setup-type-thing-2-the-masterdb-path)
 - [Configuration](#configuration)
 - [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)
 - [Using Transmorger]()
 
 ## Introduction
-
-- [Requirements](#requirements)
-- [The Transmorger database(s)](#the-transmorger-databases)
 
 Welcome to the [Tingen Transmorger](https://github.com/spectrum-health-systems/TingenTransmorger) manual!
 
@@ -88,9 +89,6 @@ To install Tingen Transmorger, just:
 2. Extract the `TingenTransmorger.exe` file to a location of your choice
 
 ## Initial launch
-
-- [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
-- [Setup-type thing #2: The MasterDb path](#setup-type-thing-2-the-masterdb-path)
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
