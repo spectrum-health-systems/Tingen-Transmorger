@@ -9,18 +9,28 @@
 
 </div>
 
-### Contents
+## Contents
 
-- Introduction
-- Installation
-- Initial launch
-- Configuration
-- Create the Transmorger database
-- Using Transmorger
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Initial launch]()
+- [Configuration]()
+- [Create the Transmorger database]()
+- [Using Transmorger]()
 
-# Introduction
+## Introduction
 
-This is the Tingen Transmorger Manual!
+Welcome to the [Tingen Transmorger](https://github.com/spectrum-health-systems/TingenTransmorger) Manual!
+
+Tingen Transmorger is a utility that aggregates data from [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform. and makes it easier to troubleshoot TeleHealth issues.
+
+The 50,000-foot view of how Tingen Transmorger works is:
+
+- TeleHealth reports are (manually) run from the TeleHealth portal
+- The completed reports are downloaded
+- Transmorger takes all of the downloaded reports and transmorgifies them into a single, custom database
+- That custom database is saved in a location that end-users have access to
+- End-users can use Transmorger to troubleshoot TeleHealth issues.
 
 # Installation
 
