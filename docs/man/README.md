@@ -53,9 +53,17 @@ To install Tingen Transmorger, just:
 
 Tingen Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
 
-Transmorger uses the **LocalDb** to do all of it's work. Each installation should have it's own LocalDb.
+Transmorger uses the **LocalDb** to do all of it's work, and each installation should have it's own LocalDb.
 
-The **MasterDb** is only used when Transmorger is running in *Admin mode*. This is the database that is updated/rebuilt, and then distributed to end-users
+The **MasterDb** is only used when Transmorger is running in *Admin mode*, the most up-to-date version of the Transmorger database.
+
+Or to put it another way:
+
+***
+
+1. This
+2. That
+3. Those
 
 ```mermaid
 flowchart LR
@@ -69,6 +77,9 @@ flowchart LR
   MasterDb --2. Send update--> EndUser
   EndUser --> LocalDb
 ```
+
+***
+
 
 ## Initial launch
 
