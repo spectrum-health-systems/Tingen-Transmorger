@@ -72,7 +72,7 @@ flowchart LR
   LocalDb@{ shape: lin-cyl, label: "LocalDb" }
 
   TransmorgerAdminMode --1. Rebuild--> MasterDb
-  EndUser ..2. Check for update..> MasterDb
+  EndUser -.-2. Check for update-.-> MasterDb
   MasterDb --3. Send update--> EndUser
   EndUser --4. Update--> LocalDb
 ```
