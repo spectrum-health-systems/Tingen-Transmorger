@@ -55,17 +55,23 @@ When you double-click on the `TingenTransmorger.exe` file, and launch it for the
 
 ### Setup-type thing #1: Creating the LocalDb path
 
- you should get a popup that looks like this:
+The first thing you should see when you first launch Transmorger is this popup:
 
-![](./Images/LocalDbPathDoesNotExistError.png)
+![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreateYn.png)
 
-The **LocalDb path** is where the *local copy* of the Transmorger database will stored. This location can be anywhere, and can be different for each end-user.
+The **LocalDb path** is where the *local copy* of the Transmorger database will stored, which is by default to `AppData/Database`.
 
-By default, the LocalDb path is `AppData/Database`.
+You can change the LocalDb path to any location, and on a per-user basis, via the configuration file (but the default setting is recommended).
 
-Click **Yes**, and, then you'll get another popup that says:
+When you click **Yes**, Transmorger will create set the LocalDb path to `AppData/Database`, and create the folder.
 
-![](./Images/MasterDbPathNotDefinedError.png)
+So click **Yes**.
+
+### Setup-type thing #2: The MasterDb path
+
+Another message will popup:
+
+![](./Images/TransmorgerManual-MasterDbPathIsUndefined.png)
 
 We'll fix that next, so for now just click "OK", and Transmorger will exit.
 
