@@ -31,6 +31,7 @@ The heart of Tingen Transmorger is the Transmorger Database, which combines mult
 ## Requirements
 
 - [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- 64bit Operating System (only tested on Windows)
 
 ## Getting Started
 
