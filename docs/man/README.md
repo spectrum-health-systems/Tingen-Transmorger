@@ -82,7 +82,7 @@ The first thing you should see when you first launch Transmorger is this popup:
 
 The ***LocalDb path*** is where the *local copy* of the Transmorger database will stored.
 
-When you click **Yes**, Transmorger will create an empty folder named `./AppData/Database`. This is the default (and recommended) location for the LocalDb, but you can change the LocalDb path to any location via the configuration file.
+When you click **Yes**, Transmorger will create an empty folder named `./AppData/Database`. This is the default (and recommended) location for the *LocalDb*, but you can change the LocalDb path to any location via the configuration file.
 
 Click **Yes**.
 
@@ -94,7 +94,11 @@ Click **Yes**.
 
 Next, another message should popup:
 
+<div align="center">
+
 ![](./Images/TransmorgerManual-MasterDbPathIsUndefined.png)
+
+</div>
 
 The **MasterDb** is the most up-to-date version of the Transmorger database...but it doesn't actually exist yet. In fact, it doesn't even have a *location* to exist in.
 
