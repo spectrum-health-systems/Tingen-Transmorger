@@ -56,6 +56,8 @@ In order for Transmorger to do what it does, and do it accurately, it needs a co
 3. Message Delivery report
 4. Visit Stats report
 
+#### Report names
+
 Report names have the following syntax: `STQma_%Report_Name%_%StartDate_EndDate%.xlsx`.
 
 `%Report_Name%` is the name of the report (e.g., "Message_Delivery").
