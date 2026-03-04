@@ -66,7 +66,7 @@ Please see the [Using Tingen Transmorger](Transmorger-Using.md) documentation.
 
 > <sub>Last updated: 260304</sub>
 
-
+<!--
 
 
 Run `TingenTransmorger.exe` again.
@@ -97,7 +97,7 @@ Click "Ok", and you'll see the Transmorger Main Window:
 And here's a secret: *it doesn't have to be local*. That's right, you 
 
 Tmp/ cleaning
-
+-->
 
 ***
 
