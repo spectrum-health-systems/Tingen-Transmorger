@@ -18,7 +18,11 @@
 
 ## CONTENTS
 
-- [The Transmorger configuration file]()
+- [The Transmorger configuration file](#the-tranmorger-configuration-file)
+- [The default configuration file](#the-default-configuration-file)
+    - [Mode](#mode)
+    - [Standard directories](#standard-directories)
+    - [Admin directories](#admin-directories)
 
 ## The Tranmorger Configuration file
 
