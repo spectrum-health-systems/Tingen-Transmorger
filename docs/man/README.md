@@ -19,7 +19,7 @@
   - [Requirements](#requirements)
   - [How it works](#how-it-works)
 - [Installation](#installation)
-- [Initial launch](#initial-launch)
+- [Initial setup](#initial-launch)
   - [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
   - [Setup-type thing #2: The MasterDb path](#setup-type-thing-2-the-masterdb-path)
 - [Configuration](#configuration)
@@ -49,11 +49,17 @@ Here's the 50,000-foot view of how Tingen Transmorger works:
 - Transmorger automatically downloads/updates the database for end-users
 - End-users can use Transmorger to troubleshoot TeleHealth issues
 
-Before you continue, I would recommend taking a quick look at the [TeleHealth Reports Overview](TeleHealthReportsOverview.md) and [Transmorger Database Overview](TransmorgerDatabaseOverview.md)
+# Pre-install information
+
+Before you continue, I would recommend taking a quick look at the following documentation, so you are familiar with various terminology:
+
+- [Transmorger Database Overview](TransmorgerDatabaseOverview.md)
+- [Transmorger Configuration Overview](TransmorgerConfigurationOverview.md)
+- [TeleHealth Reports Overview](TeleHealthReportsOverview.md)
 
 # Installation
 
-Tingen Transmorger is a stand-alone, portable, (in theory) cross-platform application.
+Tingen Transmorger is a stand-alone, portable, and (in theory) cross-platform application.
 
 To install Transmorger, just:
 
@@ -64,11 +70,11 @@ To install Transmorger, just:
 > Verify the SHA256 hash (v0.9.29.0)
 > `---`
 
-# Initial launch
+# Initial setup
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
-## Setup-type thing #1: Creating the LocalDb path
+## Setup-type thing #1: Creating the [LocalDb](TransmorgerDatabaseOverview.md#the-local-database) path
 
 The first thing you should see when you first launch Transmorger is this popup:
 
