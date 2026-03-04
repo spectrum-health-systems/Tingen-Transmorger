@@ -52,29 +52,61 @@ Here's the 50,000-foot view of how Tingen Transmorger works:
 In order for Transmorger to do what it does, and do it accurately, it needs a copy of each of these reports:
 
 1. Visit Details
-2. Message Failure report
-3. Message Delivery report
-4. Visit Stats report
+2. Message Failure
+3. Message Delivery
+4. Visit Stats
 
 #### Report names
 
 Report names have the following syntax: `STQma_%Report_Name%_%StartDate_EndDate%.xlsx`.
 
-`%Report_Name%` is the name of the report (e.g., "Message_Delivery").
+`%Report_Name%` is the name of the report (e.g., `Message_Delivery`).
 
-`%StartDate_EndDate%` is the date-range (e.g., YYYYMMDD_YYYYMMDD).
+`%StartDate_EndDate%` is the date-range (e.g., `YYYYMMDD_YYYYMMDD`).
 
 So if you run the "Visit Details" report for 1/1/2026 through 1/15/20206, the name of the report would be:
 
 ```text
-STQma_%Visit_Details_20260101_20260115.xlsx
+STQma_Visit_Details_20260101_20260115.xlsx
+```
+
+#### Date ranges
+
+Each report is run for a specific date-range. You can also run a report for a single day by setting the Start Date and End Date to the same day.
+
+So in order to troubleshoot TeleHealth for the month of May 2026, you would need the following reports:
+
+```text
+STQma_Visit_Details_20260501_20260531.xlsx
+STQma_Message_Failure_20260501_20260531.xlsx
+STQma_Message_Delivery_20260501_20260531.xlsx
+STQma_Visit_Stats_20260501_20260531.xlsx
+```
+
+Since Transmorger aggregates all of the reports in the Import/ folder, you can run reports for shorter date-ranges that add up to larger date-ranges.
+
+For example, the following reports would *also* build data for all of May 2026:
+
+```text
+STQma_Visit_Details_20260501_20260531.xlsx
+
+STQma_Message_Failure_20260501_20260515.xlsx
+STQma_Message_Failure_20260516_20260531.xlsx
+
+STQma_Message_Delivery_20260501_20260510.xlsx
+STQma_Message_Delivery_20260511_20260520.xlsx
+STQma_Message_Delivery_20260521_20260531.xlsx
+
+STQma_Visit_Stats_20260501_20260510.xlsx
+STQma_Visit_Stats_20260511_20260520.xlsx
+STQma_Visit_Stats_20260521_20260530.xlsx
+STQma_Visit_Stats_20260531_20260531.xlsx
 ```
 
 
 
-Each report is run for a specific date or date-range, which should be the same for each report.
 
-
+#### 
 
 ### The Transmorger database(s)
 
