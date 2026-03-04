@@ -74,13 +74,13 @@ To install Transmorger, just:
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
-## Setup-type thing #1: Creating the [LocalDb](TransmorgerDatabaseOverview.md#the-local-database) path
+## Setup-type thing #1: Creating the LocalDb path
 
 The first thing you should see when you first launch Transmorger is this popup:
 
 ![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreatePrompt.png)
 
-The ***LocalDb path*** is where the *local copy* of the Transmorger database will stored.
+The ***[LocalDb](TransmorgerDatabaseOverview.md#the-local-database) path*** is where the *local copy* of the Transmorger database will stored.
 
 When you click **Yes**, Transmorger will create an empty folder named `./AppData/Database`. This is the default (and recommended) location for the LocalDb, but you can change the LocalDb path to any location via the configuration file.
 
