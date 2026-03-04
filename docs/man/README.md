@@ -26,19 +26,19 @@
 - [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)
 - [Using Transmorger]()
 
-## Introduction
+# Introduction
 
 Welcome to the [Tingen Transmorger](https://github.com/spectrum-health-systems/TingenTransmorger) manual!
 
 Tingen Transmorger is a utility that aggregates data from [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform. and makes it easier to troubleshoot TeleHealth issues.
 
-### Requirements
+# Requirements
 
 Tingen Transmorger requires [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0), so make sure that the .NET Desktop Runtime (or the SDK, if you aren't into the whole brevity thing) is installed.
 
 In addition, Transmorger is a 64-bit application, and will not run on 32-bit machines.
 
-### How it works
+# How it works
 
 Here's the 50,000-foot view of how Tingen Transmorger works:
 
@@ -51,7 +51,7 @@ Here's the 50,000-foot view of how Tingen Transmorger works:
 
 Before you continue, I would recommend taking a quick look at the [TeleHealth Reports Overview](TeleHealthReportsOverview.md) and [Transmorger Database Overview](TransmorgerDatabaseOverview.md)
 
-## Installation
+# Installation
 
 Tingen Transmorger is a stand-alone, portable, (in theory) cross-platform application.
 
@@ -64,11 +64,11 @@ To install Transmorger, just:
 > Verify the SHA256 hash (v0.9.29.0)
 > `---`
 
-## Initial launch
+# Initial launch
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
 
-### Setup-type thing #1: Creating the LocalDb path
+## Setup-type thing #1: Creating the LocalDb path
 
 The first thing you should see when you first launch Transmorger is this popup:
 
@@ -84,7 +84,7 @@ Click **Yes**.
 > Clicking **No** will exit Transmorger.  
 > Subsequent launches will ask the same question, until you click **Yes**, so this step is required.
 
-### Setup-type thing #2: The MasterDb path
+## Setup-type thing #2: The MasterDb path
 
 Next, another message should popup:
 
@@ -94,11 +94,11 @@ The **MasterDb** is the most up-to-date version of the Transmorger database...bu
 
 We'll fix that next, so for now just click **OK**, and Transmorger will exit.
 
-## Configuration
+# Configuration
 
 Before we start messing with the Transmorger configuration file, please review the [Transmorger Configuration Overview](TransmorgerConfigurationOverview.md)
 
-### Modifying the configuration file
+## Modifying the configuration file
 
 We are going to make the following changes to the `transmorger.config`:
 
@@ -107,7 +107,7 @@ We are going to make the following changes to the `transmorger.config`:
 
 Notice that we're leaving the existing ***LocalDb*** and ***Tmp*** defaults.
 
-### Modifying the MasterDb location
+## Modifying the MasterDb location
 
 > [!TIP]
 > You may want to refresh your knowledge of the [MasterDb](TransmorgerDatabaseOverview.md#the-master-database).
@@ -135,7 +135,7 @@ So this:
 > [!IMPORTANT]
 > This change needs to be made for both ***standard*** and ***admin*** users.
 
-### Modifying the `Import` location
+## Modifying the `Import` location
 
 Modify this component of the configuration file to point to where all TeleHealth reports will downloaded.
 
@@ -159,7 +159,7 @@ So this:
 
 This change only needs to be made for both *admin* users.
 
-### Saving the configuration file
+## Saving the configuration file
 
 Your modified `transmorger.config` file should look something like this:
 
@@ -193,7 +193,7 @@ We're interested in other folder here: `AppData/Config`, which contains the tran
 
 Let's take a look at that file, and make some changes.
 
-## Initializing the Master Transmorger database
+# Initializing the Master Transmorger database
 
 That last thing was only *mostly* true: Tingen Transmorger needs one more configuration change, but it's a temporary one.
 
@@ -215,7 +215,7 @@ So open the `transmorger.config` file, and change this line:
 
 But don't launch Transmorger yet! To build the Transmorger database, we need TeleHealth reports.
 
-### Downloading the TeleHealth reports
+## Downloading the TeleHealth reports
 
 So...the TeleHealth reports that Transmorger needs to build its database need to be downloaded manually.
 
