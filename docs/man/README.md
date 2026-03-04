@@ -19,12 +19,6 @@ s[Tingen Transmorger manual](README.md)
 - [Requirements](#requirements)
 - [How it works](#how-it-works)
 - [Additional documentation](#additional-documentation)
-
-- [Installation](#installation)
-- [Initial setup](#initial-launch)
-  - [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
-  - [Setup-type thing #2: The MasterDb path](#setup-type-thing-2-the-masterdb-path)
-- [Configuration](#configuration)
 - [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)
 - [Using Transmorger]()
 
