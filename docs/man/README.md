@@ -31,8 +31,8 @@ Tingen Transmorger is a utility that aggregates data from [Netsmart's TeleHealth
 
 # Requirements
 
-- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0), so make sure that the .NET Desktop Runtime (or the SDK, if you aren't into the whole brevity thing) is installed.
-- 64-bit Operating System
+- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- A 64-bit Operating System
 
 # How it works
 
