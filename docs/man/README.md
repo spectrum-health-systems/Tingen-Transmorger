@@ -80,7 +80,7 @@ When you click **Yes**, Transmorger will create an empty folder named `./AppData
 
 Click **Yes**.
 
-> [!IWARNING]
+> [!WARNING]
 > Clicking **No** will exit Transmorger. Subsequent launches will ask the same question, until you click **Yes**, so this step is required.
 
 
