@@ -12,6 +12,8 @@
 
 </div>
 
+## Required reports
+
 In order for Transmorger to do what it does, and do it accurately, it needs a copy of each of these reports:
 
 1. Visit Details
@@ -21,7 +23,7 @@ In order for Transmorger to do what it does, and do it accurately, it needs a co
 
 ## Report naming convention
 
-Report names look like this:
+Downloaded report names look like this:
 
 ```text
 STQma_%Report_Name%_%StartDate_EndDate%.xlsx
@@ -32,15 +34,15 @@ Where:
 
 - `%StartDate_EndDate%` is the date-range (e.g., `YYYYMMDD_YYYYMMDD`).
 
-So if you run the "Visit Details" report for 1/1/2026 through 1/15/20206, the name of the report would be:
+So if you run the "Visit Details" report for 5/1/2026 through 5/15/20206, the name of the report would be:
 
 ```text
-STQma_Visit_Details_20260101_20260115.xlsx
+STQma_Visit_Details_20260501_20260515.xlsx
 ```
 
 ## Report date range
 
-Each report is run for a specific date-range.
+Each report requires a ***Start Date** and an ***End Date***.
 
 You can run a report for a single day by setting the Start Date and End Date to the same day.
 
