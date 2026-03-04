@@ -13,6 +13,8 @@
 
 - [Introduction](#introduction)
   - [Requirements](#requirements)
+  - [How it works](#how-it-works)
+  - [TeleHealth reports](#telehealth-reports)
   - [The Transmorger database(s)](#the-transmorger-databases)
 - [Installation](#installation)
 - [Initial launch](#initial-launch)
@@ -28,7 +30,15 @@ Welcome to the [Tingen Transmorger](https://github.com/spectrum-health-systems/T
 
 Tingen Transmorger is a utility that aggregates data from [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform. and makes it easier to troubleshoot TeleHealth issues.
 
-The 50,000-foot view of how Tingen Transmorger works is:
+### Requirements
+
+Tingen Transmorger requires [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0), so make sure that the .NET Desktop Runtime (or the SDK, if you aren't into the whole brevity thing) is installed.
+
+In addition, Transmorger is a 64-bit application, and will not run on 32-bit machines.
+
+### How it works
+
+Here's the 50,000-foot view of how Tingen Transmorger works:
 
 - TeleHealth reports are (manually) run from the TeleHealth portal
 - The completed reports are downloaded
@@ -37,11 +47,32 @@ The 50,000-foot view of how Tingen Transmorger works is:
 - Transmorger automatically downloads/updates the database for end-users
 - End-users can use Transmorger to troubleshoot TeleHealth issues
 
-### Requirements
+### TeleHealth reports
 
-Tingen Transmorger requires [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0), so make sure that the .NET Desktop Runtime (or the SDK, if you aren't into the whole brevity thing) is installed.
+In order for Transmorger to do what it does, and do it accurately, it needs a copy of each of these reports:
 
-In addition, Transmorger is a 64-bit application, and will not run on 32-bit machines.
+1. Visit Details
+2. Message Failure report
+3. Message Delivery report
+4. Visit Stats report
+
+Report names have the following syntax: `STQma_%Report_Name%_%StartDate_EndDate%.xlsx`.
+
+`%Report_Name%` is the name of the report (e.g., "Message_Delivery").
+
+`%StartDate_EndDate%` is the date-range (e.g., YYYYMMDD_YYYYMMDD).
+
+So if you run the "Visit Details" report for 1/1/2026 through 1/15/20206, the name of the report would be:
+
+```text
+STQma_%Visit_Details_20260101_20260115.xlsx
+```
+
+
+
+Each report is run for a specific date or date-range, which should be the same for each report.
+
+
 
 ### The Transmorger database(s)
 
@@ -293,12 +324,7 @@ Yeah, not great. But it is what it is.
 
 #### The reports
 
-There are four reports Transmorger needs to build the database:
-
-1. Visit Details
-2. Message Failure report
-3. Message Delivery report
-4. Visit Stats report
+--> link to thing
 
 Each report needs a date range, and the date range should be the same for all reports.
 
