@@ -78,7 +78,11 @@ When you double-click on the `TingenTransmorger.exe` file, and launch it for the
 
 The first thing you should see when you first launch Transmorger is this popup:
 
+<div align="center">
+
 ![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreatePrompt.png)
+
+</div>
 
 The ***LocalDb path*** is where the *local copy* of the Transmorger database will stored.
 
@@ -87,7 +91,7 @@ When you click **Yes**, Transmorger will create an empty folder named `./AppData
 Click **Yes**.
 
 > [!WARNING]
-> Clicking **No** will exit Transmorger.
+> Clicking **No** will exit Transmorger.  
 > Subsequent launches will ask the same question, until you click **Yes**, so this step is required.
 
 ## Setup-type thing #2: The MasterDb path
