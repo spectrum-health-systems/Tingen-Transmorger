@@ -1,4 +1,4 @@
-[Tingen Transmorger manual](README.md)
+s[Tingen Transmorger manual](README.md)
 
 ***
 
@@ -110,11 +110,15 @@ We'll fix that next, so for now just click **OK**, and Transmorger will exit.
 
 # Configuration
 
+<sub>
+
 > [!TIP]
 > You may want to refresh your knowledge of the following before continuing:  
 > - [Transmorger Configuration Overview](TransmorgerConfigurationOverview.md)
 > - [MasterDb](TransmorgerDatabaseOverview.md#the-master-database) before continuing.
 > - [LocalDb](TransmorgerDatabaseOverview.md#the-local-database) before continuing.
+
+</sub>
 
 ## Modifying the configuration file
 
