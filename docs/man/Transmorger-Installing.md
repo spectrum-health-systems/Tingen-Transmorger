@@ -1,4 +1,4 @@
-[Tingen Transmorger manual](README.md) ❰ Transmorger Setup
+[Tingen Transmorger manual](README.md) ❰ Installing Transmorger
 
 ***
 
@@ -18,7 +18,6 @@
 
 ### CONTENTS
 
-- [Introduction](#introduction)
 - [Installation](#installation)
 - [Initial setup](#initial-launch)
   - [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
@@ -29,10 +28,6 @@
   - [Modifying the Import location](#modifying-the-import-location)
 - [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)
 - [Using Transmorger]()
-
-# Introduction
-
-This document will walk you through installing Tingen Transmorger.
 
 > [!IMPORTANT]
 > Before continuing, please make sure you have reviewed the [requirements](README.md#requirements), and have read the [additional documentation](README.md#additional-documentation).
@@ -292,10 +287,8 @@ Click "OK", then click the "Close" button on the "Rebuilding Transmorger Databas
 
 Tingen Transmorger will then launch.
 
-
-
 ***
 
-[Tingen Transmorger manual](README.md) ❰ Transmorger Setup
+[Tingen Transmorger manual](README.md) ❰ Installing Transmorger
 
 > <sub>Last updated: 260304</sub>
