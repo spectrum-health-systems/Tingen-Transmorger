@@ -22,6 +22,7 @@
     - [The local database](#the-local-database)
     - [The master database](#the-master-database)
 - [How the database(s) work](#how-the-databases-work)
+- [Rebuilding the master database]()
 
 ## The Transmorger database(s)
 

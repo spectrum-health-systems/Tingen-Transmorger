@@ -50,8 +50,6 @@ To install Transmorger, just:
 > Verify the SHA256 hash (v0.9.29.0)  
 > `---`
 
-
-
 # Initial setup
 
 When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things.
@@ -97,6 +95,15 @@ We'll fix that next, so for now just click **OK**, and Transmorger will exit.
 > - The Transmorger [Configuration](TransmorgerConfigurationOverview.md) file  
 > - The [MasterDb](TransmorgerDatabaseOverview.md#the-master-database)  
 > - The [LocalDb](TransmorgerDatabaseOverview.md#the-local-database)  
+
+If you take a look in the folder where `TingenTransmorger.exe` is, you'll notice there is a folder named `AppData`, which is where Transmorger will store various data that it needs to function.
+
+You'll also see the `AppData/Database` folder that was created for the [LocalDb](#setup-type-thing-1-creating-the-localdb-path).
+
+We're interested in other folder here: `AppData/Config`, which contains the transmorger.config` configuration file.
+
+Let's take a look at that file, and make some changes.
+
 
 ## Modifying the configuration file
 
@@ -176,6 +183,114 @@ Save the changes.
 Tingen Transmorger is now configured!
 
 
+
+# Initializing the Master Transmorger database
+
+That last thing was only *mostly* true: Tingen Transmorger needs one more configuration change, but it's a temporary one.
+
+We need to change the **Mode** to "Admin", so we can build the initial Transmorger database.
+
+So open the `transmorger.config` file, and change this line:
+
+```json
+    "Mode": "Standard",
+```
+
+...to this:
+
+```json
+    "Mode": "Admin",
+```
+
+...then save the configuration file.
+
+But don't launch Transmorger yet! To build the Transmorger database, we need TeleHealth reports.
+
+## Downloading the TeleHealth reports
+
+So...the TeleHealth reports that Transmorger needs to build its database need to be downloaded manually.
+
+Yeah, not great. But it is what it is.
+
+#### The reports
+
+--> link to thing
+
+Each report needs a date range, and the date range should be the same for all reports.
+
+#### Running a report
+
+To run a TeleHealth reports:
+
+1. Login to your TeleHealth portal
+2. Click the "Reports" tab
+3. Choose a report to run
+4. Choose the start and end date of the report
+5. Click "Run Report"
+
+Using the "Message Delivery Report" as an example:
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-01.jpg)
+
+Some reports take longer than others, and some reports take pretty long.
+
+While the report is being run, you'll see a "Processing" button (that's disabled).
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-02.jpg)
+
+> [!NOTE]
+> All TeleHealth reports in the Import folder are used to create the Transmorger database, so you can download incremental date ranges.
+>
+> For example, running two reports from 1/1/2026-1/15/2015 and 1/16/20206-1/31/2026 will give you the same result as running a single report from 1/1/2026-1/31/2-26.
+
+#### Downloading a report
+
+Once the "Processing" button becomes the Download" button (which is enabled), download the report to your "Import" directory.
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-03.jpg)
+
+Once all reports have been downloaded, we can launch Tingen Transmorger and initialize the database.
+
+### Creating the Master Transmorger database
+
+First, confirm that the `transmorger.config` file has the following line:
+
+```json
+    "Mode": "Admin",
+```
+
+Then, launch Transmorger.
+
+You'll get the following popup:
+
+![](./Images/TransmorgerManual-MasterDbRebuildPrompt.png)
+
+Click **Yes** to initialize the Transmorger database (which, technically, is just "rebuilding" it for the first time).
+
+While the database is being built, you'll see a progress indicator:
+
+![](./Images/TransmorgerManual-RebuildingDbProgress.png)
+
+When the build process is complete, you'll see a popup letting you know there is a database update available.
+
+![](./Images/TransmorgerManual-NewerDbAvailablePrompt.png)
+
+> [!NOTE]
+> When you rebuild the Transmorger database, you are rebuilding the **master** database.
+>
+> Once that is complete, Transmorger checks the local version of the database to see if it's older than the master (which, in this case, it is), and prompts you to update.
+
+Since we want that update, click **Yes**
+
+You will then (hopefully) get a popup letting you know the database has been updated.
+
+![](./Images/TransmorgerManual-UpdateDbSuccess.png)
+
+Click "OK", then click the "Close" button on the "Rebuilding Transmorger Database" window.
+
+![](./Images/TransmorgerManual-RebuildDbCompleteClose.png)
+
+Tingen Transmorger will then launch.
 
 
 
