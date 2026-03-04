@@ -89,20 +89,13 @@ We'll fix that next, so for now just click **OK**, and Transmorger will exit.
 
 # Configuration
 
-> [!TIP]
-> You may want to refresh your knowledge of the following before continuing:  
-> - The Transmorger [Configuration](TransmorgerConfigurationOverview.md) file  
-> - The [MasterDb](TransmorgerDatabaseOverview.md#the-master-database)  
-> - The [LocalDb](TransmorgerDatabaseOverview.md#the-local-database)  
-
 If you take a look in the folder where `TingenTransmorger.exe` is, you'll notice there is a folder named `AppData`, which is where Transmorger will store various data that it needs to function.
 
 You'll also see the `AppData/Database` folder that was created for the [LocalDb](#setup-type-thing-1-creating-the-localdb-path).
 
-We're interested in other folder here: `AppData/Config`, which contains the transmorger.config` configuration file.
+We're interested in other folder here: `AppData/Config`, which contains the `transmorger.config` configuration file.
 
-Let's take a look at that file, and make some changes.
-
+Let's open that file, and make some modifications.
 
 ## Modifying the configuration file
 
@@ -157,8 +150,6 @@ So this:
     "MasterDb": "Z:/Transmorger/Import"
 ```
 
-This change only needs to be made for both *admin* users.
-
 ## Saving the configuration file
 
 Your modified `transmorger.config` file should look something like this:
@@ -180,8 +171,6 @@ Your modified `transmorger.config` file should look something like this:
 Save the changes.
 
 Tingen Transmorger is now configured!
-
-
 
 # Initializing the Master Transmorger database
 
@@ -217,30 +206,6 @@ Yeah, not great. But it is what it is.
 
 Each report needs a date range, and the date range should be the same for all reports.
 
-#### Running a report
-
-To run a TeleHealth reports:
-
-1. Login to your TeleHealth portal
-2. Click the "Reports" tab
-3. Choose a report to run
-4. Choose the start and end date of the report
-5. Click "Run Report"
-
-Using the "Message Delivery Report" as an example:
-
-![](./Images/TransmorgerManual-TeleHealthReportDownload-01.jpg)
-
-Some reports take longer than others, and some reports take pretty long.
-
-While the report is being run, you'll see a "Processing" button (that's disabled).
-
-![](./Images/TransmorgerManual-TeleHealthReportDownload-02.jpg)
-
-> [!NOTE]
-> All TeleHealth reports in the Import folder are used to create the Transmorger database, so you can download incremental date ranges.
->
-> For example, running two reports from 1/1/2026-1/15/2015 and 1/16/20206-1/31/2026 will give you the same result as running a single report from 1/1/2026-1/31/2-26.
 
 #### Downloading a report
 

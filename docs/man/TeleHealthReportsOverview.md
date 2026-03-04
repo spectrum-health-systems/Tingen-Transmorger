@@ -25,7 +25,7 @@
 - [Report aggregation](#report-aggregation)
 - [Missing dates](#missing-dates)
 
-## Required reports
+# Required reports
 
 In order for Transmorger to do what it does, and do it accurately, it needs these reports:
 
@@ -33,6 +33,42 @@ In order for Transmorger to do what it does, and do it accurately, it needs thes
 2. Message Failure
 3. Message Delivery
 4. Visit Stats
+
+# Report date range
+
+Each report requires a ***Start Date*** and an ***End Date***.
+
+You can run a report for a single day by setting the *Start Date* and *End Date* to the same day.
+
+##Running a report
+
+To run a TeleHealth reports:
+
+1. Login to your TeleHealth portal
+2. Click the "Reports" tab
+3. Choose a report to run
+4. Choose the start and end date of the report
+5. Click "Run Report"
+
+Using the "Message Delivery Report" as an example:
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-01.jpg)
+
+Some reports take longer than others, and some reports take pretty long.
+
+While the report is being run, you'll see a "Processing" button (that's disabled).
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-02.jpg)
+
+> [!NOTE]
+> All TeleHealth reports in the Import folder are used to create the Transmorger database, so you can download incremental date ranges.
+>
+> For example, running two reports from 1/1/2026-1/15/2015 and 1/16/20206-1/31/2026 will give you the same result as running a single report from 1/1/2026-1/31/2-26.
+
+
+
+
+
 
 ## Report names
 
@@ -53,11 +89,6 @@ So if you run the "Visit Details" report for 5/1/2026 - 5/15/20206, the name of 
 STQma_Visit_Details_20260501_20260515.xlsx
 ```
 
-## Report date range
-
-Each report requires a ***Start Date*** and an ***End Date***.
-
-You can run a report for a single day by setting the *Start Date* and *End Date* to the same day.
 
 In order to troubleshoot TeleHealth for the month of May 2026, you would need the following reports:
 
@@ -67,6 +98,8 @@ STQma_Message_Failure_20260501_20260531.xlsx
 STQma_Message_Delivery_20260501_20260531.xlsx
 STQma_Visit_Stats_20260501_20260531.xlsx
 ```
+
+
 
 ## Capturing all data
 
