@@ -67,7 +67,7 @@ To install Transmorger, just:
 2. Extract the `TingenTransmorger.exe` file to a location of your choice
 
 > [!WARNING]
-> Verify the SHA256 hash (v0.9.29.0)
+> Verify the SHA256 hash (v0.9.29.0)  
 > `---`
 
 # Initial setup
@@ -86,7 +86,7 @@ The first thing you should see when you first launch Transmorger is this popup:
 
 The ***LocalDb path*** is where the *local copy* of the Transmorger database will stored.
 
-When you click **Yes**, Transmorger will create an empty folder named `./AppData/Database`. This is the default (and recommended) location for the *LocalDb*, but you can change the LocalDb path to any location via the configuration file.
+When you click **Yes**, Transmorger will create an empty folder named `./AppData/Database`. This is the default (and recommended) location for the LocalDb, but you can change the path to any location via the configuration file.
 
 Click **Yes**.
 
@@ -104,13 +104,17 @@ Next, another message should popup:
 
 </div>
 
-The **MasterDb** is the most up-to-date version of the Transmorger database...but it doesn't actually exist yet. In fact, it doesn't even have a *location* to exist in.
+The **MasterDb** is the most up-to-date version of the Transmorger database...but it doesn't actually exist yet. In fact, it doesn't even have a *location* to exist in!
 
 We'll fix that next, so for now just click **OK**, and Transmorger will exit.
 
 # Configuration
 
-Before we start messing with the Transmorger configuration file, please review the [Transmorger Configuration Overview](TransmorgerConfigurationOverview.md)
+> [!TIP]
+> You may want to refresh your knowledge of the following before continuing:  
+> - [Transmorger Configuration Overview](TransmorgerConfigurationOverview.md)
+> - [MasterDb](TransmorgerDatabaseOverview.md#the-master-database) before continuing.
+> - [LocalDb](TransmorgerDatabaseOverview.md#the-local-database) before continuing.
 
 ## Modifying the configuration file
 
@@ -145,9 +149,6 @@ So this:
 ```json
     "MasterDb": "Z:/Transmorger/Database"
 ```
-
-> [!IMPORTANT]
-> This change needs to be made for both ***standard*** and ***admin*** users.
 
 ## Modifying the `Import` location
 
