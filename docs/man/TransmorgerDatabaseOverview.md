@@ -17,8 +17,8 @@
 </div>
 
 - [The Transmorger database(s)](#the-transmorger-databases)
-    - [The LocalDb](#the-localdb)
-    - [The MasterDb](#the-masterdb)
+    - [The local database](#the-local-database)
+    - [The master database](#the-master-database)
 
 ## The Transmorger database(s)
 
@@ -48,7 +48,9 @@ The **MasterDb**:
 
 End-users will probably never see the MasterDb
 
-## If you want something visual (that's not too abysmal):
+## How the databases work
+
+If you want something visual (that's not too abysmal):
 
 ```mermaid
 flowchart LR
@@ -73,6 +75,15 @@ flowchart LR
 >[3] If the MasterDb is more current than the LocalDb, the MasterDb is copied to the end-user's machine, overwriting the current LocalDb
 >
 > The end-user communicates directly with the LocalDb
+
+
+
+
+
+
+
+
+
 
 ***
 

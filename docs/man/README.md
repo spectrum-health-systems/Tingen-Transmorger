@@ -18,7 +18,6 @@
 - [Introduction](#introduction)
   - [Requirements](#requirements)
   - [How it works](#how-it-works)
-  - [The Transmorger database(s)](#the-transmorger-databases)
 - [Installation](#installation)
 - [Initial launch](#initial-launch)
   - [Setup-type thing #1: Creating the LocalDb path](#setup-type-thing-1-creating-the-localdb-path)
@@ -50,26 +49,20 @@ Here's the 50,000-foot view of how Tingen Transmorger works:
 - Transmorger automatically downloads/updates the database for end-users
 - End-users can use Transmorger to troubleshoot TeleHealth issues
 
-Before you continue, I would recommend taking a quick look at the [TeleHealth Reports Overview](TeleHealthReportsOverview.md) and [Transmorger Database Overview]()
-
-
-
-#### 
-
+Before you continue, I would recommend taking a quick look at the [TeleHealth Reports Overview](TeleHealthReportsOverview.md) and [Transmorger Database Overview](TransmorgerDatabaseOverview.md)
 
 ## Installation
 
-Tingen Transmorger is a stand-alone, portable, cross-platform (in theory) application.
+Tingen Transmorger is a stand-alone, portable, (in theory) cross-platform application.
 
-To install Tingen Transmorger, just:
+To install Transmorger, just:
 
 1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
 2. Extract the `TingenTransmorger.exe` file to a location of your choice
 
 > [!IMPORTANT]
 > Verify the SHA256 hash (v0.9.29.0)
-> `82d08e5237b5f5816da05c9d9b6424db8262c31c1e58424401ba3d07bf2efd57`
-
+> `---`
 
 ## Initial launch
 
@@ -81,13 +74,11 @@ The first thing you should see when you first launch Transmorger is this popup:
 
 ![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreatePrompt.png)
 
-The **LocalDb path** is where the *local copy* of the Transmorger database will stored, which is `AppData/Database` by default.
+The **LocalDb path** is where the *local copy* of the Transmorger database will stored, which is `./AppData/Database` by default.
 
-You can change the LocalDb path to any location, and on a per-user basis, via the configuration file (but the default setting is recommended).
+When you click **Yes**, Transmorger will set the LocalDb path to `./AppData/Database`, and create the folder. This is the default (and recommended) location for the LocalDb, but you can change the LocalDb path to any location, and on a per-user basis, via the configuration file.
 
-When you click **Yes**, Transmorger will set the LocalDb path to `AppData/Database`, and create the folder.
-
-So click **Yes**.
+Click **Yes**.
 
 ### Setup-type thing #2: The MasterDb path
 
