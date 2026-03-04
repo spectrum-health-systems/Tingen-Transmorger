@@ -16,7 +16,7 @@ This is a short overview of the TeleHealth reports that are used with Tingen Tra
 
 ## Required reports
 
-In order for Transmorger to do what it does, and do it accurately, it needs each of these reports:
+In order for Transmorger to do what it does, and do it accurately, it needs these reports:
 
 1. Visit Details
 2. Message Failure
@@ -36,7 +36,7 @@ Where:
 
 - `%StartDate_EndDate%` is the date-range (e.g., `YYYYMMDD_YYYYMMDD`).
 
-So if you run the "Visit Details" report for 5/1/2026 through 5/15/20206, the name of the report would be:
+So if you run the "Visit Details" report for 5/1/2026 - 5/15/20206, the name of the report would be:
 
 ```text
 STQma_Visit_Details_20260501_20260515.xlsx
@@ -56,6 +56,12 @@ STQma_Message_Failure_20260501_20260531.xlsx
 STQma_Message_Delivery_20260501_20260531.xlsx
 STQma_Visit_Stats_20260501_20260531.xlsx
 ```
+
+## Capturing all data in a report
+
+In order to capture all data for a date/date-range. is recommended that you run reports once that date/range has passed.
+
+For example, to get all data for 5/1/2026 - 5/15/20206, run the report on 5/16/26.
 
 ## Report aggregation
 
