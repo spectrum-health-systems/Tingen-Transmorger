@@ -22,8 +22,6 @@
 - [Report date range](#report-date-range)
 - [Running reports](#running-reports)
 - [Downloading reports](#downloading-reports)
-
-
 - [Report names](#report-names)
 - [Capturing all data](#capturing-all-data)
 - [Report aggregation](#report-aggregation)
@@ -44,7 +42,7 @@ Each report requires a ***Start Date*** and an ***End Date***.
 
 You can run a report for a single day by setting the *Start Date* and *End Date* to the same day.
 
-## Running reports
+# Running reports
 
 To run a TeleHealth reports:
 
@@ -69,21 +67,13 @@ While the report is being run, you'll see a "Processing" button (that's disabled
 >
 > For example, running two reports from 1/1/2026-1/15/2015 and 1/16/20206-1/31/2026 will give you the same result as running a single report from 1/1/2026-1/31/2-26.
 
-#### Downloading reports
+# Downloading reports
 
 Once the "Processing" button becomes the Download" button (which is enabled), download the report to your "Import" directory.
 
 ![](./Images/TransmorgerManual-TeleHealthReportDownload-03.jpg)
 
-Once all reports have been downloaded, we can launch Tingen Transmorger and initialize the database.
-
-
-
-
-
-
-
-## Report names
+# Report names
 
 Downloaded report names look like this:
 
@@ -102,7 +92,6 @@ So if you run the "Visit Details" report for 5/1/2026 - 5/15/20206, the name of 
 STQma_Visit_Details_20260501_20260515.xlsx
 ```
 
-
 In order to troubleshoot TeleHealth for the month of May 2026, you would need the following reports:
 
 ```text
@@ -111,8 +100,6 @@ STQma_Message_Failure_20260501_20260531.xlsx
 STQma_Message_Delivery_20260501_20260531.xlsx
 STQma_Visit_Stats_20260501_20260531.xlsx
 ```
-
-
 
 ## Capturing all data
 

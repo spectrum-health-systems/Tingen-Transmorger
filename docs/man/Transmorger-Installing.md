@@ -194,22 +194,11 @@ So open the `transmorger.config` file, and change this line:
 
 But don't launch Transmorger yet! To build the Transmorger database, we need TeleHealth reports.
 
-## Downloading the TeleHealth reports
+# Downloading the TeleHealth reports
 
-So...the TeleHealth reports that Transmorger needs to build its database need to be downloaded manually.
+See docs
 
-Yeah, not great. But it is what it is.
-
-#### The reports
-
---> link to thing
-
-Each report needs a date range, and the date range should be the same for all reports.
-
-
-
-
-### Creating the Master Transmorger database
+# Creating the Master Transmorger database
 
 First, confirm that the `transmorger.config` file has the following line:
 
