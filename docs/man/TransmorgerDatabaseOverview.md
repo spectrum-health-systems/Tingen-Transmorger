@@ -38,7 +38,7 @@ The **LocalDb**:
 
 Each Transmorger installation should have it's own LocalDb.
 
-When Transmorger is launched, it checks to see if there is an updated version of the LocalDb. If there is an updated version, the user is prompted to update.
+**Fun fact**: When Transmorger is launched, it checks to see if there is an updated version of the LocalDb. If there is an updated version, the user is prompted to update!
 
 ### The master database
 
@@ -49,7 +49,7 @@ The **MasterDb**:
 - is only accessed when building/rebuilding the database in *Admin mode*
 - is always the most up-to-date version of the Transmorger database
 
-End-users will probably never see the MasterDb
+**Fun fact**: End-users will probably never see the MasterDb!
 
 ## How the database(s) work
 

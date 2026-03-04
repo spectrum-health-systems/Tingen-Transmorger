@@ -100,7 +100,7 @@ Before we start messing with the Transmorger configuration file, please review t
 
 ### Modifying the configuration file
 
-We are going to make the follosing changes to the `transmorger.config`:
+We are going to make the following changes to the `transmorger.config`:
 
 - For **standard** users, we are only going to modify the ***MasterDb*** setting.
 - For **admin** users, we are going to modify both the ***MasterDb*** and ***Import*** settings.
@@ -109,7 +109,8 @@ Notice that we're leaving the existing ***LocalDb*** and ***Tmp*** defaults.
 
 ### Modifying the `MasterDb` location
 
-You may want to refresh your knowledge of the [MasterDb](TransmorgerDatabaseOverview.md#the-master-database).
+> [!TIP]
+> You may want to refresh your knowledge of the [MasterDb](TransmorgerDatabaseOverview.md#the-master-database).
 
 The **MasterDb** component of the configuration file needs to point to where your master database will reside.
 
