@@ -11,8 +11,6 @@
 
   <h1>TINGEN TRANSMORGER MANUAL</h1>
 
-  THIS DOCUMENTATION IS A WORK-IN-PROGRESS
-
 </div>
 
 ## Contents
@@ -23,6 +21,7 @@
 - [Additional documentation](#additional-documentation)
 - [Installing](#installing)
 - [Using](#using)
+- [Development](#development)
 
 # Introduction
 
@@ -48,11 +47,11 @@ Here's the 50,000-foot view of how Tingen Transmorger works:
 
 # Additional documentation
 
-Before you continue, I would recommend taking a quick look at the following documentation, so you are familiar with various terminology:
+Before you continue, I would recommend taking a quick look at the following documentation:
 
-- [The Transmorger Database](TheTransmorgerDatabase.md)
-- [The Transmorger Configuration](TheTransmorgerConfiguration.md)
-- [The TeleHealth Reports](TheTeleHealthReports.md)
+- [The Transmorger databases](Transmorger-Databases.md)
+- [The Transmorger configuration file](Transmorger-ConfigurationFile.md)
+- [The TeleHealth Reports](TeleHealth-Reports.md)
 
 # Installing
 
@@ -62,42 +61,10 @@ Please see the [Installing Tingen Transmorger](Transmorger-Installing.md) docume
 
 Please see the [Using Tingen Transmorger](Transmorger-Using.md) documentation.
 
+# Development
+
 ***
 
 [Tingen Transmorger manual](README.md)
 
 > <sub>Last updated: 260305</sub>
-
-<!--
-
-
-Run `TingenTransmorger.exe` again.
-
-If you didn't manually create `AppData/Database`, Transmorger will prompt you to create it now:
-
-![](.github/Readme/LocalDbDoesNotExistError.png)
-
-Either way, you'll get this popup letting you know that there is a newer version of the database (since the local version doesn't actually exist yet):
-
-![](.github/Readme/NewerDatabaseAvailable.png)
-
-Click "Yes", wait a few seconds (hopefully), and then you should get this message:
-
-![](.github/Readme/DatabaseUpgradeSuccess.png)
-
-Click "Ok", and you'll see the Transmorger Main Window:
-
-![](.github/Readme/TransmorgerMainWindow.png)
-
-
-
-
-
-
-
-
-And here's a secret: *it doesn't have to be local*. That's right, you 
-
-Tmp/ cleaning
--->
-

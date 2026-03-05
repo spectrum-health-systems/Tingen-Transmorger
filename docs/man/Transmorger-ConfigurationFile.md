@@ -1,4 +1,4 @@
-[Tingen Transmorger manual](README.md) ❰ Transmorger Configuration Overview
+[Tingen Transmorger manual](README.md) ❰ Configuring Transmorger
 
 ***
 
@@ -65,7 +65,7 @@ There are two modes that Transmorger can run in:
 This is the mode that end-users should always use.
 
 - **Admin**  
-This mode is used for rebuilding the Transmorger database, and is *not* intended for end-users. You can find more information about this mode [here]().
+This mode is used for rebuilding the Transmorger database, and is *not* intended for end-users. You can find more information about this mode.
 
 ### Standard directories
 
@@ -87,6 +87,6 @@ Any temporary data that Transmorger needs to function is stored here. When Trans
 - **Import**  
 This is the location for the TeleHealth reports that will be ***transmorgified***. This can be anywhere, but for organizational purposes I recommend putting it in the parent folder of the `MasterDb`.
 
-[Tingen Transmorger manual](README.md) ❰ Transmorger Configuration Overview
+[Tingen Transmorger manual](README.md) ❰ Configuring Transmorger
 
-> <sub>Last updated: 260304</sub>
+> <sub>Last updated: 260305</sub>

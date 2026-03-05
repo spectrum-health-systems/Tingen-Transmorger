@@ -1,4 +1,4 @@
-[Tingen Transmorger manual](README.md) ❰ Transmorger Database Overview
+[Tingen Transmorger manual](README.md) ❰ The Transmorger Database(s)
 
 ***
 
@@ -13,22 +13,23 @@
     TINGEN TRANSMORGER MANUAL<br>
     The Transmorger Database(s)
   </h1>
-  THIS DOCUMENTATION IS A WORK-IN-PROGRESS
+
 </div>
 
 ### CONTENTS
 
-- [The Transmorger database(s)](#the-transmorger-databases)
-    - [The local database](#the-local-database-localdb)
-    - [The master database](#the-master-database-masterdb)
+- [The database(s)](#the-transmorger-databases)
+    - [The local database (LocalDb)](#the-local-database-localdb)
+    - [The master database (MasterDb)](#the-master-database-masterdb)
 - [How the database(s) work](#how-the-databases-work)
-- [Rebuilding the master database]()
+- [Rebuilding the master database](#rebuilding-the-master-database)
 
-## The database(s)
+
+# The database(s)
 
 *Technically*, Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
 
-### The local database (LocalDb)
+## The local database (LocalDb)
 
 The **LocalDb**:
 
@@ -41,7 +42,7 @@ Each Transmorger installation should have it's own LocalDb.
 
 **Fun fact**: When Transmorger is launched, it checks to see if there is an updated version of the LocalDb. If there is an updated version, the user is prompted to update!
 
-### The master database (MasterDb)
+## The master database (MasterDb)
 
 The **MasterDb**:
 
@@ -52,7 +53,7 @@ The **MasterDb**:
 
 **Fun fact**: End-users will probably never see the MasterDb!
 
-## How the database(s) work
+# How the database(s) work
 
 If you want something visual (that's not too abysmal):
 
@@ -80,8 +81,46 @@ flowchart LR
 >
 > The end-user communicates directly with the LocalDb
 
+# Rebuilding the master database
+
+To rebuild the MasterDb:
+
+1. Download the TeleHealth reports with the date/date-ranges you want Transmorger to use
+2. Change the Transmorger mode to "Admin" in the `./AppData/Config/transmorger.config` file
+3. Launch Transmorger, and the rebuild process should start
+
+## The rebuild process
+
+You should get this prompt:
+
+![](./Images/TransmorgerManual-MasterDbRebuildPrompt.png)
+
+Click **Yes**.
+
+While the database is being built, you'll see a progress indicator:
+
+![](./Images/TransmorgerManual-RebuildingDbProgress.png)
+
+When the build process is complete, you'll see a popup letting you know there is a database update available.
+
+![](./Images/TransmorgerManual-NewerDbAvailablePrompt.png)
+
+Click **Yes**
+
+You will then (hopefully) get a popup letting you know the database has been updated.
+
+![](./Images/TransmorgerManual-UpdateDbSuccess.png)
+
+Click *OK*
+
+![](./Images/TransmorgerManual-RebuildDbCompleteClose.png)
+
+Tingen Transmorger will then launch in Admin mode.
+
+Exit Transmorger, change the mode to "Standard", and relaunch Transmorger as an end-user.
+
 ***
 
-[Tingen Transmorger manual](README.md) ❰ Transmorger Database Overview
+[Tingen Transmorger manual](README.md) ❰ The Transmorger Database(s)
 
-> <sub>Last updated: 260304</sub>
+> <sub>Last updated: 260305</sub>
