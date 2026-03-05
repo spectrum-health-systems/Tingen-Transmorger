@@ -9,24 +9,24 @@
 
 </div>
 
-Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and is not end-user friendly.
+Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
-Tingen Transmorger is a utility that *aggregates* those reports, ***transmorgifies*** the data, and makes it easy to find information like:
+**Tingen Transmorger** is a utility ***transmorgifies*** those reports, and makes it easy to find information like:
 
 - Patient alert details (deliver successes/failures, etc.)
 - Patient connection details (devices/operating systems used, etc.)
 - Meeting details (start/end time, when participants joined, participant list, etc.)
 - Meeting quality (bandwidth, audio/video quality, etc.)
 
-And most of the information in Tingen Transmorger can easily be copy/pasted into other documentation, emails, and tickets.
+And most of the information in Transmorger can easily be copy/pasted into other documentation, emails, and tickets.
 
 ## The Transmorger database
 
-The heart of Tingen Transmorger is the Transmorger Database, which combines multiple TeleHealth reports into a single, well organized collection of data that:
+The heart of Transmorger is the its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
 
-- Contains data from date ranges *you* choose
+- Contains information from date ranges *you* choose
 - Can be added to *on-the-fly*, with dates/date ranges *you* choose
-- Is updated for end-users *automatically*, ensuring users have the latest available data
+- Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
 ## Requirements
 
