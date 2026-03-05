@@ -92,7 +92,7 @@ This component is not used with patient searches.
 A summary of total messages, successful messages, and failed messages.
 
 2. **Copy buttons**  
-Clicking one of these buttons will copy specific data to the clipboard (see [Copying Transmorger data](#the-copy-data-buttons))
+Clicking one of these buttons will copy specific data to the clipboard (see [the Copy Data buttons](#the-copy-data-buttons))
 
 3. **Message detail results**  
 Displays various details about messages.
