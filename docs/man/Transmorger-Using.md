@@ -26,7 +26,12 @@
 
 # The Transmorger user interface
 
-The two primary interfaces you will be working with are the **Main Window** and the **Message Details Window**.
+The primary interfaces you will be working with are:
+
+1. The **Main** window
+2. The **Message Details** window
+3. The **Message Details** buttons
+4. The **Copy data** buttons
 
 ## The Main window
 
@@ -80,7 +85,7 @@ Clicking one of these buttons will copy specific data to the clipboard (see [Cop
 3. **Message detail results**  
 Displays various details about messages.
 
-# The message details button
+## The message details button
 
 When performing a patient search, both the **phone** and **email** contacts will have a **message detail button**. This button will be in one of four states:
 
@@ -100,7 +105,7 @@ This indicates that a phone number/email address was found, along with a mix of 
 ![](./Images/TransmorgerManual-MessageDetailsButtonRed.png)  
 This indicates that a phone number/email address was found, along with only failure delivery information. Clicking the button will open the Message Details window.
 
-# Copying Transmorger data
+## Copying Transmorger data
 
 You'll find the following **copy** icons on various components:
 
