@@ -2,7 +2,7 @@
 
   ![Logo](.github/Logo/TransmorgerLogo-256x256.png)
 
-  ![Release](https://img.shields.io/badge/version-0.9.29.0--rc1-teal)&nbsp;&nbsp;
+  ![Release](https://img.shields.io/badge/version-0.9.29.0-teal)&nbsp;&nbsp;
   ![License](https://img.shields.io/badge/license-apache-blue)
 
   <h1>Tingen Transmorger</h1>
@@ -22,7 +22,7 @@ And most of the information in Transmorger can easily be copy/pasted into other 
 
 ## The Transmorger database
 
-The heart of Transmorger is the its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
+The heart of Transmorger is its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
 
 - Contains information from date ranges *you* choose
 - Can be added to *on-the-fly*, with dates/date ranges *you* choose
@@ -35,7 +35,7 @@ The heart of Transmorger is the its Database, which aggregates multiple TeleHeal
 
 ## Getting Started
 
-Check out the the Tingen Transmorger [manual](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/docs/man/README.md).
+Please see the [Tingen Transmorger manual](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/docs/man/README.md).
 
 ## Other information
 
