@@ -47,8 +47,8 @@ Each Transmorger installation should have it's own LocalDb.
 The **MasterDb**:
 
 - is also named `transmorger.db`
-- should be located where that all end-users have access to (recommended)
-- is only accessed when building/rebuilding the database in *Admin mode*
+- should be located where all end-users have access
+- is only modified when building/rebuilding the database in *Admin mode*
 - is always the most up-to-date version of the Transmorger database
 
 **Fun fact**: End-users will probably never see the MasterDb!
@@ -85,9 +85,11 @@ flowchart LR
 
 To rebuild the MasterDb:
 
-1. Download the TeleHealth reports with the date/date-ranges you want Transmorger to use
+1. [Run the TeleHealth reports](TeleHealth-Reports.md#running-reports) with the date/date-ranges you want Transmorger to use
 2. Change the Transmorger mode to "Admin" in the `./AppData/Config/transmorger.config` file
-3. Launch Transmorger, and the rebuild process should start
+3. Launch Transmorger
+
+The rebuild process should start.
 
 ## The rebuild process
 
