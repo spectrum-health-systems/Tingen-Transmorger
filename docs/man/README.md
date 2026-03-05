@@ -63,6 +63,8 @@ Please see the [Using Tingen Transmorger](Transmorger-Using.md) documentation.
 
 # Development
 
+Tingen Transmorger is being [actively developed](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
+
 ***
 
 [Tingen Transmorger manual](README.md)
