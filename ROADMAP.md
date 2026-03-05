@@ -25,6 +25,7 @@
 
 ## Refactor
 
+- Providers are listed as PatientName in the database (I think)
 - Everything in ns:Database needs to be refactored.
 - MainWindow.MeetingDetails.cs needs to be refactored.
 - MainWindow.PatientDetails.cs needs to be refactored.

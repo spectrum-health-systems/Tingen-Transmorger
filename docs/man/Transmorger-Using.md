@@ -23,6 +23,8 @@
   - [The Message Details buttons](#the-message-details-button)
   - [The Copy Data buttons](#the-copy-data-buttons)
 
+- Performing a patient search
+
 ***
 
 > [!NOTE]
@@ -132,9 +134,46 @@ Clicking this icon will copy any data that is classified as "successful".
 Clicking this icon will copy any data that is classified as "failure".
 
 - **Copy both success and failures**  
-![](./Images/TransmorgerManual-CopyFailure.png)  
+![](./Images/TransmorgerManual-CopyMix.png)  
 Clicking this icon will copy any data that is classified as either "successful" or "failure" (essentially all data).
 
+# Performing a patient search
+
+To perform a patient search:
+
+1. Verify the **search toggle button** says "Patient Search". If it does not, click it.
+2. Choose to search by **name** or **ID** (for this example we will search by name)
+3. Start typing the patient name in the **search box**
+4. When the result you are looking for appears, click it
+
+Patient name, ID, and meeting list will be displayed. If the patient has an associated phone number or email address, that information will also be displayed.
+
+## Reviewing phone message details
+
+If the patient has a phone number, it will be displayed. If there are successful/failed deliveries to the phone number, you can click on the **message details button** to display additional information.
+
+## Reviewing email message details
+
+If the patient has an email address, it will be displayed. If there are successful/failed deliveries to the email address, you can click on the **message details button** to display additional information.
+
+## Reviewing meeting details
+
+A sortable list of meetings associated with the patient will be displayed. Click on a meeting to display various details.
+
+# Performing a provider search
+
+To perform a provider search:
+
+1. Verify the **search toggle button** says "Provider Search". If it does not, click it.
+2. Choose to search by **name** or **ID** (for this example we will search by name)
+3. Start typing the provider name in the **search box**
+4. When the result you are looking for appears, click it
+
+The provider name, ID, and meeting list will be displayed.
+
+## Reviewing meeting details
+
+A sortable list of meetings associated with the provider will be displayed. Click on a meeting to display various details.
 
 
 [Tingen Transmorger manual](README.md) ❰ Using Transmorger
