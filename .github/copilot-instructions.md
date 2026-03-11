@@ -1,4 +1,4 @@
-<!-- Last updated 260219 -->
+<!-- Last updated 260311 -->
 
 # Copilot Instructions (Repository Onboarding)
 
@@ -58,9 +58,10 @@ instructions first; perform searches only when the instructions are incomplete o
 - Keep `<summary>` tags on a single line.
 - Keep `<summary>` tags under 120 characters.
 - Example `<summary>` format:
-    ```xml
-    /// <summary>Represents a customer in the system.</summary>
-    ```
+
+```xml
+/// <summary>Represents a customer in the system.</summary>
+```
 
 ### <remarks> guidelines
 
@@ -69,20 +70,23 @@ instructions first; perform searches only when the instructions are incomplete o
 - If a `<remarks>` section is 120 characters or less, keep it on a single line; otherwise, use multi-line format.
 - `<remarks>` should use `<list>`, `<para>`, and other XMLdoc tags as needed.
 - Example of single-line `<remarks>`:
-    ```xml
-    /// <remarks>This method initializes the customer object with default values.</remarks>
-    ```
+
+```xml
+/// <remarks>This method initializes the customer object with default values.</remarks>
+```
 -Example of multi-line `<remarks>`:
-    ```xml
-    /// <remarks>
-    ///   This method performs the following steps:
-    ///   <list type="bullet">
-    ///     <item>Initializes the components.</item>
-    ///     <item>Sets up event handlers.</item>
-    ///     <item>Starts the main processing loop.</item>
-    ///   </list>
-    /// </remarks>
-    ```
+
+```xml
+/// <remarks>
+/// This method performs the following steps:
+/// <list type="bullet">
+/// <item>Initializes the components.</item>
+/// <item>Sets up event handlers.</item>
+/// <item>Starts the main processing loop.</item>
+/// </list>
+/// </remarks>
+```
+
 ### Other tag quideolines
 
   - Use `<param>` tags for all parameters.
@@ -93,13 +97,12 @@ instructions first; perform searches only when the instructions are incomplete o
 ```xml
 /// <summary>Calculates the total price of items in the cart.</summary>
 /// <remarks>
-///   This method sums up the prices of all items in the shopping cart,
-///   applying any discounts or taxes as necessary.
-///   <list type="bullet">
-///     <item>Iterates through each item in the cart.</item>
-///     <item>Adds the item's price to the total.</item>
-///     <item>Applies discounts if applicable.</item>
-///   </list>
+/// This method sums up the prices of all items in the shopping cart, applying any discounts or taxes as necessary.
+/// <list type="bullet">
+/// <item>Iterates through each item in the cart.</item>
+/// <item>Adds the item's price to the total.</item>
+/// <item>Applies discounts if applicable.</item>
+/// </list>
 /// </remarks>
 /// <param name="items">The list of items in the cart.</param>
 /// <returns>The total price as a decimal value.</returns>
