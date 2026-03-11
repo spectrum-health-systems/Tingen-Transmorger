@@ -810,208 +810,156 @@
         <member name="P:TingenTransmorger.Models.MeetingRow.IsCompleted">
             <summary>Gets or sets whether this meeting has been completed.</summary>
         </member>
+        <member name="T:TingenTransmorger.TeleHealthReport.ProcessWorkbook">
+            <summary>Provides methods for processing TeleHealth report Excel workbooks into JSON output files.</summary>
+        </member>
         <member name="F:TingenTransmorger.TeleHealthReport.ProcessWorkbook.ExcelConfig">
-            <summary>
-            Excel data set configuration for reading Excel files.
-            </summary>
+            <summary>Excel dataset configuration that treats the first row of each sheet as a header row.</summary>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorkbook.MessageDelivery(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Message Delivery Excel reports.
-            </summary>
-            <param name="importDir">
-            Directory containing source Excel files.
-            </param>
-            <param name="tmpDir">
-            Temporary data directory.
-            </param>
-            <param name="statusCallback">
-            Optional callback to report status messages.
-            </param>
+            <summary>Processes Message Delivery Excel workbooks, writing a flat JSON report of delivery statistics.</summary>
+            <param name="importDir">Directory containing source Excel files.</param>
+            <param name="tmpDir">Temporary data directory for JSON output.</param>
+            <param name="statusCallback">Optional callback to report progress messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorkbook.MessageFailure(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Message Failure Excel reports.
-            </summary>
-            <param name="importDir">
-            Directory containing source Excel files.
-            </param>
-            <param name="tmpDir">
-            Temporary data directory.
-            </param>
-            <param name="statusCallback">
-            Optional callback to report status messages.
-            </param>
+            <summary>Processes Message Failure Excel workbooks, writing summary, SMS statistics, and email statistics JSON reports.</summary>
+            <param name="importDir">Directory containing source Excel files.</param>
+            <param name="tmpDir">Temporary data directory for JSON output.</param>
+            <param name="statusCallback">Optional callback to report progress messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorkbook.VisitDetails(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Visit Detail Excel reports.
-            </summary>
-            <param name="importDir">
-            Directory containing source Excel files.
-            </param>
-            <param name="tmpDir">
-            Temporary data directory.
-            </param>
-            <param name="statusCallback">
-            Optional callback to report status messages.
-            </param>
+            <summary>Processes Visit Details Excel workbooks, writing meeting details and participant details JSON reports.</summary>
+            <param name="importDir">Directory containing source Excel files.</param>
+            <param name="tmpDir">Temporary data directory for JSON output.</param>
+            <param name="statusCallback">Optional callback to report progress messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorkbook.VisitStats(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Visit Stats Excel reports.
-            </summary>
-            <param name="importDir">
-            Directory containing source Excel files.
-            </param>
-            <param name="tmpDir">
-            Temporary data directory.
-            </param>
-            <param name="statusCallback">
-            Optional callback to report status messages.
-            </param>
+            <summary>Processes Visit Statistics Excel workbooks, writing summary and meeting errors JSON reports.</summary>
+            <param name="importDir">Directory containing source Excel files.</param>
+            <param name="tmpDir">Temporary data directory for JSON output.</param>
+            <param name="statusCallback">Optional callback to report progress messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorkbook.Process(System.String,System.String,System.Action{System.Data.DataTable,System.String},System.Action{System.String})">
-            <summary>Processes Excel files matching a pattern and invokes a callback for each worksheet.</summary>
+            <summary>Processes all Excel files in a directory that match a given pattern, invoking a handler for each worksheet.</summary>
+            <remarks>
+              <para>Temporary Excel lock files (those whose names begin with <c>~$</c>) are automatically skipped.</para>
+            </remarks>
             <param name="importDir">Directory to search for Excel files.</param>
-            <param name="pattern">File search pattern (e.g., "*Visit_Stats*.xlsx").</param>
-            <param name="processSheet">Callback action that receives each DataTable and sheet name.</param>
-            <param name="statusCallback">Optional callback to report status messages.</param>
+            <param name="pattern">Glob pattern used to filter files (e.g., <c>*Visit_Stats*.xlsx</c>).</param>
+            <param name="worksheetHandler">Callback invoked for each worksheet <see cref="T:System.Data.DataTable"/> and its sheet name.</param>
+            <param name="statusCallback">Optional callback to report per-file progress messages.</param>
+        </member>
+        <member name="T:TingenTransmorger.TeleHealthReport.ProcessWorksheet">
+            <summary>Provides methods for processing individual worksheets from TeleHealth report workbooks.</summary>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Summary(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Double},System.Nullable{System.ValueTuple{System.String,System.String}}@)">
-            <summary>
-            Processes summary sheets with key-value pairs, aggregating numeric values across files.
-            </summary>
-            <param name="table">
-            DataTable containing the summary sheet data.
-            </param>
-            <param name="metrics">
-            Dictionary to store aggregated metrics.
-            </param>
+            <summary>Processes a summary-style worksheet, accumulating key-value metric pairs into a dictionary.</summary>
+            <remarks>
+              <para>
+                Expects a two-column <see cref="T:System.Data.DataTable"/> where the first column contains metric names and the
+                second contains numeric values. Rows with a <c>null</c> or empty metric key are skipped.
+              </para>
+              <para>
+                If <paramref name="headers"/> is <c>null</c>, it is initialized from the table's column names, falling back
+                to <b>Metric</b> and <b>Value</b> if names are unavailable.
+              </para>
+              <para>Duplicate metric keys are summed rather than overwritten.</para>
+            </remarks>
+            <param name="table">Source <see cref="T:System.Data.DataTable"/> containing at least two columns.</param>
+            <param name="metrics">Dictionary accumulating metric name/value pairs across one or more worksheets.</param>
             <param name="headers">
-            Optional tuple to capture column header names.
+              Column header tuple <c>(metricColumn, valueColumn)</c>; initialized from <paramref name="table"/>
+              on the first call if <c>null</c>.
             </param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Keyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.List{System.String},System.String,System.Boolean)">
-            <summary>
-            Processes sheets with a unique key column, optionally aggregating numeric values for duplicate keys.
-            </summary>
-            <param name="table">
-            DataTable containing the sheet data.
-            </param>
-            <param name="dataById">
-            Dictionary to store records keyed by the specified column.
-            </param>
-            <param name="headers">
-            List to track all column headers encountered.
-            </param>
-            <param name="keyColumn">
-            Name of the column to use as the unique key.
-            </param>
+            <summary>Processes a keyed worksheet, building a dictionary of row data indexed by a specified key column.</summary>
+            <remarks>
+              <para>
+                If <paramref name="aggregateNumeric"/> is <c>true</c>, numeric values in duplicate-key rows are summed into
+                the existing entry via <see cref="M:TingenTransmorger.TeleHealthReport.ReportUtility.MergeRows(System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.Dictionary{System.String,System.Object},System.String)"/>; otherwise, only the first occurrence of each
+                key is retained.
+              </para>
+              <para>Rows with a <c>null</c> or empty key value are skipped.</para>
+            </remarks>
+            <param name="table">Source <see cref="T:System.Data.DataTable"/> containing the report data.</param>
+            <param name="dataById">Dictionary to populate with row data keyed by <paramref name="keyColumn"/> values.</param>
+            <param name="headers">Ordered list of column headers to include; updated with any new columns from <paramref name="table"/>.</param>
+            <param name="keyColumn">Name of the column whose value is used as the row key.</param>
             <param name="aggregateNumeric">
-            If true, numeric values are summed for duplicate keys.
+              When <c>true</c>, numeric values for duplicate keys are summed; when <c>false</c>, duplicate keys are ignored.
             </param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.SimpleKeyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.HashSet{System.String},System.String)">
-            <summary>
-            Processes sheets with a unique key column, keeping only the first occurrence of each key.
-            </summary>
-            <param name="table">
-            DataTable containing the sheet data.
-            </param>
-            <param name="dataById">
-            Dictionary to store records keyed by the specified column.
-            </param>
-            <param name="headers">
-            HashSet to track all column headers encountered.
-            </param>
-            <param name="keyColumn">
-            Name of the column to use as the unique key.
-            </param>
+            <summary>Processes a keyed worksheet, retaining only the first row encountered for each unique key value.</summary>
+            <remarks>
+              <para>
+                Unlike <see cref="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Keyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.List{System.String},System.String,System.Boolean)"/>, this method uses a <see cref="T:System.Collections.Generic.HashSet`1"/> for header tracking and does not
+                aggregate numeric values — duplicate keys are silently ignored.
+              </para>
+              <para>Rows with a <c>null</c> or empty key value are skipped.</para>
+            </remarks>
+            <param name="table">Source <see cref="T:System.Data.DataTable"/> containing the report data.</param>
+            <param name="dataById">Dictionary to populate with row data keyed by <paramref name="keyColumn"/> values.</param>
+            <param name="headers">Set of column headers; updated with any new columns from <paramref name="table"/>.</param>
+            <param name="keyColumn">Name of the column whose value is used as the row key.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.ClientStats(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}}},System.Collections.Generic.HashSet{System.String})">
-            <summary>
-            Processes sheets with client statistics, allowing multiple records per client.
-            </summary>
-            <param name="table">
-            DataTable containing the sheet data.
-            </param>
-            <param name="statsByClient">
-            Dictionary to store lists of records per client.
-            </param>
-            <param name="headers">
-            HashSet to track all column headers encountered.
-            </param>
+            <summary>Processes a worksheet containing per-client statistics, grouping rows by client name.</summary>
+            <remarks>
+              <para>
+                Requires a column named <b>Client Name</b>; the method returns without processing if that column is absent
+                from <paramref name="table"/>.
+              </para>
+              <para>
+                Each row is appended to the list associated with its client name in <paramref name="statsByClient"/>. A new
+                list is created automatically for first-seen client names.
+              </para>
+            </remarks>
+            <param name="table">Source <see cref="T:System.Data.DataTable"/> that must contain a <b>Client Name</b> column.</param>
+            <param name="statsByClient">Dictionary mapping client names to their accumulated list of row records.</param>
+            <param name="headers">Set of column headers; updated with any new columns from <paramref name="table"/>.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Flat(System.Data.DataTable,System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.HashSet{System.String})">
-            <summary>
-            Processes sheets as flat record lists, capturing all rows without keying or aggregation.
-            </summary>
-            <param name="table">
-            DataTable containing the sheet data.
-            </param>
-            <param name="allRecords">
-            List to store all records.
-            </param>
-            <param name="headers">
-            HashSet to track all column headers encountered.
-            </param>
+            <summary>Processes a worksheet into a flat list of row dictionaries, null-filling any missing headers.</summary>
+            <remarks>
+              <para>
+                All column names from <paramref name="table"/> are added to <paramref name="headers"/>, enabling a
+                consistent column set to be maintained across multiple worksheets.
+              </para>
+              <para>
+                For each row, columns present in the table are populated with their values; any headers in
+                <paramref name="headers"/> not found in the current table are set to <c>null</c>.
+              </para>
+            </remarks>
+            <param name="table">Source <see cref="T:System.Data.DataTable"/> containing the report data.</param>
+            <param name="allRecords">List to which all processed row dictionaries are appended.</param>
+            <param name="headers">Set of all column headers encountered across worksheets; updated with columns from <paramref name="table"/>.</param>
         </member>
         <member name="T:TingenTransmorger.TeleHealthReport.ReportProcessor">
-            <summary>
-            Entry class for processing TeleHealth reports.
-            </summary>
-            <remarks>
-            <para>
-            Processes TeleHealth Excel reports and converts them to JSON format.
-            </para>
-            <para>
-            This processor handles four types of reports:
-            <list type="bullet">
-                <item>Visit Stats - Summary and Meeting Errors</item>
-                <item>Visit Details - Meeting Details and Participant Details</item>
-                <item>Message Failure - Summary, SMS Stats, and Email Stats</item>
-                <item>Message Delivery - Message Delivery Stats</item>
-            </list>
-            </para>
-            </remarks>
-        </member>
-        <member name="M:TingenTransmorger.TeleHealthReport.ReportProcessor.Process(System.String,System.String)">
-            <summary>
-            Processes all TeleHealth reports from the import directory and generates JSON output files.
-            </summary>
-            <param name="config">
-            Configuration object containing import and output directory paths.
-            </param>
+            <summary>Provides methods for processing TeleHealth report workbooks.</summary>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ReportProcessor.ProcessVisitStats(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Visit Stats reports with progress callback support.
-            </summary>
+            <summary>Processes Visit Statistics reports with progress callback support.</summary>
             <param name="importDir">Directory containing source Excel files.</param>
             <param name="tmpDir">Temporary data directory.</param>
             <param name="statusCallback">Optional callback to report status messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ReportProcessor.ProcessVisitDetails(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Visit Details reports with progress callback support.
-            </summary>
+            <summary>Processes Visit Details reports with progress callback support.</summary>
             <param name="importDir">Directory containing source Excel files.</param>
             <param name="tmpDir">Temporary data directory.</param>
             <param name="statusCallback">Optional callback to report status messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ReportProcessor.ProcessMessageFailure(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Message Failure reports with progress callback support.
-            </summary>
+            <summary>Processes Visit Details reports with progress callback support.</summary>
             <param name="importDir">Directory containing source Excel files.</param>
             <param name="tmpDir">Temporary data directory.</param>
             <param name="statusCallback">Optional callback to report status messages.</param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ReportProcessor.ProcessMessageDelivery(System.String,System.String,System.Action{System.String})">
-            <summary>
-            Processes Message Delivery reports with progress callback support.
-            </summary>
+            <summary>Processes Message Delivery reports with progress callback support.</summary>
             <param name="importDir">Directory containing source Excel files.</param>
             <param name="tmpDir">Temporary data directory.</param>
             <param name="statusCallback">Optional callback to report status messages.</param>
