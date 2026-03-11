@@ -5,6 +5,7 @@
 - `FIXED` Transmorger no longer exits if a database update is declined
 - `MODIFIED` Admin mode background color is now purple
 - `MODIFIED` Admin mode is displayed in the title bar
+- `REMOVED` Core.Blueprint.cs (not used)
 
 ## 0.9.29.0
 

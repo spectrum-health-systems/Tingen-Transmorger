@@ -10,21 +10,21 @@ internal static class ProcessWorksheet
 {
     /// <summary>Processes a summary-style worksheet, accumulating key-value metric pairs into a dictionary.</summary>
     /// <remarks>
-    ///   <para>
-    ///     Expects a two-column <see cref="DataTable"/> where the first column contains metric names and the
-    ///     second contains numeric values. Rows with a <c>null</c> or empty metric key are skipped.
-    ///   </para>
-    ///   <para>
-    ///     If <paramref name="headers"/> is <c>null</c>, it is initialized from the table's column names, falling back
-    ///     to <b>Metric</b> and <b>Value</b> if names are unavailable.
-    ///   </para>
-    ///   <para>Duplicate metric keys are summed rather than overwritten.</para>
+    /// <para>
+    /// Expects a two-column <see cref="DataTable"/> where the first column contains metric names and the second
+    /// contains numeric values. Rows with a <c>null</c> or empty metric key are skipped.
+    /// </para>
+    /// <para>
+    /// If <paramref name="headers"/> is <c>null</c>, it is initialized from the table's column names, falling back to
+    /// <b>Metric</b> and <b>Value</b> if names are unavailable.
+    /// </para>
+    /// <para>Duplicate metric keys are summed rather than overwritten.</para>
     /// </remarks>
     /// <param name="table">Source <see cref="DataTable"/> containing at least two columns.</param>
     /// <param name="metrics">Dictionary accumulating metric name/value pairs across one or more worksheets.</param>
     /// <param name="headers">
-    ///   Column header tuple <c>(metricColumn, valueColumn)</c>; initialized from <paramref name="table"/>
-    ///   on the first call if <c>null</c>.
+    /// Column header tuple <c>(metricColumn, valueColumn)</c>; initialized from <paramref name="table"/> on the first
+    /// call if <c>null</c>.
     /// </param>
     internal static void Summary(DataTable table, Dictionary<string, double> metrics, ref (string, string)? headers)
     {
@@ -54,19 +54,19 @@ internal static class ProcessWorksheet
 
     /// <summary>Processes a keyed worksheet, building a dictionary of row data indexed by a specified key column.</summary>
     /// <remarks>
-    ///   <para>
-    ///     If <paramref name="aggregateNumeric"/> is <c>true</c>, numeric values in duplicate-key rows are summed into
-    ///     the existing entry via <see cref="ReportUtility.MergeRows"/>; otherwise, only the first occurrence of each
-    ///     key is retained.
-    ///   </para>
-    ///   <para>Rows with a <c>null</c> or empty key value are skipped.</para>
+    /// <para>
+    /// If <paramref name="aggregateNumeric"/> is <c>true</c>, numeric values in duplicate-key rows are summed into the
+    /// existing entry via <see cref="ReportUtility.MergeRows"/>; otherwise, only the first occurrence of each key is
+    /// retained.
+    /// </para>
+    /// <para>Rows with a <c>null</c> or empty key value are skipped.</para>
     /// </remarks>
     /// <param name="table">Source <see cref="DataTable"/> containing the report data.</param>
     /// <param name="dataById">Dictionary to populate with row data keyed by <paramref name="keyColumn"/> values.</param>
     /// <param name="headers">Ordered list of column headers to include; updated with any new columns from <paramref name="table"/>.</param>
     /// <param name="keyColumn">Name of the column whose value is used as the row key.</param>
     /// <param name="aggregateNumeric">
-    ///   When <c>true</c>, numeric values for duplicate keys are summed; when <c>false</c>, duplicate keys are ignored.
+    /// When <c>true</c>, numeric values for duplicate keys are summed; when <c>false</c>, duplicate keys are ignored.
     /// </param>
     internal static void Keyed(DataTable table, Dictionary<string, Dictionary<string, object?>> dataById, List<string> headers, string keyColumn, bool aggregateNumeric = false)
     {
@@ -106,11 +106,11 @@ internal static class ProcessWorksheet
 
     /// <summary>Processes a keyed worksheet, retaining only the first row encountered for each unique key value.</summary>
     /// <remarks>
-    ///   <para>
-    ///     Unlike <see cref="Keyed"/>, this method uses a <see cref="HashSet{T}"/> for header tracking and does not
-    ///     aggregate numeric values — duplicate keys are silently ignored.
-    ///   </para>
-    ///   <para>Rows with a <c>null</c> or empty key value are skipped.</para>
+    /// <para>
+    /// Unlike <see cref="Keyed"/>, this method uses a <see cref="HashSet{T}"/> for header tracking and does not
+    /// aggregate numeric values — duplicate keys are silently ignored.
+    /// </para>
+    /// <para>Rows with a <c>null</c> or empty key value are skipped.</para>
     /// </remarks>
     /// <param name="table">Source <see cref="DataTable"/> containing the report data.</param>
     /// <param name="dataById">Dictionary to populate with row data keyed by <paramref name="keyColumn"/> values.</param>
@@ -151,14 +151,14 @@ internal static class ProcessWorksheet
 
     /// <summary>Processes a worksheet containing per-client statistics, grouping rows by client name.</summary>
     /// <remarks>
-    ///   <para>
-    ///     Requires a column named <b>Client Name</b>; the method returns without processing if that column is absent
-    ///     from <paramref name="table"/>.
-    ///   </para>
-    ///   <para>
-    ///     Each row is appended to the list associated with its client name in <paramref name="statsByClient"/>. A new
-    ///     list is created automatically for first-seen client names.
-    ///   </para>
+    /// <para>
+    /// Requires a column named <b>Client Name</b>; the method returns without processing if that column is absent from
+    /// <paramref name="table"/>.
+    /// </para>
+    /// <para>
+    /// Each row is appended to the list associated with its client name in <paramref name="statsByClient"/>. A new list
+    /// is created automatically for first-seen client names.
+    /// </para>
     /// </remarks>
     /// <param name="table">Source <see cref="DataTable"/> that must contain a <b>Client Name</b> column.</param>
     /// <param name="statsByClient">Dictionary mapping client names to their accumulated list of row records.</param>
@@ -201,14 +201,14 @@ internal static class ProcessWorksheet
 
     /// <summary>Processes a worksheet into a flat list of row dictionaries, null-filling any missing headers.</summary>
     /// <remarks>
-    ///   <para>
-    ///     All column names from <paramref name="table"/> are added to <paramref name="headers"/>, enabling a
-    ///     consistent column set to be maintained across multiple worksheets.
-    ///   </para>
-    ///   <para>
-    ///     For each row, columns present in the table are populated with their values; any headers in
-    ///     <paramref name="headers"/> not found in the current table are set to <c>null</c>.
-    ///   </para>
+    /// <para>
+    /// All column names from <paramref name="table"/> are added to <paramref name="headers"/>, enabling a consistent
+    /// column set to be maintained across multiple worksheets.
+    /// </para>
+    /// <para>
+    /// For each row, columns present in the table are populated with their values; any headers in
+    /// <paramref name="headers"/> not found in the current table are set to <c>null</c>.
+    /// </para>
     /// </remarks>
     /// <param name="table">Source <see cref="DataTable"/> containing the report data.</param>
     /// <param name="allRecords">List to which all processed row dictionaries are appended.</param>

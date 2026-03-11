@@ -23,135 +23,115 @@
             </summary>
         </member>
         <member name="T:TingenTransmorger.Core.Catalog">
-            <summary>Pre-defined text blocks and message strings.</summary>
+            <summary>Provides static string array catalogs for application message box content.</summary>
             <remarks>
             <para>
-            Centralized to keep the code clean, maintainable, and to facilitate modification of messages.
-            </para>
-            <para>
-            The following types of blueprints are defined here:
-            <list type="bullet">
-                <item><b><c>   lst_</c></b> - A list of something</item>
-                <item><b><c>msgbox_</c></b> - Message box string[] definitions</item>
-                <item><b><c>msgtxt_</c></b> - Text string definitions</item>
-            </list>
+            Each method returns a two-element <see cref="T:System.String"/> array where index <c>0</c> contains the message
+            box title and index <c>1</c> contains the message body.
             </para>
             </remarks>
         </member>
+        <member name="M:TingenTransmorger.Core.Catalog.msgbox_InvalidConfigurationSetting(System.String)">
+            <summary>Returns message box content for an invalid or undefined configuration setting.</summary>
+            <param name="setting">The name of the configuration setting that is undefined.</param>
+            <returns>
+            A two-element array containing the message box title at index <c>0</c> and an error description with remediation
+            instructions at index <c>1</c>.
+            </returns>
+        </member>
+        <member name="M:TingenTransmorger.Core.Catalog.msgbox_PathDoesNotExistWithCreatePrompt(System.String,System.String)">
+            <summary>Returns message box content for a directory path that does not exist, prompting the user to create it.</summary>
+            <param name="dirKey">The configuration key name identifying the missing directory.</param>
+            <param name="dirValue">The full directory path that does not exist.</param>
+            <returns>
+            A two-element array containing the message box title at index <c>0</c> and an error description with a
+            create-or-close prompt at index <c>1</c>.
+            </returns>
+        </member>
+        <member name="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseRebuildCheck">
+            <summary>Returns message box content prompting the user to confirm a database rebuild.</summary>
+            <returns>
+            A two-element array containing the message box title at index <c>0</c> and a confirmation prompt at index <c>1</c>.
+            </returns>
+        </member>
+        <member name="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseUpdateAvailable">
+            <summary>Returns message box content notifying the user that a newer database version is available.</summary>
+            <returns>
+            A two-element array containing the message box title at index <c>0</c> and an upgrade prompt at index <c>1</c>.
+            </returns>
+        </member>
+        <member name="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseUpdateSuccess">
+            <summary>Returns message box content confirming that the database upgrade completed successfully.</summary>
+            <returns>
+            A two-element array containing the message box title at index <c>0</c> and a success message at index <c>1</c>.
+            </returns>
+        </member>
         <member name="T:TingenTransmorger.Core.Configuration">
-            <summary>
-            Represents the application's configuration and provides helpers to load, validate, and persist configuration
-            settings to disk.
-            </summary>
+            <summary>Represents the application configuration, persisted as a JSON file on disk.</summary>
             <remarks>
-            Configuration values are stored in a JSON file at "AppData/Config/transmorger.config". The <see cref="!:Verify"/>
-            method performs interactive validation and may show message boxes or terminate the application if required settings
-            are missing.
+            The configuration file is located at <c>AppData/Config/transmorger.config</c> relative to the application working
+            directory. A default configuration is created automatically if it does not exist.
             </remarks>
         </member>
         <member name="P:TingenTransmorger.Core.Configuration.Mode">
-            <summary>
-            Gets or sets the configuration mode name (for example, "Default" or "Admin").
-            </summary>
+            <summary>Gets or sets the application operating mode.</summary>
+            <value>A string identifying the current mode (e.g., <c>Standard</c>).</value>
         </member>
         <member name="P:TingenTransmorger.Core.Configuration.StandardDirectories">
-            <summary>
-            Gets or sets a mapping of standard directory keys to their configured paths.
-            </summary>
+            <summary>Gets or sets the directory paths used in standard operating mode.</summary>
+            <value>
+            A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>) to their corresponding file system
+            paths.
+            </value>
         </member>
         <member name="P:TingenTransmorger.Core.Configuration.AdminDirectories">
-            <summary>
-            Gets or sets administrator-only directory mappings used by advanced features.
-            </summary>
+            <summary>Gets or sets the directory paths used in administrative operations.</summary>
+            <value>
+            A dictionary mapping directory keys (e.g., <c>Tmp</c>, <c>Import</c>) to their corresponding file system paths.
+            </value>
         </member>
         <member name="M:TingenTransmorger.Core.Configuration.WriteConfigFile(TingenTransmorger.Core.Configuration)">
-            <summary>
-            Writes the provided <see cref="T:TingenTransmorger.Core.Configuration"/> instance to the application configuration file located
-            at "AppData/Config/transmorger.config".
-            </summary>
-            <param name="config">
-            The configuration to write to disk.
-            </param>
-            <remarks>
-            The containing directory is expected to be "AppData/Config" under the application's current working directory.
-            </remarks>
+            <summary>Serializes a <see cref="T:TingenTransmorger.Core.Configuration"/> instance and writes it to the configuration file.</summary>
+            <param name="config">The <see cref="T:TingenTransmorger.Core.Configuration"/> instance to serialize and persist.</param>
         </member>
         <member name="M:TingenTransmorger.Core.Configuration.Load">
-            <summary>
-            Loads the configuration from the application's configuration file. If the file does not exist, a default
-            configuration is created and written to disk.
-            </summary>
-            <remarks>
-            If the configuration file is absent this method creates the containing "AppData/Config" directory and writes a
-            default configuration file.
-            </remarks>
+            <summary>Loads the application configuration from disk, creating a default file if one does not exist.</summary>
             <returns>
-            The loaded <see cref="T:TingenTransmorger.Core.Configuration"/> instance.
+            The deserialized <see cref="T:TingenTransmorger.Core.Configuration"/> instance read from <c>AppData/Config/transmorger.config</c>.
             </returns>
         </member>
         <member name="M:TingenTransmorger.Core.Configuration.CreateDefault(System.String)">
-            <summary>
-            Creates a default configuration instance using the provided application data directory as the base for directory
-            paths.
-            </summary>
-            <param name="appDataDirName">
-            Base application data directory path.
-            </param>
-            <returns>
-            A new <see cref="T:TingenTransmorger.Core.Configuration"/> populated with default values.
-            </returns>
+            <summary>Creates a default <see cref="T:TingenTransmorger.Core.Configuration"/> instance with preset directory paths.</summary>
+            <param name="appDataDirName">The base application data directory path used to resolve default directory values.</param>
+            <returns>A new <see cref="T:TingenTransmorger.Core.Configuration"/> instance populated with default values.</returns>
         </member>
         <member name="T:TingenTransmorger.Core.Framework">
-            <summary>
-            Provides framework-level validation for configuration directory settings.
-            </summary>
-            <remarks>
-            The methods in this class validate configured directories and interact with the user via message boxes when values
-            are missing or paths do not exist. In certain cases the user will be prompted to create missing directories or the
-            application will be terminated via <see cref="M:TingenTransmorger.MainWindow.StopApp(System.String)"/>.
-            </remarks>
+            <summary>Provides methods for verifying application framework requirements at startup.</summary>
         </member>
         <member name="M:TingenTransmorger.Core.Framework.Verify(TingenTransmorger.Core.Configuration)">
-            <summary>
-            Verifies the configuration by validating standard directories and, when in admin mode, administrator-only
-            directories.
-            </summary>
-            <param name="config">
-            The configuration instance to validate.
-            </param>
+            <summary>Verifies that all directories defined in the configuration exist.</summary>
+            <remarks>Admin directories are also verified when <paramref name="config"/> has <c>Mode</c> set to <c>Admin</c>.</remarks>
+            <param name="config">The application configuration containing the directories to verify.</param>
         </member>
         <member name="M:TingenTransmorger.Core.Framework.VerifyDirectories(System.Collections.Generic.Dictionary{System.String,System.String})">
-            <summary>
-            Validates a set of directory mappings. For each entry this method ensures that a non-empty path exists and that
-            the target directory exists on disk.
-            </summary>
-            <param name="directories">
-            A dictionary mapping configuration keys to directory paths.
-            </param>
+            <summary>Verifies that each directory in a collection exists, prompting or stopping the application as needed.</summary>
             <remarks>
-            This method will display message boxes for missing or invalid values and  will prompt the user to create missing
-            directories. Choosing not to create a required directory will terminate the application.
+              <list type="bullet">
+                <item>Null or empty path values display an error message and stop the application.</item>
+                <item>Non-existent paths prompt the user to create the directory or exit.</item>
+              </list>
             </remarks>
+            <param name="directories">Dictionary of configuration key/path pairs to verify.</param>
         </member>
         <member name="M:TingenTransmorger.Core.Framework.PromptToCreateDirectory(System.Collections.Generic.KeyValuePair{System.String,System.String})">
-            <summary>
-            Prompts the user to create a directory when a configured path does not exist.
-            </summary>
-            <param name="dir">
-            A key/value pair where the key is the configuration name and the value is the path.
-            </param>
-            <remarks>
-            If the user agrees the directory will be created. If the user declines the application will be terminated
-            via <see cref="M:TingenTransmorger.MainWindow.StopApp(System.String)"/>.
-            </remarks>
+            <summary>Prompts the user to create a missing directory, stopping the application if declined.</summary>
+            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.StopApp(System.String)"/> if the user selects <b>No</b>.</remarks>
+            <param name="dir">The key/path pair describing the missing directory.</param>
         </member>
         <member name="M:TingenTransmorger.Core.Framework.NullEmptyWarning(System.Collections.Generic.KeyValuePair{System.String,System.String})">
-            <summary>
-            Shows an error message for a missing or empty configuration setting and terminates the application.
-            </summary>
-            <param name="dir">
-            A key/value pair where the key is the configuration name and the value is the path.
-            </param>
+            <summary>Displays an error for a null or empty configuration directory value and stops the application.</summary>
+            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.StopApp(System.String)"/> unconditionally after displaying the warning.</remarks>
+            <param name="dir">The key/path pair whose configured path is null or empty.</param>
         </member>
         <member name="T:TingenTransmorger.Database.DatabaseRebuildWindow">
             <summary>Provide the user with real-time feedback on the progress of the database rebuild process.</summary>
@@ -772,43 +752,55 @@
             </summary>
         </member>
         <member name="T:TingenTransmorger.Models.MeetingRow">
-            <summary>Represents a row in the patient meetings table.</summary>
+            <summary>Represents a single meeting record sourced from a TeleHealth Visit Details report.</summary>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.MeetingId">
-            <summary>Gets or sets the meeting ID.</summary>
+            <summary>Gets or sets the unique identifier for the meeting.</summary>
+            <value>A string containing the meeting ID, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.ScheduledStart">
-            <summary>Gets or sets the scheduled start time.</summary>
+            <summary>Gets or sets the scheduled start time of the meeting.</summary>
+            <value>A string representation of the scheduled start time, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.ActualStart">
-            <summary>Gets or sets the actual start time.</summary>
+            <summary>Gets or sets the actual start time of the meeting.</summary>
+            <value>A string representation of the actual start time, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.ScheduledEnd">
-            <summary>Gets or sets the scheduled end time.</summary>
+            <summary>Gets or sets the scheduled end time of the meeting.</summary>
+            <value>A string representation of the scheduled end time, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.ActualEnd">
-            <summary>Gets or sets the actual end time.</summary>
+            <summary>Gets or sets the actual end time of the meeting.</summary>
+            <value>A string representation of the actual end time, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.Arrived">
-            <summary>Gets or sets the time the patient arrived.</summary>
+            <summary>Gets or sets the time at which the participant arrived.</summary>
+            <value>A string representation of the arrival time, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.Dropped">
-            <summary>Gets or sets the time the patient dropped from the meeting.</summary>
+            <summary>Gets or sets the time at which the participant dropped from the meeting.</summary>
+            <value>A string representation of the drop time, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.Duration">
             <summary>Gets or sets the duration of the meeting.</summary>
+            <value>A string representation of the meeting duration, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.Status">
-            <summary>Gets or sets the meeting status.</summary>
+            <summary>Gets or sets the status of the meeting.</summary>
+            <value>A string describing the meeting status, or <see cref="F:System.String.Empty"/> if not set.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.HasError">
-            <summary>Gets or sets whether this meeting has an error in the MeetingError collection.</summary>
+            <summary>Gets or sets a value indicating whether the meeting has an associated error.</summary>
+            <value><see langword="true"/> if the meeting has an error; otherwise, <see langword="false"/>.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.IsCancelled">
-            <summary>Gets or sets whether this meeting has been cancelled.</summary>
+            <summary>Gets or sets a value indicating whether the meeting was cancelled.</summary>
+            <value><see langword="true"/> if the meeting was cancelled; otherwise, <see langword="false"/>.</value>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.IsCompleted">
-            <summary>Gets or sets whether this meeting has been completed.</summary>
+            <summary>Gets or sets a value indicating whether the meeting was completed.</summary>
+            <value><see langword="true"/> if the meeting was completed; otherwise, <see langword="false"/>.</value>
         </member>
         <member name="T:TingenTransmorger.TeleHealthReport.ProcessWorkbook">
             <summary>Provides methods for processing TeleHealth report Excel workbooks into JSON output files.</summary>
@@ -842,9 +834,7 @@
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorkbook.Process(System.String,System.String,System.Action{System.Data.DataTable,System.String},System.Action{System.String})">
             <summary>Processes all Excel files in a directory that match a given pattern, invoking a handler for each worksheet.</summary>
-            <remarks>
-              <para>Temporary Excel lock files (those whose names begin with <c>~$</c>) are automatically skipped.</para>
-            </remarks>
+            <remarks>Temporary Excel lock files (those whose names begin with <c>~$</c>) are automatically skipped. </remarks>
             <param name="importDir">Directory to search for Excel files.</param>
             <param name="pattern">Glob pattern used to filter files (e.g., <c>*Visit_Stats*.xlsx</c>).</param>
             <param name="worksheetHandler">Callback invoked for each worksheet <see cref="T:System.Data.DataTable"/> and its sheet name.</param>
@@ -856,49 +846,49 @@
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Summary(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Double},System.Nullable{System.ValueTuple{System.String,System.String}}@)">
             <summary>Processes a summary-style worksheet, accumulating key-value metric pairs into a dictionary.</summary>
             <remarks>
-              <para>
-                Expects a two-column <see cref="T:System.Data.DataTable"/> where the first column contains metric names and the
-                second contains numeric values. Rows with a <c>null</c> or empty metric key are skipped.
-              </para>
-              <para>
-                If <paramref name="headers"/> is <c>null</c>, it is initialized from the table's column names, falling back
-                to <b>Metric</b> and <b>Value</b> if names are unavailable.
-              </para>
-              <para>Duplicate metric keys are summed rather than overwritten.</para>
+            <para>
+            Expects a two-column <see cref="T:System.Data.DataTable"/> where the first column contains metric names and the second
+            contains numeric values. Rows with a <c>null</c> or empty metric key are skipped.
+            </para>
+            <para>
+            If <paramref name="headers"/> is <c>null</c>, it is initialized from the table's column names, falling back to
+            <b>Metric</b> and <b>Value</b> if names are unavailable.
+            </para>
+            <para>Duplicate metric keys are summed rather than overwritten.</para>
             </remarks>
             <param name="table">Source <see cref="T:System.Data.DataTable"/> containing at least two columns.</param>
             <param name="metrics">Dictionary accumulating metric name/value pairs across one or more worksheets.</param>
             <param name="headers">
-              Column header tuple <c>(metricColumn, valueColumn)</c>; initialized from <paramref name="table"/>
-              on the first call if <c>null</c>.
+            Column header tuple <c>(metricColumn, valueColumn)</c>; initialized from <paramref name="table"/> on the first
+            call if <c>null</c>.
             </param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Keyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.List{System.String},System.String,System.Boolean)">
             <summary>Processes a keyed worksheet, building a dictionary of row data indexed by a specified key column.</summary>
             <remarks>
-              <para>
-                If <paramref name="aggregateNumeric"/> is <c>true</c>, numeric values in duplicate-key rows are summed into
-                the existing entry via <see cref="M:TingenTransmorger.TeleHealthReport.ReportUtility.MergeRows(System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.Dictionary{System.String,System.Object},System.String)"/>; otherwise, only the first occurrence of each
-                key is retained.
-              </para>
-              <para>Rows with a <c>null</c> or empty key value are skipped.</para>
+            <para>
+            If <paramref name="aggregateNumeric"/> is <c>true</c>, numeric values in duplicate-key rows are summed into the
+            existing entry via <see cref="M:TingenTransmorger.TeleHealthReport.ReportUtility.MergeRows(System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.Dictionary{System.String,System.Object},System.String)"/>; otherwise, only the first occurrence of each key is
+            retained.
+            </para>
+            <para>Rows with a <c>null</c> or empty key value are skipped.</para>
             </remarks>
             <param name="table">Source <see cref="T:System.Data.DataTable"/> containing the report data.</param>
             <param name="dataById">Dictionary to populate with row data keyed by <paramref name="keyColumn"/> values.</param>
             <param name="headers">Ordered list of column headers to include; updated with any new columns from <paramref name="table"/>.</param>
             <param name="keyColumn">Name of the column whose value is used as the row key.</param>
             <param name="aggregateNumeric">
-              When <c>true</c>, numeric values for duplicate keys are summed; when <c>false</c>, duplicate keys are ignored.
+            When <c>true</c>, numeric values for duplicate keys are summed; when <c>false</c>, duplicate keys are ignored.
             </param>
         </member>
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.SimpleKeyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.HashSet{System.String},System.String)">
             <summary>Processes a keyed worksheet, retaining only the first row encountered for each unique key value.</summary>
             <remarks>
-              <para>
-                Unlike <see cref="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Keyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.List{System.String},System.String,System.Boolean)"/>, this method uses a <see cref="T:System.Collections.Generic.HashSet`1"/> for header tracking and does not
-                aggregate numeric values — duplicate keys are silently ignored.
-              </para>
-              <para>Rows with a <c>null</c> or empty key value are skipped.</para>
+            <para>
+            Unlike <see cref="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Keyed(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.List{System.String},System.String,System.Boolean)"/>, this method uses a <see cref="T:System.Collections.Generic.HashSet`1"/> for header tracking and does not
+            aggregate numeric values — duplicate keys are silently ignored.
+            </para>
+            <para>Rows with a <c>null</c> or empty key value are skipped.</para>
             </remarks>
             <param name="table">Source <see cref="T:System.Data.DataTable"/> containing the report data.</param>
             <param name="dataById">Dictionary to populate with row data keyed by <paramref name="keyColumn"/> values.</param>
@@ -908,14 +898,14 @@
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.ClientStats(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}}},System.Collections.Generic.HashSet{System.String})">
             <summary>Processes a worksheet containing per-client statistics, grouping rows by client name.</summary>
             <remarks>
-              <para>
-                Requires a column named <b>Client Name</b>; the method returns without processing if that column is absent
-                from <paramref name="table"/>.
-              </para>
-              <para>
-                Each row is appended to the list associated with its client name in <paramref name="statsByClient"/>. A new
-                list is created automatically for first-seen client names.
-              </para>
+            <para>
+            Requires a column named <b>Client Name</b>; the method returns without processing if that column is absent from
+            <paramref name="table"/>.
+            </para>
+            <para>
+            Each row is appended to the list associated with its client name in <paramref name="statsByClient"/>. A new list
+            is created automatically for first-seen client names.
+            </para>
             </remarks>
             <param name="table">Source <see cref="T:System.Data.DataTable"/> that must contain a <b>Client Name</b> column.</param>
             <param name="statsByClient">Dictionary mapping client names to their accumulated list of row records.</param>
@@ -924,14 +914,14 @@
         <member name="M:TingenTransmorger.TeleHealthReport.ProcessWorksheet.Flat(System.Data.DataTable,System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Collections.Generic.HashSet{System.String})">
             <summary>Processes a worksheet into a flat list of row dictionaries, null-filling any missing headers.</summary>
             <remarks>
-              <para>
-                All column names from <paramref name="table"/> are added to <paramref name="headers"/>, enabling a
-                consistent column set to be maintained across multiple worksheets.
-              </para>
-              <para>
-                For each row, columns present in the table are populated with their values; any headers in
-                <paramref name="headers"/> not found in the current table are set to <c>null</c>.
-              </para>
+            <para>
+            All column names from <paramref name="table"/> are added to <paramref name="headers"/>, enabling a consistent
+            column set to be maintained across multiple worksheets.
+            </para>
+            <para>
+            For each row, columns present in the table are populated with their values; any headers in
+            <paramref name="headers"/> not found in the current table are set to <c>null</c>.
+            </para>
             </remarks>
             <param name="table">Source <see cref="T:System.Data.DataTable"/> containing the report data.</param>
             <param name="allRecords">List to which all processed row dictionaries are appended.</param>

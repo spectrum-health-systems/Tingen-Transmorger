@@ -26,7 +26,7 @@ instructions first; perform searches only when the instructions are incomplete o
 - Use proper grammar, punctuation, and capitalization in XML doc comments.
 - Use proper XML formatting and escape special characters.
 - XML tags should be properly nested and well-formed.
-- Indents should be 2 spaces.
+- XML documentation should not be indented.
 - Use HTML tags like `<b>`, `<i>`, `<u>`, `<br/>`, and `<para>` for formatting within XML doc comments.
 - Use the following XML doc tags where appropriate:
   - `<c>code</c>` for inline code references and `<code>` for multi-line code blocks.
