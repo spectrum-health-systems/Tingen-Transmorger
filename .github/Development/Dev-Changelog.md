@@ -2,6 +2,7 @@
 
 ## 0.9.30.0
 
+- `ADDED` Database date range to title bar
 - `UPDATED` XML documentation for all classes
 - `FIXED` Transmorger no longer exits if a database update is declined
 - `MODIFIED` Admin mode background color is now purple

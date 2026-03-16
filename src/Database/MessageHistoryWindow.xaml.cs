@@ -1,8 +1,7 @@
 ﻿// 260212_code
 // 260311_documentation
 
-/* Development note: This class needs to be refactored.
- */
+/* The database namespace needs to be refactored */
 
 using System.Text;
 using System.Windows;

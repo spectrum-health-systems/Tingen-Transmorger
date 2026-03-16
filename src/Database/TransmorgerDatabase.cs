@@ -1,6 +1,8 @@
 ﻿// 260212_code
 // 260212_documentation
 
+/* The database namespace needs to be refactored */
+
 using System.IO;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -328,6 +330,49 @@ public partial class TransmorgerDatabase
         }
 
         return null;
+    }
+
+    /// <summary>Determines the date range of the database by finding the earliest and latest scheduled meeting start dates.</summary>
+    /// <remarks>Returns null if the database has no data, the MeetingDetail section is missing, or no parseable dates exist.</remarks>
+    /// <returns>A tuple containing the earliest start date and the latest start date, or null if no dates are found.</returns>
+    public (DateTime Start, DateTime End)? GetDatabaseDateRange()
+    {
+        if (!_hasData)
+        {
+            return null;
+        }
+
+        if (!_jsonRoot.TryGetProperty("MeetingDetail", out var meetingDetailObj))
+        {
+            return null;
+        }
+
+        if (meetingDetailObj.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        var dates = new List<DateTime>();
+
+        foreach (var meeting in meetingDetailObj.EnumerateObject())
+        {
+            if (meeting.Value.TryGetProperty("ScheduledStart", out var scheduledStart))
+            {
+                var dateString = scheduledStart.GetString();
+
+                if (!string.IsNullOrWhiteSpace(dateString) && DateTime.TryParse(dateString, out var date))
+                {
+                    dates.Add(date);
+                }
+            }
+        }
+
+        if (dates.Count == 0)
+        {
+            return null;
+        }
+
+        return (dates.Min(), dates.Max());
     }
 
     internal static void Build(string tmpDir, string masterDbDir)

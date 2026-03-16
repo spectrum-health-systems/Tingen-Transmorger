@@ -134,38 +134,9 @@
             <param name="dir">The key/path pair whose configured path is null or empty.</param>
         </member>
         <member name="T:TingenTransmorger.Database.DatabaseRebuildWindow">
-            <summary>Provide the user with real-time feedback on the progress of the database rebuild process.</summary>
             <summary>
             DatabaseRebuildWindow
             </summary>
-        </member>
-        <member name="F:TingenTransmorger.Database.DatabaseRebuildWindow._parentWindow">
-            <summary>Used to track the parent window.</summary>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.#ctor">
-            <summary>Entry point for the DatabaseRebuildWindow.</summary>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.SetParentWindow(System.Windows.Window)">
-            <summary>Sets the parent window that should be shown when this window closes.</summary>
-            <param name="parentWindow">The parent window.</param>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.UpdateTask(System.String)">
-            <summary>Inform the user what the current database rebuild task is.</summary>
-            <param name="rebuildTask">Database rebuild current task.</param>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.UpdateProgress(System.Double)">
-            <summary>Update the user where they are in the rebuild progress.</summary>
-            <param name="percentage">Database rebuild progress.</param>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.UpdateStatus(System.String)">
-            <summary>Provide the user with a detailed database rebuild status message.</summary>
-            <param name="rebuildStatus">Detailed database rebuild status message.</param>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.Complete">
-            <summary>Marks the rebuild as complete and closes the window.</summary>
-        </member>
-        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.CloseClick">
-            <summary>Closes the DatabaseRebuildWindow and shows the original parent window.</summary>
         </member>
         <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.InitializeComponent">
             <summary>
@@ -181,6 +152,11 @@
             <summary>
             InitializeComponent
             </summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetDatabaseDateRange">
+            <summary>Determines the date range of the database by finding the earliest and latest scheduled meeting start dates.</summary>
+            <remarks>Returns null if the database has no data, the MeetingDetail section is missing, or no parseable dates exist.</remarks>
+            <returns>A tuple containing the earliest start date and the latest start date, or null if no dates are found.</returns>
         </member>
         <member name="T:TingenTransmorger.MainWindow">
             <summary>Entry class for Tingen Transmorger.</summary>

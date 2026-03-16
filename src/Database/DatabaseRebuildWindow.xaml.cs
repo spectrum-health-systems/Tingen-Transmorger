@@ -1,6 +1,8 @@
 ﻿// 260212_code
 // 260311_documentation
 
+/* The database namespace needs to be refactored */
+
 using System.Windows;
 
 namespace TingenTransmorger.Database;

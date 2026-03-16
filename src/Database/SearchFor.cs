@@ -1,6 +1,8 @@
 ﻿// 260212_code
 // 260212_documentation
 
+/* The database namespace needs to be refactored */
+
 namespace TingenTransmorger.Database;
 
 internal static class SearchFor

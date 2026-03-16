@@ -1,6 +1,8 @@
 ﻿// 260206_code
 // 260206_documentation
 
+/* The database namespace needs to be refactored */
+
 using System.Text.Json;
 
 namespace TingenTransmorger.Database;
