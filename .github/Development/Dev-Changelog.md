@@ -1,5 +1,9 @@
 # Tingen Transmorger: Development Changelog (Development)
 
+## 0.9.31.0
+
+- `ADDED` Ability to copy the meeting list rows to the clipboard
+
 ## 0.9.30.0
 
 - `ADDED` Database date range to title bar

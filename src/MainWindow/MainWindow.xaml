@@ -1,13 +1,13 @@
 ﻿<!--
     260227_code
-    260227_documentation
+    260318_documentation
 -->
 
 <!--
     This is the main window of the Tingen Transmorger application. I am not a UI designer, so it probably breaks a
     number of UI best practices, but I did my best! To that point, this window has a resolution of 1200x700, and is not
     designed to be resized.
-    
+
     I've provided detailed comments throughout the XAML to explain the structure and purpose of each element in the UI,
     and the code-behind contains is written to be as clear as possible.
 -->
@@ -469,6 +469,22 @@
                                     FontSize="16"
                                     Foreground="Gray"
                                     Text="0 Scheduled" />
+
+                                <Button x:Name="btnCopyMeetingList"
+                                    Width="24"
+                                    Height="24"
+                                    Margin="200,0,0,0"
+                                    BorderThickness="0"
+                                    Click="btnCopyMeetingList_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="3" />
+                                        </Style>
+                                    </Button.Resources>
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/AppData/Image/Control/Button/Copy-40x40.png" />
+                                    </Button.Background>
+                                </Button>
                             </StackPanel>
 
                             <!--

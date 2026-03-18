@@ -200,6 +200,10 @@
             <summary>Copies patient participant details from the UI to the clipboard as formatted text.</summary>
             <remarks>Displays a confirmation on success or an error message if the clipboard operation fails.</remarks>
         </member>
+        <member name="M:TingenTransmorger.MainWindow.CopyMeetingList">
+            <summary>Copies all rows from the meeting list grid to the clipboard as formatted text.</summary>
+            <remarks>Displays a confirmation on success or an error message if the clipboard operation fails.</remarks>
+        </member>
         <member name="M:TingenTransmorger.MainWindow.CopyProviderMeetingDetails">
             <summary>Copies provider participant details from the UI to the clipboard as formatted text.</summary>
             <remarks>Displays a confirmation on success or an error message if the clipboard operation fails.</remarks>
