@@ -35,7 +35,7 @@
 
   ![](.github/repository/readme/Transmorger-MainWindowScreenshot.png)
 
-  <h5>The Tingen Transmorger main window</h5>
+  ##### The Tingen Transmorger main window
 
 </div>
 
@@ -63,7 +63,7 @@
   The HTML indentations have to stay this way to work.
 -->
 
-<table>
+<table cellspacing="0" cellpadding="0">
 <tr>
 <td>
 
