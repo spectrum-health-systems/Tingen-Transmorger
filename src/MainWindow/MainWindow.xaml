@@ -473,7 +473,7 @@
                                 <Button x:Name="btnCopyMeetingList"
                                     Width="24"
                                     Height="24"
-                                    Margin="180,0,0,0"
+                                    Margin="10,0,0,0"
                                     BorderThickness="0"
                                     Click="btnCopyMeetingList_Click">
                                     <Button.Resources>
@@ -548,22 +548,26 @@
                                     <DataGridTextColumn
                                         Width="135"
                                         Binding="{Binding ScheduledStart}"
-                                        Header="Scheduled Start" />
+                                        Header="Scheduled Start"
+                                        SortMemberPath="ScheduledStartSort" />
                                     <!-- Actual start date/time -->
                                     <DataGridTextColumn
                                         Width="135"
                                         Binding="{Binding ActualStart}"
-                                        Header="Actual Start Time" />
+                                        Header="Actual Start Time"
+                                        SortMemberPath="ActualStartSort" />
                                     <!-- Scheduled end date/time -->
                                     <DataGridTextColumn
                                         Width="135"
                                         Binding="{Binding ScheduledEnd}"
-                                        Header="Scheduled End Time" />
+                                        Header="Scheduled End Time"
+                                        SortMemberPath="ScheduledEndSort" />
                                     <!-- Actual end date/time -->
                                     <DataGridTextColumn
                                         Width="135"
                                         Binding="{Binding ActualEnd}"
-                                        Header="Actual End Time" />
+                                        Header="Actual End Time"
+                                        SortMemberPath="ActualEndSort" />
                                     <!-- Duration -->
                                     <DataGridTextColumn
                                         Width="60"

@@ -14,9 +14,7 @@ namespace TingenTransmorger.Database;
 /// <summary>Specifies the type of message history to display.</summary>
 public enum MessageHistoryType
 {
-    /// <summary>Short Message Service (SMS/text) messages.</summary>
     SMS,
-    /// <summary>Email messages.</summary>
     Email
 }
 
@@ -62,31 +60,30 @@ public partial class MessageHistoryWindow : Window
             {
                 if (item is MessageHistoryRow mr)
                 {
-                    if (!string.Equals(mr.Type, "Failure", StringComparison.OrdinalIgnoreCase) &&
-                        !string.Equals(mr.Status, "Failed", StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(mr.Type, "Failure", StringComparison.OrdinalIgnoreCase) && !string.Equals(mr.Status, "Failed", StringComparison.OrdinalIgnoreCase))
                     {
                         successes.Add(mr);
                     }
                 }
                 else
                 {
-                    var t = item.GetType();
+                    var t          = item.GetType();
                     var statusProp = t.GetProperty("Status");
-                    var typeProp = t.GetProperty("Type");
-                    var statusVal = statusProp?.GetValue(item)?.ToString() ?? string.Empty;
-                    var typeVal = typeProp?.GetValue(item)?.ToString() ?? string.Empty;
-                    if (!string.Equals(typeVal, "Failure", StringComparison.OrdinalIgnoreCase) &&
-                        !string.Equals(statusVal, "Failed", StringComparison.OrdinalIgnoreCase))
+                    var typeProp   = t.GetProperty("Type");
+                    var statusVal  = statusProp?.GetValue(item)?.ToString() ?? string.Empty;
+                    var typeVal    = typeProp?.GetValue(item)?.ToString() ?? string.Empty;
+
+                    if (!string.Equals(typeVal, "Failure", StringComparison.OrdinalIgnoreCase) && !string.Equals(statusVal, "Failed", StringComparison.OrdinalIgnoreCase))
                     {
                         successes.Add(new MessageHistoryRow
                         {
-                            Sent = t.GetProperty("Sent")?.GetValue(item)?.ToString() ?? string.Empty,
+                            Sent              = t.GetProperty("Sent")?.GetValue(item)?.ToString() ?? string.Empty,
                             ScheduleStartTime = t.GetProperty("ScheduleStartTime")?.GetValue(item)?.ToString() ?? string.Empty,
-                            Status = statusVal,
-                            MessageType = t.GetProperty("MessageType")?.GetValue(item)?.ToString() ?? string.Empty,
-                            ErrorDetails = t.GetProperty("ErrorDetails")?.GetValue(item)?.ToString() ?? string.Empty,
-                            PhoneNumber = t.GetProperty("PhoneNumber")?.GetValue(item)?.ToString() ?? string.Empty,
-                            Type = typeVal,
+                            Status            = statusVal,
+                            MessageType       = t.GetProperty("MessageType")?.GetValue(item)?.ToString() ?? string.Empty,
+                            ErrorDetails      = t.GetProperty("ErrorDetails")?.GetValue(item)?.ToString() ?? string.Empty,
+                            PhoneNumber       = t.GetProperty("PhoneNumber")?.GetValue(item)?.ToString() ?? string.Empty,
+                            Type              = typeVal,
                         });
                     }
                 }
@@ -95,6 +92,7 @@ public partial class MessageHistoryWindow : Window
             if (successes.Count == 0)
             {
                 MessageBox.Show(this, "No success rows found to copy.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 return;
             }
 
