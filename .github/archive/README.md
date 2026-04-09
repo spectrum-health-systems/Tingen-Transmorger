@@ -1,3 +1,3 @@
 # .github/archive
 
-Repository archived data.
+Repository archived data goes here.
