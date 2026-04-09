@@ -1,3 +1,3 @@
-# Repository: Development Design Document
+# Tingen Transmorger: Development Design Document
 
 The design document.
