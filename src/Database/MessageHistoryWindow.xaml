@@ -1,4 +1,9 @@
-<Window
+<!--
+    260409_code
+    260409_documentation
+-->
+
+    <Window
     x:Class="TingenTransmorger.Database.MessageHistoryWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -129,7 +134,8 @@
                             <DataGridTextColumn
                                 Width="130"
                                 Binding="{Binding SentOrStartTime}"
-                                Header="Sent / Start Time" />
+                                Header="Sent / Start Time"
+                                SortMemberPath="SortTimestamp" />
                             <!-- Removed separate Start Time column; other columns unchanged -->
                             <DataGridTextColumn
                                 Width="60"

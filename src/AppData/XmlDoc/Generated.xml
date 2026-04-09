@@ -134,24 +134,196 @@
             <param name="dir">The key/path pair whose configured path is null or empty.</param>
         </member>
         <member name="T:TingenTransmorger.Database.DatabaseRebuildWindow">
+            <summary>A progress window displayed during a database rebuild operation.</summary>
             <summary>
             DatabaseRebuildWindow
             </summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.#ctor">
+            <summary>Initializes a new instance of <see cref="T:TingenTransmorger.Database.DatabaseRebuildWindow"/>.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.SetParentWindow(System.Windows.Window)">
+            <summary>Sets the parent window to be restored when this window is closed.</summary>
+            <param name="parentWindow">The parent <see cref="T:System.Windows.Window"/> to restore on close.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.UpdateTask(System.String)">
+            <summary>Updates the current task label on the UI thread.</summary>
+            <param name="rebuildTask">The description of the task currently being performed.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.UpdateProgress(System.Double)">
+            <summary>Updates the progress bar value on the UI thread.</summary>
+            <param name="percentage">The completion percentage, from 0 to 100.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.UpdateStatus(System.String)">
+            <summary>Updates the status label on the UI thread.</summary>
+            <param name="rebuildStatus">The current status message to display.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.Complete">
+            <summary>Marks the rebuild as complete and reveals the close button on the UI thread.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.CloseClick">
+            <summary>Restores the parent window and closes this window.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.btnClose_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>Handles the Close button click event.</summary>
         </member>
         <member name="M:TingenTransmorger.Database.DatabaseRebuildWindow.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
         </member>
+        <member name="T:TingenTransmorger.Database.MessageHistoryType">
+            <summary>Specifies the type of message history to display.</summary>
+        </member>
         <member name="T:TingenTransmorger.Database.MessageHistoryWindow">
+            <summary>A window that displays the message delivery and failure history for a patient contact.</summary>
             <summary>
             MessageHistoryWindow
             </summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.#ctor(System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}},System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String,System.String,System.String,System.String}})">
+            <summary>Initializes a new instance of <see cref="T:TingenTransmorger.Database.MessageHistoryWindow"/> for SMS message history.</summary>
+            <param name="smsFailures">The list of SMS delivery failures to display.</param>
+            <param name="messageDeliveries">The list of SMS delivery records to display.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.#ctor(System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}},System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String,System.String,System.String,System.String}},TingenTransmorger.Database.MessageHistoryType)">
+            <summary>Initializes a new instance of <see cref="T:TingenTransmorger.Database.MessageHistoryWindow"/> for email message history.</summary>
+            <param name="emailFailures">The list of email delivery failures to display.</param>
+            <param name="emailDeliveries">The list of email delivery records to display.</param>
+            <param name="messageType">The <see cref="T:TingenTransmorger.Database.MessageHistoryType"/> value identifying this as an email window.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.btnCopyAllSuccessMessageHistory_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>Handles the Copy All Successes button click event, copying only non-failure rows to the clipboard.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.btnCopyAllErrorMessageHistory_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>Handles the Copy All Errors button click event, copying only failure rows to the clipboard.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.btnCopyTopTenMessageHistory_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>Handles the Copy Top Ten button click event, copying the first ten rows to the clipboard.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.ConfigureForMessageType">
+            <summary>Configures the window title, label, and contact column header to match the current message type.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.SetMessageData(System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}},System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String,System.String,System.String,System.String}})">
+            <summary>Populates the message grid with combined SMS failure and delivery records, sorted by descending timestamp.</summary>
+            <param name="smsFailures">The list of SMS delivery failures.</param>
+            <param name="messageDeliveries">The list of SMS delivery records.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.SetEmailData(System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}},System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String,System.String,System.String,System.String}})">
+            <summary>Populates the message grid with combined email failure and delivery records, sorted by descending timestamp.</summary>
+            <param name="emailFailures">The list of email delivery failures.</param>
+            <param name="emailDeliveries">The list of email delivery records.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.UpdateSummary(System.Collections.Generic.List{TingenTransmorger.Database.MessageHistoryRow})">
+            <summary>Updates the summary text block with total, success, and failure counts.</summary>
+            <param name="messages">The full list of message rows currently displayed.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.btnClose_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>Handles the Close button click event.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.CombineDateAndTime(System.String,System.String)">
+            <summary>Combines separate date and time strings into a single datetime string.</summary>
+            <param name="date">The date portion.</param>
+            <param name="time">The time portion.</param>
+            <returns>A combined date-time string, or just the date if <paramref name="time"/> is empty.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.ParseTimestamp(System.String)">
+            <summary>Parses a timestamp string into a <see cref="T:System.DateTime"/> for sorting.</summary>
+            <param name="timestamp">The timestamp string to parse.</param>
+            <returns>The parsed <see cref="T:System.DateTime"/>, or <see cref="F:System.DateTime.MinValue"/> if parsing fails.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.FormatStartTime(System.String)">
+            <summary>Formats a datetime string for display in the grid.</summary>
+            <param name="startTime">The raw datetime string to format.</param>
+            <returns>A formatted string in <c>MM/dd/yy hh:mm tt</c> form, or <c>---</c> if the value is empty or unparseable.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.FormatErrorDetails(System.String)">
+            <summary>Normalizes an error details string for display, replacing empty or placeholder values with <c>---</c>.</summary>
+            <param name="errorDetails">The raw error details string.</param>
+            <returns>The original string, or <c>---</c> if the value is empty or an empty JSON object.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.btnCopyAllMessageHistory_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>Handles the Copy All button click event, copying all message rows to the clipboard as formatted text.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.MessageHistoryWindow.Escape(System.String)">
+            <summary>Replaces tab, carriage-return, and newline characters with spaces to make a string safe for clipboard output.</summary>
+            <param name="s">The string to escape.</param>
+            <returns>The escaped string, or <see cref="F:System.String.Empty"/> if the input is null or empty.</returns>
         </member>
         <member name="M:TingenTransmorger.Database.MessageHistoryWindow.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
+        </member>
+        <member name="T:TingenTransmorger.Database.MessageHistoryRow">
+            <summary>Represents a single row in the message history grid.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.IsFailure">
+            <summary>Gets or sets a value indicating whether this row represents a delivery failure.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.Sent">
+            <summary>Gets or sets the formatted sent datetime, or <c>---</c> for failure rows.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.ScheduleStartTime">
+            <summary>Gets or sets the formatted scheduled start time, or <c>---</c> for delivery rows.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.Status">
+            <summary>Gets or sets the delivery status.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.MessageType">
+            <summary>Gets or sets the message type (e.g. SMS or Email).</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.ErrorDetails">
+            <summary>Gets or sets the error or details text, or <c>---</c> if none.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.PhoneNumber">
+            <summary>Gets or sets the recipient phone number.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.EmailAddress">
+            <summary>Gets or sets the recipient email address.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.Type">
+            <summary>Gets or sets whether this row represents a failure or a delivery.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.SortTimestamp">
+            <summary>Gets or sets the timestamp used to sort rows in descending order.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Database.MessageHistoryRow.SentOrStartTime">
+            <summary>Gets the best available timestamp string for display: the sent time if present, otherwise the scheduled start time.</summary>
+        </member>
+        <member name="T:TingenTransmorger.Database.SearchFor">
+            <summary>Provides methods for searching patients and providers in the Transmorger database.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.SearchFor.PatientByName(System.String,TingenTransmorger.Database.TransmorgerDatabase)">
+            <summary>Searches for patients whose name contains the specified text.</summary>
+            <param name="searchText">The text to search for within patient names.</param>
+            <param name="tmDb">The database instance to search.</param>
+            <returns>A list of matching patient entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.SearchFor.PatientById(System.String,TingenTransmorger.Database.TransmorgerDatabase)">
+            <summary>Searches for patients whose ID contains the specified text.</summary>
+            <param name="searchText">The text to search for within patient IDs.</param>
+            <param name="tmDb">The database instance to search.</param>
+            <returns>A list of matching patient entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.SearchFor.ProviderByName(System.String,TingenTransmorger.Database.TransmorgerDatabase)">
+            <summary>Searches for providers whose name contains the specified text.</summary>
+            <param name="searchText">The text to search for within provider names.</param>
+            <param name="tmDb">The database instance to search.</param>
+            <returns>A list of matching provider entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.SearchFor.ProviderById(System.String,TingenTransmorger.Database.TransmorgerDatabase)">
+            <summary>Searches for providers whose ID contains the specified text.</summary>
+            <param name="searchText">The text to search for within provider IDs.</param>
+            <param name="tmDb">The database instance to search.</param>
+            <returns>A list of matching provider entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.SearchFor.SearchResult(System.String,System.Collections.Generic.List{System.ValueTuple{System.String,System.String}},System.Boolean)">
+            <summary>Filters and formats a list of name/ID entries based on the given search text.</summary>
+            <param name="searchText">The text to match against either names or IDs.</param>
+            <param name="allEntries">The full list of name and ID tuples to search.</param>
+            <param name="searchByName">If <see langword="true"/>, searches by name; otherwise searches by ID.</param>
+            <returns>A list of matching entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
         </member>
         <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetDatabaseDateRange">
             <summary>Determines the date range of the database by finding the earliest and latest scheduled meeting start dates.</summary>
@@ -198,6 +370,10 @@
         </member>
         <member name="M:TingenTransmorger.MainWindow.CopyPatientMeetingDetails">
             <summary>Copies patient participant details from the UI to the clipboard as formatted text.</summary>
+            <remarks>Displays a confirmation on success or an error message if the clipboard operation fails.</remarks>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.CopyMeetingList">
+            <summary>Copies all rows from the meeting list grid to the clipboard as formatted text.</summary>
             <remarks>Displays a confirmation on success or an error message if the clipboard operation fails.</remarks>
         </member>
         <member name="M:TingenTransmorger.MainWindow.CopyProviderMeetingDetails">
@@ -542,6 +718,18 @@
         <member name="P:TingenTransmorger.Models.MeetingRow.Status">
             <summary>Gets or sets the status of the meeting.</summary>
             <value>A string describing the meeting status, or <see cref="F:System.String.Empty"/> if not set.</value>
+        </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ScheduledStartSort">
+            <summary>Gets the parsed <see cref="T:System.DateTime"/> of <see cref="P:TingenTransmorger.Models.MeetingRow.ScheduledStart"/> for correct date sorting.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ActualStartSort">
+            <summary>Gets the parsed <see cref="T:System.DateTime"/> of <see cref="P:TingenTransmorger.Models.MeetingRow.ActualStart"/> for correct date sorting.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ScheduledEndSort">
+            <summary>Gets the parsed <see cref="T:System.DateTime"/> of <see cref="P:TingenTransmorger.Models.MeetingRow.ScheduledEnd"/> for correct date sorting.</summary>
+        </member>
+        <member name="P:TingenTransmorger.Models.MeetingRow.ActualEndSort">
+            <summary>Gets the parsed <see cref="T:System.DateTime"/> of <see cref="P:TingenTransmorger.Models.MeetingRow.ActualEnd"/> for correct date sorting.</summary>
         </member>
         <member name="P:TingenTransmorger.Models.MeetingRow.HasError">
             <summary>Gets or sets a value indicating whether the meeting has an associated error.</summary>

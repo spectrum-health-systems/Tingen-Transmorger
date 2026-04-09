@@ -1,7 +1,15 @@
 # Tingen Transmorger: Development Roadmap (Development)
 
+- `ADDED` Button to the MessageHistoryWindow that copies the opt-in message to the clipboard.
+
+-`REFACTORED` TransmorgerDatabase.cs
+
 - `MODIFIED` If a database is out of date, the background is now red
 - `MODIFIED` If a database is out of date, a message is displayed in the title bar
+
+- Leading "0"s breaks search by ID
+- Minimize database
+- Refactor ns:Database
 
 ## Test
 

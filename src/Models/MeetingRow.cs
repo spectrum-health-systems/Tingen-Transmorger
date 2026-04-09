@@ -1,4 +1,4 @@
-// 260206_code
+// 260409_code
 // 260311_documentation
 
 namespace TingenTransmorger.Models;
@@ -41,6 +41,18 @@ public class MeetingRow
     /// <summary>Gets or sets the status of the meeting.</summary>
     /// <value>A string describing the meeting status, or <see cref="string.Empty"/> if not set.</value>
     public string Status { get; set; } = string.Empty;
+
+    /// <summary>Gets the parsed <see cref="DateTime"/> of <see cref="ScheduledStart"/> for correct date sorting.</summary>
+    public DateTime ScheduledStartSort => DateTime.TryParse(ScheduledStart, out var dt) ? dt : DateTime.MinValue;
+
+    /// <summary>Gets the parsed <see cref="DateTime"/> of <see cref="ActualStart"/> for correct date sorting.</summary>
+    public DateTime ActualStartSort => DateTime.TryParse(ActualStart, out var dt) ? dt : DateTime.MinValue;
+
+    /// <summary>Gets the parsed <see cref="DateTime"/> of <see cref="ScheduledEnd"/> for correct date sorting.</summary>
+    public DateTime ScheduledEndSort => DateTime.TryParse(ScheduledEnd, out var dt) ? dt : DateTime.MinValue;
+
+    /// <summary>Gets the parsed <see cref="DateTime"/> of <see cref="ActualEnd"/> for correct date sorting.</summary>
+    public DateTime ActualEndSort => DateTime.TryParse(ActualEnd, out var dt) ? dt : DateTime.MinValue;
 
     /// <summary>Gets or sets a value indicating whether the meeting has an associated error.</summary>
     /// <value><see langword="true"/> if the meeting has an error; otherwise, <see langword="false"/>.</value>

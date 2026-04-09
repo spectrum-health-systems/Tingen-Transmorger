@@ -1,5 +1,5 @@
-﻿// 260212_code
-// 260311_documentation
+﻿// 260409_code
+// 260409_documentation
 
 /* The database namespace needs to be refactored */
 
@@ -11,22 +11,24 @@ using System.Windows.Media;
 
 namespace TingenTransmorger.Database;
 
+/// <summary>Specifies the type of message history to display.</summary>
 public enum MessageHistoryType
 {
     SMS,
     Email
 }
 
+/// <summary>A window that displays the message delivery and failure history for a patient contact.</summary>
 public partial class MessageHistoryWindow : Window
 {
     private List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> _smsFailures;
     private List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> _messageDeliveries;
     private MessageHistoryType _messageType;
 
-    // Constructor for SMS messages
-    public MessageHistoryWindow(
-        List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> smsFailures,
-        List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> messageDeliveries)
+    /// <summary>Initializes a new instance of <see cref="MessageHistoryWindow"/> for SMS message history.</summary>
+    /// <param name="smsFailures">The list of SMS delivery failures to display.</param>
+    /// <param name="messageDeliveries">The list of SMS delivery records to display.</param>
+    public MessageHistoryWindow(List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> smsFailures, List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> messageDeliveries)
     {
         InitializeComponent();
         _messageType = MessageHistoryType.SMS;
@@ -34,11 +36,11 @@ public partial class MessageHistoryWindow : Window
         SetMessageData(smsFailures, messageDeliveries);
     }
 
-    // Constructor for Email messages
-    public MessageHistoryWindow(
-        List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> emailFailures,
-        List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> emailDeliveries,
-        MessageHistoryType messageType)
+    /// <summary>Initializes a new instance of <see cref="MessageHistoryWindow"/> for email message history.</summary>
+    /// <param name="emailFailures">The list of email delivery failures to display.</param>
+    /// <param name="emailDeliveries">The list of email delivery records to display.</param>
+    /// <param name="messageType">The <see cref="MessageHistoryType"/> value identifying this as an email window.</param>
+    public MessageHistoryWindow(List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> emailFailures, List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> emailDeliveries, MessageHistoryType messageType)
     {
         InitializeComponent();
         _messageType = messageType;
@@ -46,6 +48,7 @@ public partial class MessageHistoryWindow : Window
         SetEmailData(emailFailures, emailDeliveries);
     }
 
+    /// <summary>Handles the Copy All Successes button click event, copying only non-failure rows to the clipboard.</summary>
     private void btnCopyAllSuccessMessageHistory_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -57,31 +60,30 @@ public partial class MessageHistoryWindow : Window
             {
                 if (item is MessageHistoryRow mr)
                 {
-                    if (!string.Equals(mr.Type, "Failure", StringComparison.OrdinalIgnoreCase) &&
-                        !string.Equals(mr.Status, "Failed", StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(mr.Type, "Failure", StringComparison.OrdinalIgnoreCase) && !string.Equals(mr.Status, "Failed", StringComparison.OrdinalIgnoreCase))
                     {
                         successes.Add(mr);
                     }
                 }
                 else
                 {
-                    var t = item.GetType();
+                    var t          = item.GetType();
                     var statusProp = t.GetProperty("Status");
-                    var typeProp = t.GetProperty("Type");
-                    var statusVal = statusProp?.GetValue(item)?.ToString() ?? string.Empty;
-                    var typeVal = typeProp?.GetValue(item)?.ToString() ?? string.Empty;
-                    if (!string.Equals(typeVal, "Failure", StringComparison.OrdinalIgnoreCase) &&
-                        !string.Equals(statusVal, "Failed", StringComparison.OrdinalIgnoreCase))
+                    var typeProp   = t.GetProperty("Type");
+                    var statusVal  = statusProp?.GetValue(item)?.ToString() ?? string.Empty;
+                    var typeVal    = typeProp?.GetValue(item)?.ToString() ?? string.Empty;
+
+                    if (!string.Equals(typeVal, "Failure", StringComparison.OrdinalIgnoreCase) && !string.Equals(statusVal, "Failed", StringComparison.OrdinalIgnoreCase))
                     {
                         successes.Add(new MessageHistoryRow
                         {
-                            Sent = t.GetProperty("Sent")?.GetValue(item)?.ToString() ?? string.Empty,
+                            Sent              = t.GetProperty("Sent")?.GetValue(item)?.ToString() ?? string.Empty,
                             ScheduleStartTime = t.GetProperty("ScheduleStartTime")?.GetValue(item)?.ToString() ?? string.Empty,
-                            Status = statusVal,
-                            MessageType = t.GetProperty("MessageType")?.GetValue(item)?.ToString() ?? string.Empty,
-                            ErrorDetails = t.GetProperty("ErrorDetails")?.GetValue(item)?.ToString() ?? string.Empty,
-                            PhoneNumber = t.GetProperty("PhoneNumber")?.GetValue(item)?.ToString() ?? string.Empty,
-                            Type = typeVal,
+                            Status            = statusVal,
+                            MessageType       = t.GetProperty("MessageType")?.GetValue(item)?.ToString() ?? string.Empty,
+                            ErrorDetails      = t.GetProperty("ErrorDetails")?.GetValue(item)?.ToString() ?? string.Empty,
+                            PhoneNumber       = t.GetProperty("PhoneNumber")?.GetValue(item)?.ToString() ?? string.Empty,
+                            Type              = typeVal,
                         });
                     }
                 }
@@ -90,6 +92,7 @@ public partial class MessageHistoryWindow : Window
             if (successes.Count == 0)
             {
                 MessageBox.Show(this, "No success rows found to copy.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 return;
             }
 
@@ -155,6 +158,7 @@ public partial class MessageHistoryWindow : Window
         }
     }
 
+    /// <summary>Handles the Copy All Errors button click event, copying only failure rows to the clipboard.</summary>
     private void btnCopyAllErrorMessageHistory_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -262,6 +266,7 @@ public partial class MessageHistoryWindow : Window
         }
     }
 
+    /// <summary>Handles the Copy Top Ten button click event, copying the first ten rows to the clipboard.</summary>
     private void btnCopyTopTenMessageHistory_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -363,6 +368,7 @@ public partial class MessageHistoryWindow : Window
         }
     }
 
+    /// <summary>Configures the window title, label, and contact column header to match the current message type.</summary>
     private void ConfigureForMessageType()
     {
         Title = _messageType == MessageHistoryType.SMS ? "SMS Message History" : "Email Message History";
@@ -377,6 +383,9 @@ public partial class MessageHistoryWindow : Window
         }
     }
 
+    /// <summary>Populates the message grid with combined SMS failure and delivery records, sorted by descending timestamp.</summary>
+    /// <param name="smsFailures">The list of SMS delivery failures.</param>
+    /// <param name="messageDeliveries">The list of SMS delivery records.</param>
     public void SetMessageData(
         List<(string PhoneNumber, string ErrorMessage, string ScheduledStartTime)> smsFailures,
         List<(string PhoneNumber, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> messageDeliveries)
@@ -438,6 +447,9 @@ public partial class MessageHistoryWindow : Window
         UpdateSummary(sortedMessages);
     }
 
+    /// <summary>Populates the message grid with combined email failure and delivery records, sorted by descending timestamp.</summary>
+    /// <param name="emailFailures">The list of email delivery failures.</param>
+    /// <param name="emailDeliveries">The list of email delivery records.</param>
     public void SetEmailData(
         List<(string EmailAddress, string ErrorMessage, string ScheduledStartTime)> emailFailures,
         List<(string EmailAddress, string DeliveryStatus, string MessageType, string ErrorMessage, string DateSent, string TimeSent)> emailDeliveries)
@@ -494,6 +506,8 @@ public partial class MessageHistoryWindow : Window
         UpdateSummary(sortedMessages);
     }
 
+    /// <summary>Updates the summary text block with total, success, and failure counts.</summary>
+    /// <param name="messages">The full list of message rows currently displayed.</param>
     private void UpdateSummary(List<MessageHistoryRow> messages)
     {
         try
@@ -516,11 +530,16 @@ public partial class MessageHistoryWindow : Window
         }
     }
 
+    /// <summary>Handles the Close button click event.</summary>
     private void btnClose_Click(object sender, RoutedEventArgs e)
     {
         Close();
     }
 
+    /// <summary>Combines separate date and time strings into a single datetime string.</summary>
+    /// <param name="date">The date portion.</param>
+    /// <param name="time">The time portion.</param>
+    /// <returns>A combined date-time string, or just the date if <paramref name="time"/> is empty.</returns>
     private string CombineDateAndTime(string? date, string? time)
     {
         if (string.IsNullOrWhiteSpace(date))
@@ -532,6 +551,9 @@ public partial class MessageHistoryWindow : Window
         return $"{date} {time}";
     }
 
+    /// <summary>Parses a timestamp string into a <see cref="DateTime"/> for sorting.</summary>
+    /// <param name="timestamp">The timestamp string to parse.</param>
+    /// <returns>The parsed <see cref="DateTime"/>, or <see cref="DateTime.MinValue"/> if parsing fails.</returns>
     private DateTime ParseTimestamp(string timestamp)
     {
         if (string.IsNullOrWhiteSpace(timestamp))
@@ -543,6 +565,9 @@ public partial class MessageHistoryWindow : Window
         return DateTime.MinValue;
     }
 
+    /// <summary>Formats a datetime string for display in the grid.</summary>
+    /// <param name="startTime">The raw datetime string to format.</param>
+    /// <returns>A formatted string in <c>MM/dd/yy hh:mm tt</c> form, or <c>---</c> if the value is empty or unparseable.</returns>
     private string FormatStartTime(string? startTime)
     {
         if (string.IsNullOrWhiteSpace(startTime))
@@ -556,6 +581,9 @@ public partial class MessageHistoryWindow : Window
         return string.IsNullOrWhiteSpace(startTime) ? "---" : startTime;
     }
 
+    /// <summary>Normalizes an error details string for display, replacing empty or placeholder values with <c>---</c>.</summary>
+    /// <param name="errorDetails">The raw error details string.</param>
+    /// <returns>The original string, or <c>---</c> if the value is empty or an empty JSON object.</returns>
     private string FormatErrorDetails(string? errorDetails)
     {
         if (string.IsNullOrWhiteSpace(errorDetails))
@@ -567,6 +595,7 @@ public partial class MessageHistoryWindow : Window
         return errorDetails;
     }
 
+    /// <summary>Handles the Copy All button click event, copying all message rows to the clipboard as formatted text.</summary>
     private void btnCopyAllMessageHistory_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -713,6 +742,9 @@ public partial class MessageHistoryWindow : Window
         }
     }
 
+    /// <summary>Replaces tab, carriage-return, and newline characters with spaces to make a string safe for clipboard output.</summary>
+    /// <param name="s">The string to escape.</param>
+    /// <returns>The escaped string, or <see cref="string.Empty"/> if the input is null or empty.</returns>
     private static string Escape(string? s)
     {
         if (string.IsNullOrEmpty(s))
@@ -722,19 +754,31 @@ public partial class MessageHistoryWindow : Window
     }
 }
 
+/// <summary>Represents a single row in the message history grid.</summary>
 public class MessageHistoryRow
 {
+    /// <summary>Gets or sets a value indicating whether this row represents a delivery failure.</summary>
     public bool IsFailure { get; set; }
+    /// <summary>Gets or sets the formatted sent datetime, or <c>---</c> for failure rows.</summary>
     public string Sent { get; set; } = string.Empty;
+    /// <summary>Gets or sets the formatted scheduled start time, or <c>---</c> for delivery rows.</summary>
     public string ScheduleStartTime { get; set; } = string.Empty;
+    /// <summary>Gets or sets the delivery status.</summary>
     public string Status { get; set; } = string.Empty;
+    /// <summary>Gets or sets the message type (e.g. SMS or Email).</summary>
     public string MessageType { get; set; } = string.Empty;
+    /// <summary>Gets or sets the error or details text, or <c>---</c> if none.</summary>
     public string ErrorDetails { get; set; } = string.Empty;
+    /// <summary>Gets or sets the recipient phone number.</summary>
     public string PhoneNumber { get; set; } = string.Empty;
+    /// <summary>Gets or sets the recipient email address.</summary>
     public string EmailAddress { get; set; } = string.Empty;
+    /// <summary>Gets or sets whether this row represents a failure or a delivery.</summary>
     public string Type { get; set; } = string.Empty;
+    /// <summary>Gets or sets the timestamp used to sort rows in descending order.</summary>
     public DateTime SortTimestamp { get; set; }
 
+    /// <summary>Gets the best available timestamp string for display: the sent time if present, otherwise the scheduled start time.</summary>
     public string SentOrStartTime =>
         !string.IsNullOrWhiteSpace(Sent) && Sent != "---"
             ? Sent

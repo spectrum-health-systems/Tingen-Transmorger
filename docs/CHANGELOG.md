@@ -1,5 +1,12 @@
 # Tingen Transmorger: Changelog
 
+## 0.9.31.0 - 4/9/26
+
+- `ADDED` Ability to copy the meeting list rows to the clipboard
+- `ADDED` XML Documentation to some ns:Database classes
+- `FIXED` dgrdMeetingList control now sorts correctly
+- `FIXED` dgMessages control now sorts correctly
+
 ## 0.9.30.0 - 3/16/26
 
 > The main focus for this release was updating the XML documentation.

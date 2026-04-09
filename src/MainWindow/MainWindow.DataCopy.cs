@@ -3,6 +3,7 @@
 
 using System.Text;
 using System.Windows;
+using TingenTransmorger.Models;
 
 namespace TingenTransmorger;
 
@@ -76,6 +77,52 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             MessageBox.Show(this, $"Failed to copy meeting details: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
+    /// <summary>Copies all rows from the meeting list grid to the clipboard as formatted text.</summary>
+    /// <remarks>Displays a confirmation on success or an error message if the clipboard operation fails.</remarks>
+    private void CopyMeetingList()
+    {
+        try
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("MEETING LIST");
+            sb.AppendLine("------------");
+            sb.AppendLine(
+                "ID".PadRight(12) +
+                "Scheduled Start".PadRight(22) +
+                "Actual Start".PadRight(22) +
+                "Scheduled End".PadRight(22) +
+                "Actual End".PadRight(22) +
+                "Duration".PadRight(12) +
+                "Status");
+            sb.AppendLine(new string('-', 118));
+
+            foreach (var item in dgrdMeetingList.Items)
+            {
+                if (item is not MeetingRow row)
+                {
+                    continue;
+                }
+
+                sb.AppendLine(
+                    row.MeetingId.PadRight(12) +
+                    row.ScheduledStart.PadRight(22) +
+                    row.ActualStart.PadRight(22) +
+                    row.ScheduledEnd.PadRight(22) +
+                    row.ActualEnd.PadRight(22) +
+                    row.Duration.PadRight(12) +
+                    row.Status);
+            }
+
+            Clipboard.SetText(sb.ToString());
+            MessageBox.Show(this, "Meeting list copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, $"Failed to copy meeting list: {ex.Message}", "Copy Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 
