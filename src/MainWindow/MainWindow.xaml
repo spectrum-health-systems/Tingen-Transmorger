@@ -1,5 +1,5 @@
 ﻿<!--
-    260227_code
+    260409_code
     260318_documentation
 -->
 
@@ -473,7 +473,7 @@
                                 <Button x:Name="btnCopyMeetingList"
                                     Width="24"
                                     Height="24"
-                                    Margin="200,0,0,0"
+                                    Margin="180,0,0,0"
                                     BorderThickness="0"
                                     Click="btnCopyMeetingList_Click">
                                     <Button.Resources>

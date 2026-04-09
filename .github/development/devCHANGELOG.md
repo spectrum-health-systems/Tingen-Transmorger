@@ -3,6 +3,7 @@
 ## 0.9.31.0
 
 - `ADDED` Ability to copy the meeting list rows to the clipboard
+- `ADDED` XML Documentation to ns:Database classes
 
 ## 0.9.30.0
 
@@ -53,6 +54,7 @@
 - Removed MainWindow.DisplayDetails.cs
 - Removed MainWindow.Events.cs
 - Code/comment cleanup
+
 
 ## 0.9.27.0
 
