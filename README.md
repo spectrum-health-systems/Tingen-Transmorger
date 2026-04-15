@@ -30,7 +30,7 @@
 <div align="center">
 
   ![](.github/repository/readme/Transmorger-MainWindowScreenshot.png)
-  <h6>The Tingen Transmorger main window</h6>
+  <figcaption>The Tingen Transmorger main window</figcaption>
 
 </div>
 
