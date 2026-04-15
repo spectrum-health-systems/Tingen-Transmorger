@@ -29,8 +29,10 @@
 
 <div align="center">
 
-  ![](.github/repository/readme/Transmorger-MainWindowScreenshot.png)
-  <figcaption>The Tingen Transmorger main window</figcaption>
+  <figure>
+    <img src=".github/repository/readme/Transmorger-MainWindowScreenshot.png" style="width:70%">
+    <figcaption>The Tingen Transmorger main window</figcaption>
+  </figure>
 
 </div>
 
