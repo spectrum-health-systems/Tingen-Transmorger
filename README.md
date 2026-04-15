@@ -1,4 +1,4 @@
-<!-- 260326 -->
+<!-- 260415 -->
 
 <!--
   This section contains the project logo and various details.
@@ -16,7 +16,7 @@
     <img alt="Fallback image description" src=".github/repository/logo/TransmorgerLogo-256x256.png">
   </picture>
 
-  ![VERSION-01](https://img.shields.io/badge/Version-0.9.30.0-teal)&nbsp;&nbsp;![STAGE](https://img.shields.io/badge/BETA-yellow)&nbsp;&nbsp;![LICENSE](https://img.shields.io/badge/license-apache-blue)<br>
+  ![VERSION-01](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;&nbsp;![STAGE](https://img.shields.io/badge/BETA-yellow)&nbsp;&nbsp;![LICENSE](https://img.shields.io/badge/license-apache-blue)<br>
   [![OPERATING-SYSTEM](https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white)](#)&nbsp;&nbsp;[![DOTNET](https://img.shields.io/badge/.NET-10-512BD4?)](#)&nbsp;&nbsp;[![CSHARP](https://custom-icon-badges.demolab.com/badge/C%23-%23239120.svg?logo=cshrp&logoColor=white)](#)
 
 </div>
@@ -35,7 +35,6 @@
 
 </div>
 
-
 <!--
   Optional menu.
 
@@ -46,7 +45,7 @@
 
 <h6 align="center">
 
-[Changelog](docs/CHANGELOG.md)&nbsp;&bull;&nbsp;[Roadmap](docs/ROADMAP.md)&nbsp;&bull;&nbsp;[Known issues](docs/KNOWN-ISSUES.md)&nbsp;&bull;&nbsp;
+[Changelog](docs/CHANGELOG.md)&nbsp;&bull;&nbsp;[Roadmap](docs/ROADMAP.md)&nbsp;&bull;&nbsp;[Known issues](docs/KNOWN-ISSUES.md)
 
 </h6>
 
@@ -103,7 +102,7 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 
 - [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 - 64bit Operating System (only tested on Windows)
-- Access to the Netsmart TeleHealth reports
+- Access to Netsmart TeleHealth reports
 
 # GETTING STARTED
 
