@@ -19,7 +19,6 @@
   ![VERSION-01](https://img.shields.io/badge/Version-0.9.30.0-teal)&nbsp;&nbsp;![STAGE](https://img.shields.io/badge/BETA-yellow)&nbsp;&nbsp;![LICENSE](https://img.shields.io/badge/license-apache-blue)<br>
   [![OPERATING-SYSTEM](https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white)](#)&nbsp;&nbsp;[![DOTNET](https://img.shields.io/badge/.NET-10-512BD4?)](#)&nbsp;&nbsp;[![CSHARP](https://custom-icon-badges.demolab.com/badge/C%23-%23239120.svg?logo=cshrp&logoColor=white)](#)
 
-
 </div>
 
 ***
