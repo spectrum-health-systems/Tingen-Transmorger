@@ -30,8 +30,8 @@
 <div align="center">
 
   <figure>
-    <img src=".github/repository/readme/Transmorger-MainWindowScreenshot.png" style="width:70%">
-    <figcaption>The Tingen Transmorger main window</figcaption>
+  <img src=".github/repository/readme/Transmorger-MainWindowScreenshot.png" alt="..." style="width:70%">
+  <figcaption>The Tingen Transmorger main window</figcaption>
   </figure>
 
 </div>
