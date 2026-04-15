@@ -62,22 +62,19 @@
 <td img src=".github/repository/readme/spacer.png" alt="blank-spacer" width="1000" height="1">
 
   ### CONTENTS
-  [ABOUT](#about)<br>
-  [GETTING STARTED](#getting-started)<br>
-  [INSTALLING](#installing)<br>
-  [SETUP](#setup)<br>
-  [USING](#using)<br>
-  [COMPILING](#compiling)<br>
-  [TESTING](#testing)<br>
-  [API](#api)<br>
-  [DEVELOPMENT](#development)<br>
-  [ADDITIONAL INFORMATION](#additional-information)<br>
+  [About Tingen Transmorger](#about-tingen-transmorger)<br>
+    [The Transmorger Database](#the-transmorger-database)<br>
+    [Requirements](#requirements)<br>
+  [Getting Started](#getting-started)<br>
+  [Other Information](#other-information)<br>
+  [Development](#development)<br>
+  [Additional Information](#additional-information)<br>
 
 </td>
 </tr>
 </table>
 
-# ABOUT
+# Aabout Tingen Transmorger
 
 Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
@@ -108,20 +105,17 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 
 Please see the [Tingen Transmorger manual](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/docs/man/README.md).
 
-## Other information
+## Other Information
 
 - [Changelog](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/CHANGELOG.md)
 - [Roadmap](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/ROADMAP.md)
 - [Known issues](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/KNOWN-ISSUES.md)
 
-## Development
+# Development
 
 Tingen Transmorger is being [actively developed](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
 
-
-# DEVELOPMENT
-
-A blurb about development can go here.
+# Additional Information
 
 - [Project homepage](https://github.com/spectrum-health-systems/Tingen-Transmorger)
 
