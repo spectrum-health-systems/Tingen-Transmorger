@@ -1,3 +1,10 @@
+<div align="center">
+
+  <h1>Tingen Transmorger: Scratchpad
+
+</div>
+
+***
 
 ```xaml
 <Button.Resources>
@@ -7,10 +14,7 @@
 </Button.Resources>
 ```
 
-
-
-
-
+***
 
 ~~8151~~	4738	5996	7403	7987
 2336	3922	6244	9628	7238
@@ -22,8 +26,3 @@
 470	1279	9074	8515	7046
 3673	987	4569	5288	4891
 3588	6269	955	4814	5110
-
-
-
-MainWindow.AdminMode.cs
-MainWindow.DataCopy.cs
