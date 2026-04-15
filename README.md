@@ -104,116 +104,20 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 - 64bit Operating System (only tested on Windows)
 - Access to Netsmart TeleHealth reports
 
-# GETTING STARTED
+## Getting Started
 
-### Before you begin
+Please see the [Tingen Transmorger manual](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/docs/man/README.md).
 
-Things you should know/do before you begin.
+## Other information
 
-### Prerequisites
+- [Changelog](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/CHANGELOG.md)
+- [Roadmap](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/ROADMAP.md)
+- [Known issues](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/KNOWN-ISSUES.md)
 
-* Prerequisite #1
-* Prerequisite #2
-* Prerequisite #3
+## Development
 
-# INSTALLING
+Tingen Transmorger is being [actively developed](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
 
-### Windows
-
-1. The steps to install the project in Windows
-2. Use both Markdown and/or HTML
-3. Include screenshots when possible.
-
-### MacOS
-
-1. The steps to install the project in MacOS
-2. Use both Markdown and/or HTML
-3. Include screenshots when possible.
-
-### Linux
-
-1. The steps to install the project in Linux
-2. Use both Markdown and/or HTML
-3. Include screenshots when possible.
-
-### Other operating systems
-
-1. The steps to install the project in other operating systems
-2. Use both Markdown and/or HTML
-3. Include screenshots when possible.
-4. If other operating systems are not supported, mention that here.
-
-# SETUP
-
-If your project has a setup procedure, document it here.
-
-For example, you may need to make changes to a configuration file before using the project.
-
-### Configuring
-
-Configuration introduction.
-
-#### Required configuration settings
-
-Required configuration settings go here.
-
-#### Recommended configuration settings
-
-Recommended configuration settings go here.
-
-#### Optional configuration settings
-
-Optional configuration settings go here.
-
-### Important notes about options
-
-Optional/important notes about options go here.
-
-# USING
-
-Usage instructions go here.
-
-# UPDATING
-
-Updating instructions go here
-
-# UNINSTALLING
-
-Instructions for uninstalling go here.
-
-# COMPILING
-
-Compling information blurb goes here.
-
-### Making
-
-Making instructions go here.
-
-### Building
-
-Building instructions go here.
-
-### Deploying
-
-Deployment instructions go here.
-
-# TESTING
-
-Testing instructions go here.
-
-# HOW IT WORKS
-
-Sometimes it's fun to let users know how the magic happens.
-
-# API
-
-If your project contains an API, it should be documented here (or link to the documentation).
-
-# FAQ
-
-## Are you nice?
-
-I think so.
 
 # DEVELOPMENT
 

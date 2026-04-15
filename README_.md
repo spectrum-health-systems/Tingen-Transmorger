@@ -33,17 +33,3 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 
 - [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 - 64bit Operating System (only tested on Windows)
-
-## Getting Started
-
-Please see the [Tingen Transmorger manual](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/docs/man/README.md).
-
-## Other information
-
-- [Changelog](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/CHANGELOG.md)
-- [Roadmap](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/ROADMAP.md)
-- [Known issues](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/KNOWN-ISSUES.md)
-
-## Development
-
-Tingen Transmorger is being [actively developed](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
