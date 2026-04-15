@@ -1,4 +1,4 @@
-<!-- Last updated 260311 -->
+﻿<!-- Last updated 260403 -->
 
 # Copilot Instructions (Repository Onboarding)
 
@@ -23,17 +23,18 @@ instructions first; perform searches only when the instructions are incomplete o
 
 - Ensure all types and members have XML documentation comments.
 - If XML documentation exists, do not replace it; Only create XML documentation where it is missing.
+- Do not create XML documentation for event handlers.
 - Use proper grammar, punctuation, and capitalization in XML doc comments.
 - Use proper XML formatting and escape special characters.
 - XML tags should be properly nested and well-formed.
 - XML documentation should not be indented.
-- Use HTML tags like `<b>`, `<i>`, `<u>`, `<br/>`, and `<para>` for formatting within XML doc comments.
+- Use valid HTML tags for formatting XML documentation.
+- Prefer `<br/>` over `<para></para>` when possible.
 - Use the following XML doc tags where appropriate:
   - `<c>code</c>` for inline code references and `<code>` for multi-line code blocks.
   - `<example>` for usage examples
   - `<exception>` to document thrown exceptions
   - `<list>` for bulleted or numbered lists
-  - `<para>` for paragraph breaks in long descriptions
   - `<paramref>` to reference parameters in descriptions
   - `<see cref="..."/>` for inline cross-references
   - `<seealso cref="..."/>` for related topics
@@ -74,7 +75,7 @@ instructions first; perform searches only when the instructions are incomplete o
 ```xml
 /// <remarks>This method initializes the customer object with default values.</remarks>
 ```
--Example of multi-line `<remarks>`:
+- Example of multi-line `<remarks>`:
 
 ```xml
 /// <remarks>
@@ -87,7 +88,7 @@ instructions first; perform searches only when the instructions are incomplete o
 /// </remarks>
 ```
 
-### Other tag quideolines
+### Other tag guidelines
 
   - Use `<param>` tags for all parameters.
   - Use `<returns>` tags for methods returning values.
@@ -137,10 +138,10 @@ CI / workflows
 
 ## Project layout & where to make changes
 
-- `MainWindow.xaml` / `MainWindow.xaml.cs` — application entry UI.
-- `PaletteSwapper/PaletteSwapperWindow.xaml` and `PaletteSwapper/PaletteSwapperWindow.xaml.cs` — feature UI.
-- `PaletteSwapper/ImageZoom.cs` — helper for image zoom & pan behavior.
-- `Directory.Build.props` — contains central version and assembly information.
+- `MainWindow/MainWindow.xaml` / `MainWindow/MainWindow.xaml.cs` — application entry UI.
+- `Core/Framework.cs` — core framework utilities.
+- `Database/DatabaseMaintenanceWindow.xaml` / `Database/DatabaseMaintenanceWindow.xaml.cs` — database maintenance UI.
+- `ProjectInfo.cs` — project metadata (informational only, no executable code).
 
 ## Common pitfalls and helpful checks
 

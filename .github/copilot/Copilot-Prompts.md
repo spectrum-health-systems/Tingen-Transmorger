@@ -13,8 +13,6 @@ MessageFailure
 MessageDelivery
 	MessageDeliveryStats
 
-
-
 ## COMPONENT ONE: Summary information
 
 Create a new JSON-formatted file in the temporary directory named "transmorger.db". This is going to be the Transmorger database, and will contain all of the information Transmorger needs to function.
@@ -35,8 +33,6 @@ Please create two seperate summaries:
 
 2. Message Failure Summary, built using the "Message_Failure-Summary.json" file
 
-
-
 ## COMPONENT TWO, PART ONE: Patient name and ID
 
 Ok, now the second component of thransmorgifier.db: Client information.
@@ -52,8 +48,6 @@ The best place to get all of the patient names is probably Visit_Details-Partici
 PatientNames should be formatted like "Firstname Lastname", and any special characters should remain, and not be converted/escaped. For example: "Catherine O'Hara" and "Billy-Bob Thorton" should have the "'" and "-" (or any other special character) in their name, and not "\u2019", or whatever.
 
 The other piece of information that transmorger.db needs is the PatientId, which can be found in "MRN/PatientId"
-
-
 
 ## COMPONENT TWO, PART TWO: Patient Messaging, Part One - The Groundwork
 
@@ -79,8 +73,6 @@ For each of the PatientNames (refered to as "Client Name") in Message_Failure-Em
   
 - If a PatientName exists in Message_Failure-Email_Stats.json, but not transmorger.db, append the patient name to a file in the temporary directory named "mfes-missing-patient.error"
 
-
-
 ## COMPONENT TWO, PART THREE: Patient Messaging, Part Two - SMS Failures
 
 Let's continue to focus on messages.
@@ -100,8 +92,6 @@ For each patient "FailedMeeting" in Message_Failure-Sms_Stats.json, attach the f
 
 Keep in mind, there may be multiple FailedMeetings per patient phone number.
 
-
-
 ## COMPONENT TWO, PART FOUR: Patient Messaging, Part Three - Email Failures
 
 Now let's do the same thing with email addresses.
@@ -120,7 +110,6 @@ For each patient "FailedMeeting" in Message_Failure-Email_Stats.json, attach the
 Keep in mind, there may be multiple FailedMeetings per patient email address.
 
 Let's also change the "SmsErrorMessage" to "ErrorMessage" on the phone side of things.
-
 
 ## COMPONENT TWO, PART FIVE: Patient Messaging, Part Four - SMS Successes
 
@@ -142,7 +131,6 @@ If the sanitized "Phone Number" in "Message_Delivery-Message_Delivery_Stats.json
 
 Keep in mind, there may be multiple DeliverySuccess per patient phone number.
 
-
 ## COMPONENT TWO, PART SIX: Patient Messaging, Part Five - Email Successes
 
 Now let's do the same thing for successful messages via email.
@@ -160,7 +148,6 @@ If the "Email Address" in "Message_Delivery-Message_Delivery_Stats.json" matches
 - The "TimeSent" (referred to as "Time Sent")
 
 Keep in mind, there may be multiple DeliverySuccess per patient email addresses.
-
 
 ## COMPONENT TWO, PART SEVEN: Patient Meetings
 
@@ -195,7 +182,6 @@ While you are parsing Visit_Details-Participant_Details.json:
 - If you find a phone number that does not exist in transmorger.db, append that phone number to a file in the temporary directory named "vspd-phone.error"
 - If you find an MRN/PatientId thatdoes not exist in transmorger.db, append that PatientId to a file in the temporary directory named "vspd-patid.error"
 
-
 ## COMPONENT THREE, PART ONE: Provider name and ID
 
 Let's take a break from patient data, and focus on Providers for a minute.
@@ -212,7 +198,6 @@ Put the ProviderName and ProviderId in transmorger.db.
 
 If you find any provider names in Visit_Details-Meeting_Details.json that do not exist in thransmorgifier.md, append the name to a file in the temporary directory named "vdmd-provider.error"
 
-
 ## COMPONENT THREE, PART TWO: Provider MeetingIds
 
 Now let's add any MeetingIds associated with a ProviderName.
@@ -222,7 +207,6 @@ Go through Visit_Stats-Meeting_Details.json, and for each Provider/Staff Names y
 Providers can have more than one associated MeetingId.
 
 If you find any MeetingIds in Visit_Stats-Meeting_Details.json that are not in transmorger.json, append the MeetingId to a file in the temporary directory named "vsmd-meetingid.error"
-
 
 ## COMPONENT FOUR, PART ONE: Meeting Details
 
