@@ -31,7 +31,7 @@
 
   ![](.github/repository/readme/Transmorger-MainWindowScreenshot.png)
   
-  #### The Tingen Transmorger main window
+  <h5>The Tingen Transmorger main window</h5>
 
 </div>
 
