@@ -17,15 +17,15 @@ not using the this section, comment this divider out.
 --->
 ---
 
-<!-- ===================================================== [PROJECT WARNING] -->
+<!-- ============================================================= [WARNING] -->
 
-<!-- [INTRO] ===========================================================
+<!-- [INTRO] ===================================================================
 * Project logo
   There are references for both a "light" and "dark" images. The dark image
   should have a background of HEX #0d1117, to match the dark mode of GitHub.
   The light image is the fallback.
-* Project title
-* Project badges
+* Page title
+* Project/manual version badge
 ---------------------------------------------------------------------------- -->
 
 <div align="center">
@@ -42,8 +42,102 @@ not using the this section, comment this divider out.
 
 </div>
 
-<!--
-This divider separates this section from the rest of the README. This should
-not be modified.
---->
 ---
+
+<!-- [TABLE OF CONTENTS] =======================================================
+* The Table of Contents
+  The Table of Contents.
+---------------------------------------------------------------------------- -->
+
+### CONTENTS
+
+* [About %ProjectName%](#about)<br>
+    * [Features](#features)<br>
+* [How It Works](#how-it-works)<br>
+  * [The Transmorger Database](#the-transmorger-database)<br>
+* [Getting Started](#getting-started)<br>
+  * [Requirements](#requirements)<br>
+
+
+* [Installing](#installing)<br>
+* [Usage](#usage)<br>
+* [Acknowledgements](#acknowledgements)<br>
+* [Related Projects](#related-projects)<br>
+* [License](#license)<br>
+
+---
+
+<!-- =================================================== [TABLE OF CONTENTS] -->
+
+## About Tingen Transmorger
+
+Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
+
+**Tingen Transmorger** is a utility ***transmorgifies*** TeleHealth reports, and makes it easy to find the information you're looking for.
+
+### Features
+
+* Aggregate TeleHealth reports across a custom date range
+* Find information like:
+  * Patient alert details
+  * Patient connection details
+  * Meeting details
+  * Meeting quality
+* Copy information from Transmorger, and paste it into other aplications as plain text
+
+## How It Works
+
+Here's the 50,000-foot view of how Tingen Transmorger works:
+
+* TeleHealth reports are (manually) run from the TeleHealth portal
+* The completed reports are downloaded
+* Transmorger takes all of the downloaded reports and ***transmorgifies*** them into a single, custom database
+* That custom database is saved in a location that end-users have access to
+* Transmorger automatically downloads/updates the database for end-users
+* End-users can use Transmorger to troubleshoot TeleHealth issues
+
+### The Transmorger Database
+
+The heart of Transmorger is its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
+
+* Contains information from date ranges *you* choose
+* Can be added to *on-the-fly*, with dates/date ranges *you* choose
+* Is updated for end-users *automatically*, ensuring users have the latest available details to work with
+
+## Getting Started
+
+Tingen Transmorger is a stand-alone, portable, and (in theory) cross-platform application.
+
+Installation is as simple as downloading the latest release and executing it.
+
+Configuration is done via an external JSON file.
+
+To uninstall, simply delete the executable and the `AppData/*` directory.
+
+### Requirements
+
+| Requirement | Minimum version | Notes |
+|-------------|-----------------|-------|
+| [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) | 10.0 | Required to build and run. |
+| 64bit Microsoft Windows OS | | |
+| Access to Netsmart TeleHealth reports | | |
+
+## Installing
+
+> [!NOTE]
+> Transmorger is currently only available for Windows.
+
+### Windows
+
+To install Transmorger:
+
+1. Download the latest [release](https://github.com/spectrum-health-systems/TingenTransmorger/releases)
+2. Extract the `TingenTransmorger.exe` file to a location of your choice
+
+> [!WARNING]
+> Verify the SHA256 hash!  
+> ```text
+> Name: TingenTransmorger-0.9.31.0.7z
+> Size: 39.6 MB (41,531,038 bytes)
+> SHA256: 80ef3ef83669daa9e2884c092afbe024761502d92ef9303772394e29b09bb5c3 
+> ```
