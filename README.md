@@ -153,7 +153,7 @@ not using the this section, comment this divider out.
 
 Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
-* **Tingen Transmorger** is a utility ***transmorgifies*** TeleHealth reports, and makes it easy to find the information you're looking for.
+**Tingen Transmorger** is a utility ***transmorgifies*** TeleHealth reports, and makes it easy to find the information you're looking for.
 
 ### Features
 
@@ -170,11 +170,10 @@ Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguid
 
 ### What's New
 
-#### Version/Release X.Y.Z
+#### Version 0.9.31
 
-* New feature — What it does and why it matters.
-* Improvement — What was improved and why it matters.
-* Bug fix — What was fixed and why it matters.
+* Copy meetings list — the meetings list can now be copied to the clipboard
+* Meeting and Message lists now sort correctly
 
 For more details, see the [CHANGELOG](docs/CHANGELOG.md).
 
