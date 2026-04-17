@@ -62,9 +62,6 @@ not be modified.
   The light image is the fallback.
 ---------------------------------------------------------------------------- -->
 
-A second paragraph with a bit more detail — what problem this solves, who it is for, and
-what makes it worth using over alternatives.
-
 <div align="center">
 
   <picture>
@@ -89,7 +86,7 @@ not using the this section, comment this divider out.
 
 <h6 align="center">
 
-  [WEBSITE](URL)&nbsp;&bull;&nbsp;[DEMO](URL)&nbsp;&bull;&nbsp;[MANUAL](docs/man/README.md)&nbsp;&bull;&nbsp;[CHANGELOG](docs/CHANGELOG.md)&nbsp;&bull;&nbsp;[ROADMAP](docs/ROADMAP.md)&nbsp;&bull;&nbsp;[KNOWN ISSUES](docs/KNOWN-ISSUES.md)
+  [MANUAL](docs/man/README.md)&nbsp;&bull;&nbsp;[CHANGELOG](docs/CHANGELOG.md)&nbsp;&bull;&nbsp;[ROADMAP](docs/ROADMAP.md)&nbsp;&bull;&nbsp;[KNOWN ISSUES](docs/KNOWN-ISSUES.md)
   
 </h6>
 
@@ -129,10 +126,10 @@ not using the this section, comment this divider out.
   Use for time-sensitive notices, deprecation warnings, or anything critical
   that every visitor should see. Remove this section if not needed.
 ============================================================================ -->
-
+<!-- Not used
 > [!IMPORTANT]
 > Replace this with a message everyone should see, or remove this section entirely.
-
+-->
 <!--
 This divider separates the this section from the rest of the README. If you are
 not using the this section, comment this divider out.
@@ -152,11 +149,9 @@ not using the this section, comment this divider out.
   List of technologies and/or frameworks used
 ---------------------------------------------------------------------------- -->
 
-## About %ProjectName%
+## About Tingen Transmorger
 
-A brief description of the project, what it does, and who it's for. This should
-be a concise summary that gives readers a clear understanding of the project's
-purpose and value proposition.
+Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
 ### Features
 

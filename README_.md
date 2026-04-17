@@ -69,7 +69,6 @@
 ***
 # About Tingen Transmorger
 
-Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
 **Tingen Transmorger** is a utility ***transmorgifies*** those reports, and makes it easy to find information like:
 
