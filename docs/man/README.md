@@ -1,5 +1,5 @@
 <!--
-  Tingen Transmorger manual.
+  Tingen Transmorger manual
   260417_code
   260417_documentation
 -->
