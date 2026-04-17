@@ -107,10 +107,9 @@ not using the this section, comment this divider out.
 
 * [About Tingen Transmorger](#about-tingen-transmorger)<br>
 * [How It Works](#how-it-works)<br>
-* [Getting Started](#getting-started)<br>
 * [Installing](#installing)<br>
 * [Usage](#usage)<br>
-* [Acknowledgements](#acknowledgements)<br>
+* [Related Projects](#related-projects)<br>
 * [License](#license)<br>
 
 <!--
