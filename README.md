@@ -105,7 +105,7 @@ not using the this section, comment this divider out.
 
 ### CONTENTS
 
-* [About %ProjectName%](#about)<br>
+* [About Tingen Transmorger](#about-tingen-transmorger)<br>
 * [How It Works](#how-it-works)<br>
 * [Getting Started](#getting-started)<br>
 * [Installing](#installing)<br>
@@ -155,9 +155,16 @@ Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguid
 
 ### Features
 
-* Feature — What it does and why it matters.
-* Feature — What it does and why it matters.
-* Feature — What it does and why it matters.
+* **Tingen Transmorger** is a utility ***transmorgifies*** TeleHealth reports, and makes it easy to find information like:
+  * Patient alert details (deliver successes/failures, etc.)
+  * Patient connection details (devices/operating systems used, etc.)
+  * Meeting details (start/end time, when participants joined, participant list, etc.)
+  * Meeting quality (bandwidth, audio/video quality, etc.)
+* Information can easily be copied from Transmorger, and pasted into other documentation, emails, and tickets.
+* The Transmorger database, which aggregates multiple TeleHealth reports into a single, well organized collection of data:
+  * Contains information from date ranges *you* choose
+  * Can be added to *on-the-fly*, with dates/date ranges *you* choose
+  * Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
 ### What's New
 

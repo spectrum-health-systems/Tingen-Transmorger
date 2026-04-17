@@ -70,12 +70,7 @@
 # About Tingen Transmorger
 
 
-**Tingen Transmorger** is a utility ***transmorgifies*** those reports, and makes it easy to find information like:
 
-- Patient alert details (deliver successes/failures, etc.)
-- Patient connection details (devices/operating systems used, etc.)
-- Meeting details (start/end time, when participants joined, participant list, etc.)
-- Meeting quality (bandwidth, audio/video quality, etc.)
 
 And most of the information in Transmorger can easily be copy/pasted into other documentation, emails, and tickets.
 
