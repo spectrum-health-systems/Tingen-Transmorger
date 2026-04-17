@@ -1,4 +1,4 @@
-# Tingen Transmorger: Testing
+# Tingen Transmorger: Frequently Asked Questions
 
 Nothing here yet.
 

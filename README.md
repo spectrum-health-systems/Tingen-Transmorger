@@ -1,12 +1,12 @@
-<!-- 260415 -->
-
 <!--
-  This section contains the project logo and various details.
-
-  There are references for both a "light" and "dark" images. The dark image
-  should have a background of HEX #0d1117, to match the dark mode of GitHub.
-  The light image is the fallback.
+  260417_code
+  260417_documentation
 -->
+
+> [!WARNING]  
+> Tingen Transmorger is currently **Beta software**.
+
+---
 
 <div align="center">
 
@@ -16,104 +16,115 @@
     <img alt="Fallback image description" src=".github/repository/logo/TransmorgerLogo-256x256.png">
   </picture>
 
-  ![VERSION-01](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;&nbsp;![STAGE](https://img.shields.io/badge/BETA-yellow)&nbsp;&nbsp;![LICENSE](https://img.shields.io/badge/license-apache-blue)<br>
-  [![OPERATING-SYSTEM](https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white)](#)&nbsp;&nbsp;[![DOTNET](https://img.shields.io/badge/.NET-10-512BD4?)](#)&nbsp;&nbsp;[![CSHARP](https://custom-icon-badges.demolab.com/badge/C%23-%23239120.svg?logo=cshrp&logoColor=white)](#)
+  <h1>Tingen Transmorger</h1>
+
+  A utility for parsing Netsmart AvatarNX TeleHealth reports.
+
+  ![RELEASE](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;
+  ![STAGE](https://img.shields.io/badge/ALPHA/BETA-yellow)&nbsp; <!-- Alpha = Red, Beta = Yellow, Stable = Green -->
+  ![LICENSE](https://img.shields.io/badge/license-apache-blue)&nbsp;
+  ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)&nbsp;
 
 </div>
 
-***
-
-<!--
-  Optional screenshot
--->
+---
 
 <div align="center">
 
-  ![](.github/repository/readme/Transmorger-MainWindowScreenshot.png)
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/repository/readme/Transmorger-MainWindowScreenshot.png">
+    <source media="(prefers-color-scheme: light)" srcset=".github/repository/readme/Transmorger-MainWindowScreenshot.png">
+    <img alt="Fallback image description" src=".github/repository/readme/Transmorger-MainWindowScreenshot.png">
+  </picture>
   <h6>The Tingen Transmorger main window</h6>
 
 </div>
 
-***
-
-<!--
-  Optional menu.
-
-  These are things that aren't/don't belong in the Table of Contents.
-
-  Use whichever components you want/need. 
--->
+---
 
 <h6 align="center">
 
-[Changelog](docs/CHANGELOG.md)&nbsp;&bull;&nbsp;[Roadmap](docs/ROADMAP.md)&nbsp;&bull;&nbsp;[Known issues](docs/KNOWN-ISSUES.md)
-
+  [MANUAL](docs/man/README.md)&nbsp;&bull;&nbsp;[CHANGELOG](docs/CHANGELOG.md)&nbsp;&bull;&nbsp;[ROADMAP](docs/ROADMAP.md)&nbsp;&bull;&nbsp;[KNOWN ISSUES](docs/KNOWN-ISSUES.md)
+  
 </h6>
 
-<!-- 
-  Table of contents.
+---
 
-  These are things that aren't/don't belong in the Menu.
--->
+### CONTENTS
 
-***
+* [About Tingen Transmorger](#about-tingen-transmorger)<br>
+* [How It Works](#how-it-works)<br>
+* [Installing](#installing)<br>
+* [Usage](#usage)<br>
+* [Related Projects](#related-projects)<br>
+* [License](#license)<br>
 
-  #### CONTENTS
-  * [About Tingen Transmorger](#about-tingen-transmorger)<br>
-    * [The Transmorger Database](#the-transmorger-database)<br>
-  * [Requirements](#requirements)<br>
-  * [Getting Started](#getting-started)<br>
-  * [Development](#development)<br>
-  * [Additional Information](#additional-information)<br>
+---
 
-***
-# About Tingen Transmorger
+## About Tingen Transmorger
 
 Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
-**Tingen Transmorger** is a utility ***transmorgifies*** those reports, and makes it easy to find information like:
+**Tingen Transmorger** is a utility ***transmorgifies*** TeleHealth reports, and makes it easy to find the information you're looking for.
 
-- Patient alert details (deliver successes/failures, etc.)
-- Patient connection details (devices/operating systems used, etc.)
-- Meeting details (start/end time, when participants joined, participant list, etc.)
-- Meeting quality (bandwidth, audio/video quality, etc.)
+### Features
 
-And most of the information in Transmorger can easily be copy/pasted into other documentation, emails, and tickets.
+* Aggregate TeleHealth reports across a custom date range
+* Find information like:
+  * Patient alert details
+  * Patient connection details
+  * Meeting details
+  * Meeting quality
+* Copy information from Transmorger, and paste it into other aplications as plain text
 
-## The Transmorger Database
+## How It Works
+
+Here's the 50,000-foot view of how Tingen Transmorger works:
+
+* TeleHealth reports are (manually) run from the TeleHealth portal
+* The completed reports are downloaded
+* Transmorger takes all of the downloaded reports and ***transmorgifies*** them into a single, custom database
+* That custom database is saved in a location that end-users have access to
+* Transmorger automatically downloads/updates the database for end-users
+* End-users can use Transmorger to troubleshoot TeleHealth issues
+
+### The Transmorger Database
 
 The heart of Transmorger is its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
 
-- Contains information from date ranges *you* choose
-- Can be added to *on-the-fly*, with dates/date ranges *you* choose
-- Is updated for end-users *automatically*, ensuring users have the latest available details to work with
+* Contains information from date ranges *you* choose
+* Can be added to *on-the-fly*, with dates/date ranges *you* choose
+* Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
-## Requirements
+## Installing
 
-- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
-- 64bit Operating System (only tested on Windows)
-- Access to Netsmart TeleHealth reports
+For detailed installation instructions, see the [manual](docs/man/README.md#installation).
 
-## Getting Started
+## Usage
 
-Please see the [Tingen Transmorger manual](https://github.com/spectrum-health-systems/TingenTransmorger/blob/main/docs/man/README.md).
+For detailed usage instructions, see the [manual](docs/man/README.md#usage).
 
-# Development
+## Related projects
 
-Tingen Transmorger is being [actively developed](https://github.com/spectrum-health-systems/TingenTransmorger/tree/development).
+* [Tingen Nyqvist](https://github.com/spectrum-health-systems/Tingen-Nyqvist)  
+Nyqvist is used to test SQL queries against different Avatar Systems. Since Tingen Nyqvist only works with Spectrum Health Systems AvatarNX Systems, it is a private repository. If you would like access to the Tingen Nyqvist repository, please contact us.
 
-## Contributing
+* [Tingen Web Service](https://github.com/spectrum-health-systems/Tingen-WebService)  
+The Tingen Web Service is a custom web service which includes various tools and utilities for Netsmart's [Avatar™ EHR](https://www.ntst.com/Solutions-and-Services/Offerings/myAvatar™) EHR that aren't included in the official release, and provides a solid foundation for building additional functionality quickly and efficiently.
 
-If you are interested in contributing to this project, please see the:
+## License
 
-- [Code of conduct](https://github.com/APrettyCoolProgram/.github/blob/main/.github/CODE_OF_CONDUCT.md)
-- [Contributing guidelines](https://github.com/APrettyCoolProgram/.github/blob/main/.github/CONTRIBUTING.md)
-* [Issue templates](https://github.com/APrettyCoolProgram/.github/blob/main/.github/ISSUE_TEMPLATE/)
-* [Pull request template](https://github.com/APrettyCoolProgram/.github/blob/main/.github/PULL_REQUEST_TEMPLATE/)
+Distributed under the [Apache 2.0 License](LICENSE).  
+Copyright &copy; 2026 %Owner%
 
-# Additional Information
+---
 
-- [Repository](https://github.com/spectrum-health-systems/Tingen-Transmorger)
-- [Documentation](docs/)
+<h6 align="center">
 
-***
+  [FAQ](docs/FAQ.md)&nbsp;&bull;&nbsp;[DEVELOPMENT](docs/DEVELOPMENT.md)&nbsp;&bull;&nbsp;[API](docs/api/README.md)&nbsp;&bull;&nbsp;[TESTING](docs/TESTING.md)&nbsp;&bull;&nbsp;[SUPPORT](docs/SUPPORT.md)&nbsp;&bull;&nbsp;[NOTICES](docs/NOTICES.md)
+  
+</h6>
+
+---
+
+<sub>Last updated: 260417</sub>
