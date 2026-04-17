@@ -62,7 +62,16 @@ not using the this section, comment this divider out.
 * [Setup](#setup)<br>
   * [Creating the LocalDb path](#creating-the-localdb-path)<br>
   * [The MasterDb path warning](#the-masterdb-path-warning)<br>
-
+* [Configuration](#configuration)<br>
+  * [The Transmorger Configuration file](#the-transmorger-configuration-file)<br>
+  * [The default configuration file](#the-default-configuration-file)<br>
+    * [Mode](#mode)<br>
+    * [Standard directories](#standard-directories)<br>
+    * [Admin directories](#admin-directories)<br>
+  * [Modifying the configuration file](#modifying-the-configuration-file)<br>
+    * [Modifying the MasterDb location](#modifying-the-masterdb-location)<br>
+    * [Modifying the `Import` location](#modifying-the-import-location)<br>
+  * [Saving the configuration file](#saving-the-configuration-file)<br>
 
 
 * [Usage](#usage)<br>
@@ -109,6 +118,8 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 * Can be added to *on-the-fly*, with dates/date ranges *you* choose
 * Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
+---
+
 ## Getting Started
 
 Tingen Transmorger is a stand-alone, portable, and (in theory) cross-platform application.
@@ -126,6 +137,8 @@ To uninstall, simply delete the executable and the `AppData/*` directory.
 | [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) | 10.0 | Required to build and run. |
 | 64bit Microsoft Windows OS | | |
 | Access to Netsmart TeleHealth reports | | |
+
+---
 
 ## Installing
 
@@ -146,6 +159,8 @@ To install Transmorger:
 > Size: 39.6 MB (41,531,038 bytes)
 > SHA256: 80ef3ef83669daa9e2884c092afbe024761502d92ef9303772394e29b09bb5c3 
 > ```
+
+---
 
 ## Setup
 
@@ -191,6 +206,8 @@ The **MasterDb** is the most up-to-date version of the Transmorger database...bu
 
 We'll fix that next, so for now just click **OK**, and Transmorger will exit.
 
+---
+
 ## Configuration
 
 If you take a look in the folder where `TingenTransmorger.exe` is, you'll notice there is a folder named `AppData`, which is where Transmorger will store various data that it needs to function.
@@ -199,7 +216,7 @@ You'll also see the `AppData/Database` folder that was *just created* for the `L
 
 We're interested in other folder here: `AppData/Config`, which contains the `transmorger.config` configuration file.
 
-### The Tranmorger Configuration file
+### The Transmorger Configuration file
 
 The Transmorger **configuration file**:
 
