@@ -72,6 +72,18 @@ not using the this section, comment this divider out.
     * [Modifying the MasterDb location](#modifying-the-masterdb-location)<br>
     * [Modifying the `Import` location](#modifying-the-import-location)<br>
   * [Saving the configuration file](#saving-the-configuration-file)<br>
+* [TeleHealth reports](#running-the-telehealth-reports)<br>
+  * [Report date range](#report-date-range)<br>
+  * [Running reports](#running-reports)<br>
+  * [Downloading reports](#downloading-reports)<br>
+  * [Report names](#report-names)<br>
+  * [Capturing all data](#capturing-all-data)<br>
+  * [Report aggregation](#report-aggregation)<br>
+  * [Missing dates](#missing-dates)<br>
+* [The database(s)](#the-databases)<br>
+  * [How the database(s) work](#how-the-databases-work)<br>
+  * [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)<br>
+  * [Creating the Master Transmorger database](#creating-the-master-transmorger-database)<br>
 
 
 * [Usage](#usage)<br>
@@ -356,6 +368,118 @@ Save the changes.
 
 Tingen Transmorger is now configured!
 
+## TeleHealth reports
+
+In order for Transmorger to do what it does, and do it accurately, it needs these reports:
+
+1. Visit Details
+2. Message Failure
+3. Message Delivery
+4. Visit Stats
+
+### Report date range
+
+Each report requires a ***Start Date*** and an ***End Date***.
+
+You can run a report for a single day by setting the *Start Date* and *End Date* to the same day.
+
+### Running reports
+
+To run a TeleHealth reports:
+
+1. Login to your TeleHealth portal
+2. Click the **Reports** tab
+3. Choose a report to run
+4. Choose the start and end date of the report
+5. Click **Run Report**
+
+Using the **Message Delivery Report** as an example:
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-01.jpg)
+
+Some reports take longer than others, and some reports take pretty long.
+
+While the report is being run, you'll see a **Processing** button (that's disabled).
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-02.jpg)
+
+> [!NOTE]
+> All TeleHealth reports in the Import folder are used to create the Transmorger database, so you can download incremental date ranges.
+>
+> For example, running two reports from 1/1/2026-1/15/2015 and 1/16/20206-1/31/2026 will give you the same result as running a single report from 1/1/2026-1/31/2-26.
+
+### Downloading reports
+
+Once the **Processing** button becomes the **Download** button (which is enabled), download the report to your **Import/** folder.
+
+![](./Images/TransmorgerManual-TeleHealthReportDownload-03.jpg)
+
+### Report names
+
+Downloaded report names look like this:
+
+```text
+STQma_%Report_Name%_%StartDate_EndDate%.xlsx
+```
+Where:
+
+- `%Report_Name%` is the name of the report (e.g., `Message_Delivery`).
+
+- `%StartDate_EndDate%` is the date-range (e.g., `YYYYMMDD_YYYYMMDD`).
+
+So if you run the "Visit Details" report for 5/1/2026 - 5/15/20206, the name of the report would be:
+
+```text
+STQma_Visit_Details_20260501_20260515.xlsx
+```
+
+In order to troubleshoot TeleHealth for the month of May 2026, you would need the following reports:
+
+```text
+STQma_Visit_Details_20260501_20260531.xlsx
+STQma_Message_Failure_20260501_20260531.xlsx
+STQma_Message_Delivery_20260501_20260531.xlsx
+STQma_Visit_Stats_20260501_20260531.xlsx
+```
+
+### Capturing all data
+
+In order to capture all data for a date/date-range. is recommended that you run reports once that date/range has passed.
+
+For example, to get all data for 5/1/2026 - 5/15/20206, run the report on 5/16/26.
+
+### Report aggregation
+
+Since Transmorger aggregates *all* of the reports in the Import/ folder, you can run reports for shorter date-ranges that add up to larger date-ranges.
+
+For example, the following reports would *also* build data for all of May 2026:
+
+```text
+STQma_Visit_Details_20260501_20260531.xlsx
+
+STQma_Message_Failure_20260501_20260515.xlsx
+STQma_Message_Failure_20260516_20260531.xlsx
+
+STQma_Message_Delivery_20260501_20260510.xlsx
+STQma_Message_Delivery_20260511_20260520.xlsx
+STQma_Message_Delivery_20260521_20260531.xlsx
+
+STQma_Visit_Stats_20260501_20260510.xlsx
+STQma_Visit_Stats_20260511_20260520.xlsx
+STQma_Visit_Stats_20260521_20260530.xlsx
+STQma_Visit_Stats_20260531_20260531.xlsx
+```
+
+### Missing dates
+
+If a report for a specific date does not exist, that data will not be included in the Transmorger database. All other dates will be included.
+
+For example, if you ran reports for **5/1/26 - 1/15/26** and **5/17/26 - 5/31/26**, but *not* for **5/16/26**, data would exist for all of May 2026 *except* for 5/16/26.
+
+This could be resolved by running reports with a start *and* end date of 5/16/25, and adding that report the the Import/ folder.
+
+---
+
 ## The database(s)
 
 *Technically*, Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
@@ -382,9 +506,37 @@ The **MasterDb**:
 > [!NOTE]
 > **Fun fact**: End-users will probably never see the MasterDb!
 
-## Initializing the Master Transmorger database
+### How the database(s) work
 
-That last thing was only *mostly* true: Tingen Transmorger needs one more configuration change, but it's a temporary one.
+If you want something visual (that's not too abysmal):
+
+```mermaid
+flowchart LR
+    %% Components
+    TransmorgerAdminMode@{ shape: rounded, label: "Transmorger\n[Admin Mode]" }
+    MasterDb@{ shape: cyl, label: "MasterDb" } 
+    TransmorgerEndUser@{ shape: rounded, label: "Transmorger\n[End User]" }
+    LocalDb@{ shape: lin-cyl, label: "LocalDb" }
+    %% Layout
+    TransmorgerAdminMode -. &nbsp;[1] Rebuild request&nbsp; .-> MasterDb
+    TransmorgerEndUser -- [2] Check for update --> MasterDb
+    MasterDb -. [3] Download update .-> LocalDb
+    TransmorgerEndUser e1@<--> LocalDb
+    LocalDb e2@<-->TransmorgerEndUser
+    %% Styles
+    e1@{ animate: true }
+    e2@{ animate: true }
+```
+
+>[1] Transmorger Admin mode can request that the MasterDb be rebuilt  
+>[2] When an end-user launches Transmorger, it checks to see if the MasterDb is more current than it's LocalDb  
+>[3] If the MasterDb is more current than the LocalDb, the MasterDb is copied to the end-user's machine, overwriting the current LocalDb
+>
+> The end-user communicates directly with the LocalDb
+
+### Initializing the Master Transmorger database
+
+So, I lied when I said that Transmorger was configured. It actually needs one more configuration change, but it's a temporary one.
 
 We need to change the **Mode** to "Admin", so we can build the initial Transmorger database.
 
@@ -404,9 +556,6 @@ So open the `transmorger.config` file, and change this line:
 
 But don't launch Transmorger yet! To build the Transmorger database, we need TeleHealth reports.
 
-## Running the TeleHealth reports
-
-For detailed instruction on how to run and download TeleHealth reports, please see the [TeleHealth reports](TeleHealth-Reports.md#running-reports) documentation.
 
 ## Creating the Master Transmorger database
 

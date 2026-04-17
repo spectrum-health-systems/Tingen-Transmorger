@@ -72,33 +72,7 @@ The **MasterDb**:
 
 **Fun fact**: End-users will probably never see the MasterDb!
 
-# How the database(s) work
 
-If you want something visual (that's not too abysmal):
-
-```mermaid
-flowchart LR
-    %% Components
-    TransmorgerAdminMode@{ shape: rounded, label: "Transmorger\n[Admin Mode]" }
-    MasterDb@{ shape: cyl, label: "MasterDb" } 
-    TransmorgerEndUser@{ shape: rounded, label: "Transmorger\n[End User]" }
-    LocalDb@{ shape: lin-cyl, label: "LocalDb" }
-    %% Layout
-    TransmorgerAdminMode -. &nbsp;[1] Rebuild request&nbsp; .-> MasterDb
-    TransmorgerEndUser -- [2] Check for update --> MasterDb
-    MasterDb -. [3] Download update .-> LocalDb
-    TransmorgerEndUser e1@<--> LocalDb
-    LocalDb e2@<-->TransmorgerEndUser
-    %% Styles
-    e1@{ animate: true }
-    e2@{ animate: true }
-```
-
->[1] Transmorger Admin mode can request that the MasterDb be rebuilt  
->[2] When an end-user launches Transmorger, it checks to see if the MasterDb is more current than it's LocalDb  
->[3] If the MasterDb is more current than the LocalDb, the MasterDb is copied to the end-user's machine, overwriting the current LocalDb
->
-> The end-user communicates directly with the LocalDb
 
 # Rebuilding the master database
 
