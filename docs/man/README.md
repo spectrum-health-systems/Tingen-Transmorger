@@ -118,6 +118,8 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 * Can be added to *on-the-fly*, with dates/date ranges *you* choose
 * Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
+<br>
+
 ---
 
 ## Getting Started
@@ -137,6 +139,8 @@ To uninstall, simply delete the executable and the `AppData/*` directory.
 | [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) | 10.0 | Required to build and run. |
 | 64bit Microsoft Windows OS | | |
 | Access to Netsmart TeleHealth reports | | |
+
+<br>
 
 ---
 
@@ -159,6 +163,8 @@ To install Transmorger:
 > Size: 39.6 MB (41,531,038 bytes)
 > SHA256: 80ef3ef83669daa9e2884c092afbe024761502d92ef9303772394e29b09bb5c3 
 > ```
+
+<br>
 
 ---
 
@@ -205,6 +211,8 @@ After creating the LocalDb path, you should get the following popup:
 The **MasterDb** is the most up-to-date version of the Transmorger database...but it doesn't actually exist yet. In fact, it doesn't even have a *location* to exist in!
 
 We'll fix that next, so for now just click **OK**, and Transmorger will exit.
+
+<br>
 
 ---
 
@@ -256,7 +264,7 @@ There are two modes that Transmorger can run in:
 * **Standard**  
 This is the mode that end-users should always use.
 
-- **Admin**  
+* **Admin**  
 This mode is used for rebuilding the Transmorger database, and is *not* intended for end-users. You can find more information about this mode.
 
 #### Standard directories
