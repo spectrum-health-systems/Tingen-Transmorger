@@ -369,7 +369,7 @@ The **LocalDb**:
 
 Each Transmorger installation should have it's own LocalDb.
 
-> [!INFO]
+> [!NOTE]
 > **Fun fact**: When Transmorger is launched, it checks to see if there is an updated version of the LocalDb. If there is an updated version, the user is prompted to update!
 
 The **MasterDb**:
@@ -379,7 +379,7 @@ The **MasterDb**:
 * is only modified when building/rebuilding the database in *Admin mode*
 * is always the most up-to-date version of the Transmorger database
 
-> [!INFO]
+> [!NOTE]
 > **Fun fact**: End-users will probably never see the MasterDb!
 
 ## Initializing the Master Transmorger database
