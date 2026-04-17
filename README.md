@@ -1,6 +1,4 @@
 <!--
-  README.md template for source code repositories.
-  R26.4.0.0-170944
   260417_code
   260417_documentation
 -->
@@ -10,7 +8,7 @@
 ---------------------------------------------------------------------------- -->
 
 > [!WARNING]  
-> This is a warning everyone should see, or remove this section entirely.
+> Tingen Transmorger is currently **Beta software**.
 
 <!--
 This divider separates the this section from the rest of the README. If you are
@@ -33,20 +31,19 @@ not using the this section, comment this divider out.
 <div align="center">
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/repository/logo/repository-logo-dark.jpg">
-    <source media="(prefers-color-scheme: light)" srcset=".github/repository/logo/repository-logo-light.jpg">
-    <img alt="Fallback image description" src=".github/repository/logo/repository-logo-light.jpg">
+    <source media="(prefers-color-scheme: dark)" srcset=".github/repository/logo/TransmorgerLogo-256x256.png">
+    <source media="(prefers-color-scheme: light)" srcset=".github/repository/logo/TransmorgerLogo-256x256.png">
+    <img alt="Fallback image description" src=".github/repository/logo/TransmorgerLogo-256x256.png">
   </picture>
 
-  <h1>Source Code Repository README.md Template</h1>
+  <h1>Tingen Transmorger</h1>
 
-  Catchphrase!
+  A utility for parsing Netsmart AvatarNX TeleHealth reports.
 
-  ![RELEASE](https://img.shields.io/badge/Release\/Version-25.0.0.0-teal)&nbsp;
-  ![STAGE](https://img.shields.io/badge/ALPHA/BETA-red)&nbsp; <!-- Alpha = Red, Beta = Yellow, Stable = Green -->
+  ![RELEASE](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;
+  ![STAGE](https://img.shields.io/badge/ALPHA/BETA-yellow)&nbsp; <!-- Alpha = Red, Beta = Yellow, Stable = Green -->
   ![LICENSE](https://img.shields.io/badge/license-apache-blue)&nbsp;
-  ![Build](https://img.shields.io/badge/Build-Passing-brightgreen)
-  ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)&nbsp;
+  ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)&nbsp;
 
 </div>
 
@@ -71,11 +68,11 @@ what makes it worth using over alternatives.
 <div align="center">
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/repository/readme/screenshot01-dark.jpg">
-    <source media="(prefers-color-scheme: light)" srcset=".github/repository/readme/screenshot01-light.jpg">
-    <img alt="Fallback image description" src=".github/repository/readme/screenshot01-light.jpg">
+    <source media="(prefers-color-scheme: dark)" srcset=".github/repository/readme/Transmorger-MainWindowScreenshot.png">
+    <source media="(prefers-color-scheme: light)" srcset=".github/repository/readme/Transmorger-MainWindowScreenshot.png">
+    <img alt="Fallback image description" src=".github/repository/readme/Transmorger-MainWindowScreenshot.png">
   </picture>
-  <h6>The Screenshot</h6>
+  <h6>The Tingen Transmorger main window</h6>
 
 </div>
 
