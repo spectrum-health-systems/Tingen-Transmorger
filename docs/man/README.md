@@ -18,7 +18,7 @@
 
 ### CONTENTS
 
-- [Introduction](#introduction)
+- [About Tingen Transmorger](#about-tingen-transmorger)
   - [The Transmorger Database](#the-transmorger-database)
   - [Requirements](#requirements)
   - [How it works](#how-it-works)
@@ -66,47 +66,74 @@
 
 ***
 
-# Introduction
+<!-- [ABOUT] ===================================================================
+* About %ProjectName%
+  Describes the project in a few sentences
+* Features
+  List of project features
+* What's new
+  A summary of what's new in the latest release
+* Built With
+  List of technologies and/or frameworks used
+---------------------------------------------------------------------------- -->
+
+## About Tingen Transmorger
 
 Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguidance-solutions/telehealth) platform can be frustrating; data is spread across multiple reports which use inconsistent syntax, and are not end-user friendly.
 
-**Tingen Transmorger** is a utility ***transmorgifies*** those reports, and makes it easy to find information like:
+**Tingen Transmorger** is a utility ***transmorgifies*** TeleHealth reports, and makes it easy to find the information you're looking for.
 
-- Patient alert details (deliver successes/failures, etc.)
-- Patient connection details (devices/operating systems used, etc.)
-- Meeting details (start/end time, when participants joined, participant list, etc.)
-- Meeting quality (bandwidth, audio/video quality, etc.)
+### Features
 
-And most of the information in Transmorger can easily be copy/pasted into other documentation, emails, and tickets.
+* Aggregate TeleHealth reports across a custom date range
+* Find information like:
+  * Patient alert details
+  * Patient connection details
+  * Meeting details
+  * Meeting quality
+* Copy information from Transmorger, and paste it into other aplications as plain text
 
-## The Transmorger Database
+<!-- =============================================================== [ABOUT] -->
 
-The heart of Transmorger is its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
+<!-- [HOW IT WORKS] ============================================================
+* How it works
+  A high-level overview of how the project works.
+============================================================================= -->
 
-- Contains information from date ranges *you* choose
-- Can be added to *on-the-fly*, with dates/date ranges *you* choose
-- Is updated for end-users *automatically*, ensuring users have the latest available details to work with
-
-## Requirements
-
-- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
-- 64bit Operating System (only tested on Windows)
-- Access to Netsmart TeleHealth reports
-
-## How it works
+## How It Works
 
 Here's the 50,000-foot view of how Tingen Transmorger works:
 
-- TeleHealth reports are (manually) run from the TeleHealth portal
-- The completed reports are downloaded
-- Transmorger takes all of the downloaded reports and ***transmorgifies*** them into a single, custom database
-- That custom database is saved in a location that end-users have access to
-- Transmorger automatically downloads/updates the database for end-users
-- End-users can use Transmorger to troubleshoot TeleHealth issues
+* TeleHealth reports are (manually) run from the TeleHealth portal
+* The completed reports are downloaded
+* Transmorger takes all of the downloaded reports and ***transmorgifies*** them into a single, custom database
+* That custom database is saved in a location that end-users have access to
+* Transmorger automatically downloads/updates the database for end-users
+* End-users can use Transmorger to troubleshoot TeleHealth issues
 
-# Installing
+### The Transmorger Database
+
+The heart of Transmorger is its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
+
+* Contains information from date ranges *you* choose
+* Can be added to *on-the-fly*, with dates/date ranges *you* choose
+* Is updated for end-users *automatically*, ensuring users have the latest available details to work with
+
+<!-- ========================================================= [HOW IT WORKS] -->
+
+## Getting Started
 
 Tingen Transmorger is a stand-alone, portable, and (in theory) cross-platform application.
+
+### Prerequisites
+
+| Requirement | Minimum version | Notes |
+|-------------|-----------------|-------|
+| [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) | 10.0 | Required to build and run. |
+| 64bit Microsoft Windows OS | | |
+| Access to Netsmart TeleHealth reports | | |
+
+### Installation
 
 To install Transmorger, just:
 

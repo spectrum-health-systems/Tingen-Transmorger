@@ -157,22 +157,13 @@ Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguid
 
 ### Features
 
+* Aggregate TeleHealth reports across a custom date range
 * Find information like:
   * Patient alert details
   * Patient connection details
   * Meeting details
   * Meeting quality
 * Copy information from Transmorger, and paste it into other aplications as plain text
-* Aggregate multiple TeleHealth reports into a single database that:
-  * Contains information from date ranges *you* choose
-  * Can be added to *on-the-fly*
-  * Is updated for end-users *automatically*
-
-### Built With
-
-* [Technology or framework](URL)  - Role it plays in the project.
-* [Technology or framework](URL)  - Role it plays in the project.
-* [Technology or framework](URL)  - Role it plays in the project.
 
 <!-- =============================================================== [ABOUT] -->
 
@@ -183,44 +174,37 @@ Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguid
 
 ## How It Works
 
-A blurb describing how the project works at a high level.
+Here's the 50,000-foot view of how Tingen Transmorger works:
+
+* TeleHealth reports are (manually) run from the TeleHealth portal
+* The completed reports are downloaded
+* Transmorger takes all of the downloaded reports and ***transmorgifies*** them into a single, custom database
+* That custom database is saved in a location that end-users have access to
+* Transmorger automatically downloads/updates the database for end-users
+* End-users can use Transmorger to troubleshoot TeleHealth issues
+
+### The Transmorger Database
+
+The heart of Transmorger is its Database, which aggregates multiple TeleHealth reports into a single, well organized collection of data that:
+
+* Contains information from date ranges *you* choose
+* Can be added to *on-the-fly*, with dates/date ranges *you* choose
+* Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
 <!-- ========================================================= [HOW IT WORKS] -->
-
-
-<!-- [GETTING STARTED] =========================================================
-* Before you begin
-  Any prerequisites, assumptions, or other information a user should know before
-  getting started.
-* Prerequisites
-  List of software, hardware, or other requirements.
-* Documentation
-  Information about where to find documentation.
-============================================================================ -->
-
-## Getting Started
-
-### Before you begin
-
-Things a user should know or do before starting.
-
-### Prerequisites
-
-| Requirement | Minimum version | Notes |
-|-------------|-----------------|-------|
-| [.NET SDK](https://dotnet.microsoft.com/download) | 10.0 | Required to build and run. |
-| Requirement two | X.x | Notes. |
-| Requirement three | X.x | Notes. |
 
 <!-- [INSTALLING] =========================================================
 * Installing
   Step-by-step instructions for installing the project on supported platforms.
   Remove OS sections that are not supported.
+
+  In general, this should be a quick overview of the installation process,
+  with a link to docs/man/README.md.
 ============================================================================ -->
 
 ## Installing
 
-Quick summary of installation instructions, or link to the Installing documentation.
+For detailed installation instructions, see the [Tingen Transmorger Manual](docs/man/README.md#installation).
 
 <!-- ========================================================== [INSTALLING] -->
 
@@ -228,11 +212,14 @@ Quick summary of installation instructions, or link to the Installing documentat
 * Usage
   Step-by-step instructions for using the project on supported platforms.
   Remove OS sections that are not supported.
+
+  In general, this should be a quick overview of the installation process,
+  with a link to docs/man/README.md.
 ============================================================================ -->
 
 ## Usage
 
-Step-by-step instructions for using the project on supported platforms.
+For detailed usage instructions, see the [Tingen Transmorger Manual](docs/man/README.md#usage).
 
 <!-- =============================================================== [USAGE] -->
 
