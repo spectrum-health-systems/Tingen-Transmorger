@@ -51,7 +51,7 @@ not using the this section, comment this divider out.
 
 ### CONTENTS
 
-* [About %ProjectName%](#about)<br>
+* [About Tingen Transmorger](#about)<br>
     * [Features](#features)<br>
 * [How It Works](#how-it-works)<br>
   * [The Transmorger Database](#the-transmorger-database)<br>
