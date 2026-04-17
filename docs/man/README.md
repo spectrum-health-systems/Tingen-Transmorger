@@ -84,12 +84,16 @@ not using the this section, comment this divider out.
   * [How the database(s) work](#how-the-databases-work)<br>
   * [Initializing the Master Transmorger database](#initializing-the-master-transmorger-database)<br>
   * [Creating the Master Transmorger database](#creating-the-master-transmorger-database)<br>
-
-
-* [Usage](#usage)<br>
-* [Acknowledgements](#acknowledgements)<br>
-* [Related Projects](#related-projects)<br>
-* [License](#license)<br>
+* [The Transmorger user interface](#the-transmorger-user-interface)<br>
+  * [The Main window](#the-main-window)<br>
+  * [The Message Details window](#the-message-details-window)<br>
+  * [The message details button](#the-message-details-button)<br>
+  * [The Copy Data buttons](#the-copy-data-buttons)<br>
+* [Using](#using)<br>
+  * [Performing a patient search](#performing-a-patient-search)<br>
+  * [Performing a provider search](#performing-a-provider-search)<br>
+  * [Reviewing patient meeting details](#reviewing-patient-meeting-details)<br>
+  * [Reviewing provider meeting details](#reviewing-provider-meeting-details)<br>
 
 ---
 
@@ -795,3 +799,7 @@ The provider name, ID, and meeting list will be displayed.
 #### Reviewing provider meeting details
 
 A sortable list of meetings associated with the provider will be displayed. Click on a meeting to display various details.
+
+***
+
+<sub>Last updated: 260417</sub>
