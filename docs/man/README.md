@@ -57,9 +57,14 @@ not using the this section, comment this divider out.
   * [The Transmorger Database](#the-transmorger-database)<br>
 * [Getting Started](#getting-started)<br>
   * [Requirements](#requirements)<br>
-
-
 * [Installing](#installing)<br>
+  * [Windows](#windows)
+* [Setup](#setup)<br>
+  * [Creating the LocalDb path](#creating-the-localdb-path)<br>
+  * [The MasterDb path warning](#the-masterdb-path-warning)<br>
+  
+
+
 * [Usage](#usage)<br>
 * [Acknowledgements](#acknowledgements)<br>
 * [Related Projects](#related-projects)<br>
@@ -141,3 +146,53 @@ To install Transmorger:
 > Size: 39.6 MB (41,531,038 bytes)
 > SHA256: 80ef3ef83669daa9e2884c092afbe024761502d92ef9303772394e29b09bb5c3 
 > ```
+
+## Setup
+
+When you double-click on the `TingenTransmorger.exe` file, and launch it for the first time, it does a few setup-type things, including:
+
+* Creating the `./AppData/` folder
+* Creating the `./AppData/Config/` folder
+* Creating the `./AppData/Config/transmorger.config` file
+* Prompt the user to create the `LocalDb` path
+* Warn the user about the `MasterDb` path
+
+
+## Creating the LocalDb path
+
+The when you launch Transmorger for the first time, you should see this popup:
+
+<div align="center">
+
+![](./Images/TransmorgerManual-LocalDbPathDoesNotExistCreatePrompt.png)
+
+</div>
+
+The ***LocalDb path*** is where the *local copy* of the Transmorger database will stored.
+
+When you click **Yes**, Transmorger will create an empty folder named `./AppData/Database/`. This is the default (and recommended) location for the LocalDb, but you can change the path to any location via the configuration file.
+
+Click **Yes**.
+
+> [!WARNING]
+> Clicking **No** will exit Transmorger.  
+> Subsequent launches will ask the same question, until you click **Yes**, so this step is required.
+
+## The MasterDb path warning
+
+After creating the LocalDb path, you should get the following popup:
+
+<div align="center">
+
+![](./Images/TransmorgerManual-MasterDbPathIsUndefined.png)
+
+</div>
+
+The **MasterDb** is the most up-to-date version of the Transmorger database...but it doesn't actually exist yet. In fact, it doesn't even have a *location* to exist in!
+
+We'll fix that next, so for now just click **OK**, and Transmorger will exit.
+
+
+
+
+
