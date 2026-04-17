@@ -98,11 +98,11 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 
 ## Installing
 
-For detailed installation instructions, see the [Manual](docs/man/README.md#installation).
+For detailed installation instructions, see the [manual](docs/man/README.md#installation).
 
 ## Usage
 
-For detailed usage instructions, see the [Manual](docs/man/README.md#usage).
+For detailed usage instructions, see the [manual](docs/man/README.md#usage).
 
 ## Related projects
 
