@@ -42,89 +42,11 @@
 
 ***
 
-### Installation
-
-# Setup
 
 
-# Initializing the Master Transmorger database
 
-That last thing was only *mostly* true: Tingen Transmorger needs one more configuration change, but it's a temporary one.
 
-We need to change the **Mode** to "Admin", so we can build the initial Transmorger database.
 
-So open the `transmorger.config` file, and change this line:
-
-```json
-    "Mode": "Standard",
-```
-
-...to this:
-
-```json
-    "Mode": "Admin",
-```
-
-...then save the configuration file.
-
-But don't launch Transmorger yet! To build the Transmorger database, we need TeleHealth reports.
-
-# Running the TeleHealth reports
-
-For detailed instruction on how to run and download TeleHealth reports, please see the [TeleHealth reports](TeleHealth-Reports.md#running-reports) documentation.
-
-# Creating the Master Transmorger database
-
-Now that we have the necessary TeleHealth reports, launch Transmorger.
-
-You'll get the following popup:
-
-![](./Images/TransmorgerManual-MasterDbRebuildPrompt.png)
-
-Click **Yes** to initialize the Transmorger database (which, technically, is just "rebuilding" it for the first time).
-
-While the database is being built, you'll see a progress indicator:
-
-![](./Images/TransmorgerManual-RebuildingDbProgress.png)
-
-When the build process is complete, you'll see a popup letting you know there is a database update available.
-
-![](./Images/TransmorgerManual-NewerDbAvailablePrompt.png)
-
-> [!NOTE]
-> When you rebuild the Transmorger database, you are rebuilding the **master** database.
->
-> Once that is complete, Transmorger checks the local version of the database to see if it's older than the master (which, in this case, it is), and prompts you to update.
-
-Since we want that update, click **Yes**
-
-You will then (hopefully) get a popup letting you know the database has been updated.
-
-![](./Images/TransmorgerManual-UpdateDbSuccess.png)
-
-Click *OK*, then click the "Close" button on the "Rebuilding Transmorger Database" window.
-
-![](./Images/TransmorgerManual-RebuildDbCompleteClose.png)
-
-Tingen Transmorger will then launch in Admin mode.
-
-Exit Transmorger, and put it back into "Standard" by modifying the configuration file from this:
-
-```json
-    "Mode": "Admin",
-```
-
-...to this:
-
-```json
-    "Mode": "Standard",
-```
-
-That's it! Transmorger is now ready to use!
-
-# The database(s)
-
-*Technically*, Transmorger uses two databases: the ***LocalDb***, and the ***MasterDb***.
 
 ## The local database (LocalDb)
 
