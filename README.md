@@ -223,12 +223,12 @@ For detailed usage instructions, see the [Manual](docs/man/README.md#usage).
 
 <!-- =============================================================== [USAGE] -->
 
-### Related projects
+## Related projects
 
 * [Tingen Nyqvist](https://github.com/spectrum-health-systems/Tingen-Nyqvist)  
   Nyqvist is used to test SQL queries against different Avatar Systems.
 
-  > [!IMPORTANT]  
+> [!IMPORTANT]  
 > Since Tingen Nyqvist only works with Spectrum Health Systems AvatarNX Systems, it is a private repository. If you would like access to the Tingen Nyqvist repository, please contact us.
 
 * [Tingen Web Service](https://github.com/spectrum-health-systems/Tingen-WebService)  
