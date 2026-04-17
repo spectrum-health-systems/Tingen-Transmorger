@@ -46,3 +46,7 @@
 - Trim().ToLower() everything, or use the comparison stuff
 - Public/internal/private, static
 - The try...catch/if block in private async Task StartApp() should probably be moved to Database.TransmorgerDatabase.cs
+
+***
+
+<sub>Last updated: 260417</sub>

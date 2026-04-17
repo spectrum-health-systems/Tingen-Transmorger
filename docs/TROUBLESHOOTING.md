@@ -1,8 +1,6 @@
-<div align="center">
+# Tingen Transmorger: Troubleshooting
 
-  <h1>Tingen Transmorger: Troubleshooting</h1>
-
-</div>
+Nothing here yet.
 
 ***
 
