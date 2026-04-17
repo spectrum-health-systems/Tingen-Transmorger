@@ -158,24 +158,15 @@ Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguid
 ### Features
 
 * Find information like:
-  * Patient alert details (delivery successes/failures, etc.)
-  * Patient connection details (devices/operating systems used, etc.)
-  * Meeting details (start/end time, when participants joined, participant list, etc.)
-  * Meeting quality (bandwidth, audio/video quality, etc.)
+  * Patient alert details
+  * Patient connection details
+  * Meeting details
+  * Meeting quality
 * Copy information from Transmorger, and paste it into other aplications as plain text
-* Aggregate multiple TeleHealth reports into a single, well organized collection of data that:
+* Aggregate multiple TeleHealth reports into a single database that:
   * Contains information from date ranges *you* choose
-  * Can be added to *on-the-fly*, with dates/date ranges *you* choose
-  * Is updated for end-users *automatically*, ensuring users have the latest available details to work with
-
-### What's New
-
-#### Version 0.9.31
-
-* Copy meetings list — the meetings list can now be copied to the clipboard
-* Meeting and Message lists now sort correctly
-
-For more details, see the [CHANGELOG](docs/CHANGELOG.md).
+  * Can be added to *on-the-fly*
+  * Is updated for end-users *automatically*
 
 ### Built With
 
