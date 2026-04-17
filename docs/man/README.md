@@ -62,7 +62,7 @@ not using the this section, comment this divider out.
 * [Setup](#setup)<br>
   * [Creating the LocalDb path](#creating-the-localdb-path)<br>
   * [The MasterDb path warning](#the-masterdb-path-warning)<br>
-  
+
 
 
 * [Usage](#usage)<br>
@@ -157,8 +157,7 @@ When you double-click on the `TingenTransmorger.exe` file, and launch it for the
 * Prompt the user to create the `LocalDb` path
 * Warn the user about the `MasterDb` path
 
-
-## Creating the LocalDb path
+### Creating the LocalDb path
 
 The when you launch Transmorger for the first time, you should see this popup:
 
@@ -178,7 +177,7 @@ Click **Yes**.
 > Clicking **No** will exit Transmorger.  
 > Subsequent launches will ask the same question, until you click **Yes**, so this step is required.
 
-## The MasterDb path warning
+### The MasterDb path warning
 
 After creating the LocalDb path, you should get the following popup:
 
