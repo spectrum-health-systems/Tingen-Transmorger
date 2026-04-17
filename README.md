@@ -3,30 +3,10 @@
   260417_documentation
 -->
 
-<!-- [PROJECT WARNING] =========================================================
-* Project warning
----------------------------------------------------------------------------- -->
-
 > [!WARNING]  
 > Tingen Transmorger is currently **Beta software**.
 
-<!--
-This divider separates the this section from the rest of the README. If you are
-not using the this section, comment this divider out.
---->
 ---
-
-<!-- ===================================================== [PROJECT WARNING] -->
-
-<!-- [PROJECT INTRO] ===========================================================
-* Project logo
-  There are references for both a "light" and "dark" images. The dark image
-  should have a background of HEX #0d1117, to match the dark mode of GitHub.
-  The light image is the fallback.
-* Project title
-* Project catchphrase!
-* Project badges
----------------------------------------------------------------------------- -->
 
 <div align="center">
 
@@ -47,20 +27,7 @@ not using the this section, comment this divider out.
 
 </div>
 
-<!--
-This divider separates this section from the rest of the README. This should
-not be modified.
---->
 ---
-
-<!-- ======================================================= [PROJECT INTRO] -->
-
-<!-- [PROJECT DETAIL] ==========================================================
-* Project screenshot
-  There are references for both a "light" and "dark" images. The dark image
-  should have a background of HEX #0d1117, to match the dark mode of GitHub.
-  The light image is the fallback.
----------------------------------------------------------------------------- -->
 
 <div align="center">
 
@@ -73,16 +40,7 @@ not be modified.
 
 </div>
 
-<!--
-This divider separates the this section from the rest of the README. If you are
-not using the this section, comment this divider out.
---->
 ---
-
-<!-- [HORIZONTAL MENU] =========================================================
-* Horizontal menu (top)
-  Contains components that aren't in/don't belong in the table of contents.
----------------------------------------------------------------------------- -->
 
 <h6 align="center">
 
@@ -90,18 +48,7 @@ not using the this section, comment this divider out.
   
 </h6>
 
-<!--
-This divider separates the this section from the rest of the README. If you are
-not using the this section, comment this divider out.
---->
 ---
-
-<!-- ===================================================== [HORIZONTAL MENU] -->
-
-<!-- [TABLE OF CONTENTS] =======================================================
-* The Table of Contents
-  The [TOC] contains components that aren't in/don't belong in the horizontal menu.
----------------------------------------------------------------------------- -->
 
 ### CONTENTS
 
@@ -112,41 +59,7 @@ not using the this section, comment this divider out.
 * [Related Projects](#related-projects)<br>
 * [License](#license)<br>
 
-<!--
-This divider separates the this section from the rest of the README. If you are
-not using the this section, comment this divider out.
---->
 ---
-
-<!-- =================================================== [TABLE OF CONTENTS] -->
-
-<!-- [PROJECT MESSAGE] =========================================================
-* Project message
-  Use for time-sensitive notices, deprecation warnings, or anything critical
-  that every visitor should see. Remove this section if not needed.
-============================================================================ -->
-<!-- Not used
-> [!IMPORTANT]
-> Replace this with a message everyone should see, or remove this section entirely.
--->
-<!--
-This divider separates the this section from the rest of the README. If you are
-not using the this section, comment this divider out.
---->
----
-
-<!-- ===================================================== [PROJECT MESSAGE] -->
-
-<!-- [ABOUT] ===================================================================
-* About %ProjectName%
-  Describes the project in a few sentences
-* Features
-  List of project features
-* What's new
-  A summary of what's new in the latest release
-* Built With
-  List of technologies and/or frameworks used
----------------------------------------------------------------------------- -->
 
 ## About Tingen Transmorger
 
@@ -163,13 +76,6 @@ Troubleshooting [Netsmart's TeleHealth](https://www.ntst.com/carefabric/careguid
   * Meeting details
   * Meeting quality
 * Copy information from Transmorger, and paste it into other aplications as plain text
-
-<!-- =============================================================== [ABOUT] -->
-
-<!-- [HOW IT WORKS] ============================================================
-* How it works
-  A high-level overview of how the project works.
-============================================================================= -->
 
 ## How It Works
 
@@ -190,37 +96,13 @@ The heart of Transmorger is its Database, which aggregates multiple TeleHealth r
 * Can be added to *on-the-fly*, with dates/date ranges *you* choose
 * Is updated for end-users *automatically*, ensuring users have the latest available details to work with
 
-<!-- ========================================================= [HOW IT WORKS] -->
-
-<!-- [INSTALLING] =========================================================
-* Installing
-  Step-by-step instructions for installing the project on supported platforms.
-  Remove OS sections that are not supported.
-
-  In general, this should be a quick overview of the installation process,
-  with a link to docs/man/README.md.
-============================================================================ -->
-
 ## Installing
 
 For detailed installation instructions, see the [Manual](docs/man/README.md#installation).
 
-<!-- ========================================================== [INSTALLING] -->
-
-<!-- [USAGE] ===================================================================
-* Usage
-  Step-by-step instructions for using the project on supported platforms.
-  Remove OS sections that are not supported.
-
-  In general, this should be a quick overview of the installation process,
-  with a link to docs/man/README.md.
-============================================================================ -->
-
 ## Usage
 
 For detailed usage instructions, see the [Manual](docs/man/README.md#usage).
-
-<!-- =============================================================== [USAGE] -->
 
 ## Related projects
 
@@ -237,18 +119,11 @@ Copyright &copy; 2026 %Owner%
 
 ---
 
-<!-- [HORIZONTAL MENU] =========================================================
-* Horizontal menu (bottom)
-  Contains components that aren't in/don't belong in the table of contents.
----------------------------------------------------------------------------- -->
-
 <h6 align="center">
 
   [FAQ](docs/FAQ.md)&nbsp;&bull;&nbsp;[DEVELOPMENT](docs/DEVELOPMENT.md)&nbsp;&bull;&nbsp;[API](docs/api/README.md)&nbsp;&bull;&nbsp;[TESTING](docs/TESTING.md)&nbsp;&bull;&nbsp;[SUPPORT](docs/SUPPORT.md)&nbsp;&bull;&nbsp;[NOTICES](docs/NOTICES.md)
   
 </h6>
-
-<!-- ===================================================== [HORIZONTAL MENU] -->
 
 ---
 
