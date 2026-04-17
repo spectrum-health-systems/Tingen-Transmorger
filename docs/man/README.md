@@ -710,7 +710,7 @@ Clicking one of these buttons will copy specific data to the clipboard (see [the
 3. **Message detail results**  
 Displays various details about messages.
 
-#### The message details button
+### The message details button
 
 When performing a patient search, both the **phone** and **email** contacts will have a **message detail button**. This button will be in one of four states:
 
