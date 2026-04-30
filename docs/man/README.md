@@ -347,7 +347,7 @@ So this:
 ...or a more real-world example:
 
 ```json
-    "MasterDb": "Z:/Transmorger/Import"
+    "Import": "Z:/Transmorger/Import"
 ```
 
 ### Saving the configuration file
@@ -802,4 +802,4 @@ A sortable list of meetings associated with the provider will be displayed. Clic
 
 ***
 
-<sub>Last updated: 260417</sub>
+<sub>Last updated: 260430</sub>
