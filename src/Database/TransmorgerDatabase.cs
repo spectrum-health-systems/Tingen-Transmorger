@@ -1,5 +1,5 @@
-﻿// 260316_code
-// 260212_documentation
+﻿// 260430_code
+// 260430_documentation
 
 /* The database namespace needs to be refactored */
 
@@ -10,20 +10,24 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
 using TingenTransmorger.Core;
+using TingenTransmorger.TeleHealthReport;
 
 namespace TingenTransmorger.Database;
 
+/// <summary>Provides methods for building, loading, updating, and querying the Transmorger database.</summary>
 public partial class TransmorgerDatabase
 {
-
     /* OLD STRUCTURE - START ======================================================================================== */
 
+    /// <summary>Shared <see cref="JsonSerializerOptions"/> used for serializing database output files.</summary>
+    /// <remarks>Indented formatting is enabled, and <see cref="JavaScriptEncoder.UnsafeRelaxedJsonEscaping"/> is used to preserve special characters such as <c>'</c> and <c>-</c>.</remarks>
     internal static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Preserves special characters like ' and -
     };
 
+    /// <summary>Compiled regular expression used to validate email address format.</summary>
     private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
 
     /* OLD STRUCTURE - END  ========================================================================================= */
@@ -32,27 +36,32 @@ public partial class TransmorgerDatabase
      * NEW STRUCTURE - START ===========================================================================================
      */
 
-    /* Not quite sure how these two private fields work, but it's integral to the way that Claude Sonnet 4.5 parses the
-     * database.
-     */
+    /// <summary>Stores the root JSON element of the loaded database.</summary>
     private JsonElement _jsonRoot;
 
+    /// <summary>Indicates whether the database has been loaded and contains data.</summary>
     private bool _hasData;
 
+    /// <summary>Asks the user to confirm whether they want to rebuild the database.</summary>
+    /// <param name="importDir">The path to the directory containing report files to import.</param>
+    /// <param name="tmpDir">The path to the temporary working directory used during the rebuild process.</param>
+    /// <param name="masterDbDir">The path to the master database directory where the rebuilt database will be written.</param>
+    /// <param name="parentWindow">The parent <see cref="Window"/> used to position any dialogs shown during the rebuild.</param>
+    /// <returns>A boolean value indicating whether the rebuild was successful.</returns>
     internal static async Task<bool> RebuildDatabaseCheck(string importDir, string tmpDir, string masterDbDir, Window parentWindow)
     {
-        if (!RebuildDatabasePrompt())
-        {
-            return false;
-            //MainWindow.StopApp();
-        }
-
-        return await TransmorgerDatabase.Rebuild(importDir, tmpDir, masterDbDir, parentWindow);
-        //return await RebuildDatabase(importDir, tmpDir, masterDbDir);
+        return RebuildDatabasePrompt() && await Rebuild(importDir, tmpDir, masterDbDir, parentWindow);
     }
+
+    /// <summary>Initiates a database rebuild after prompting the user for confirmation.</summary>
+    /// <remarks>If the rebuild check returns <see langword="false"/>, the method returns early without loading the database or showing the main UI.</remarks>
+    /// <param name="reportsPath">The path to the directory containing report files to import.</param>
+    /// <param name="tmpPath">The path to the temporary working directory used during the rebuild process.</param>
+    /// <param name="masterDbPath">The path to the master database directory where the rebuilt database will be written.</param>
+    /// <param name="parentWindow">The parent <see cref="Window"/> used to position any dialogs shown during the rebuild.</param>
     public async Task RebuildDatabase(string reportsPath, string tmpPath, string masterDbPath, Window parentWindow)
     {
-        var flowControl = await Database.TransmorgerDatabase.RebuildDatabaseCheck(reportsPath, tmpPath, masterDbPath, parentWindow);
+        var flowControl = await RebuildDatabaseCheck(reportsPath, tmpPath, masterDbPath, parentWindow);
 
         /* If EnterAdminMode returns false, it means the user either failed to authenticate or chose to exit from
          * the admin mode dialog. In that case, we should stop the app instead of continuing to load the database
@@ -64,13 +73,17 @@ public partial class TransmorgerDatabase
         }
     }
 
+    /// <summary>  Loads a local Transmorger database from the specified file path. </summary>
+    /// <remarks>If the database cannot be loaded, the application will display an error message and terminate.</remarks>
+    /// <param name="localDbPath">The file system path to the local database file to load. Must not be null or empty.</param>
+    /// <returns>A loaded instance of the TransmorgerDatabase corresponding to the specified file path.</returns>
     internal static TransmorgerDatabase LocalDatabase(string localDbPath) // MOVE
     {
         var tmDb = new TransmorgerDatabase();
 
         try
         {
-            tmDb = TransmorgerDatabase.Load(localDbPath);
+            tmDb = Load(localDbPath);
         }
         catch (Exception ex)
         {
@@ -96,37 +109,44 @@ public partial class TransmorgerDatabase
         return rebuildResponse == MessageBoxResult.Yes;
     }
 
+    /// <summary>Performs a full rebuild of the database.</summary>
+    /// <remarks>
+    /// This method displays a progress window to the user and processes multiple types of report
+    /// workbooks in sequence. It should be called from the UI thread. The rebuild operation runs asynchronously and
+    /// updates the UI with progress and status messages.
+    /// </remarks>
+    /// <param name="importDir">The directory containing the source report workbooks to be processed.</param>
+    /// <param name="tmpDir">The directory used for storing temporary files during the rebuild process.</param>
+    /// <param name="masterDbDir">The directory where the rebuilt master database will be created or updated.</param>
+    /// <param name="parentWindow">The parent window to which the rebuild progress window will be attached.</param>
+    /// <returns>True if the rebuild completes successfully.</returns>
     internal static async Task<bool> Rebuild(string importDir, string tmpDir, string masterDbDir, Window parentWindow)
     {
-
-        // Show the rebuild window
         var databaseRebuildWindow = new DatabaseRebuildWindow();
         databaseRebuildWindow.SetParentWindow(parentWindow);
         databaseRebuildWindow.Show();
 
-        // Run rebuild on background thread
         await Task.Run(() =>
         {
-            // Process reports with progress updates
             databaseRebuildWindow.UpdateTask("Processing VisitStats workbooks...");
             databaseRebuildWindow.UpdateProgress(10);
-            TeleHealthReport.ReportProcessor.ProcessVisitStats(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+            ReportProcessor.ProcessVisitStats(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
 
             databaseRebuildWindow.UpdateTask("Processing VisitDetails workbooks...");
             databaseRebuildWindow.UpdateProgress(30);
-            TeleHealthReport.ReportProcessor.ProcessVisitDetails(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+            ReportProcessor.ProcessVisitDetails(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
 
             databaseRebuildWindow.UpdateTask("Processing MessageFailure workbooks...");
             databaseRebuildWindow.UpdateProgress(50);
-            TeleHealthReport.ReportProcessor.ProcessMessageFailure(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+            ReportProcessor.ProcessMessageFailure(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
 
             databaseRebuildWindow.UpdateTask("Processing MessageDelivery workbooks...");
             databaseRebuildWindow.UpdateProgress(70);
-            TeleHealthReport.ReportProcessor.ProcessMessageDelivery(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
+            ReportProcessor.ProcessMessageDelivery(importDir, tmpDir, (status) => databaseRebuildWindow.UpdateStatus(status));
 
             databaseRebuildWindow.UpdateTask("Building Transmorger database...");
             databaseRebuildWindow.UpdateProgress(90);
-            TransmorgerDatabase.Build(tmpDir, masterDbDir);
+            Build(tmpDir, masterDbDir);
 
             databaseRebuildWindow.Complete();
         });
@@ -134,6 +154,10 @@ public partial class TransmorgerDatabase
         return true;
     }
 
+    /// <summary>Updates the local database.</summary>
+    /// <param name="localDbPath">The path to the local database file.</param>
+    /// <param name="masterDbPath">The path to the master database file.</param>
+    /// <param name="mainWindow">The main window of the application.</param>
     internal static void Update(string localDbPath, string masterDbPath, Window mainWindow)
     {
         if (File.Exists(masterDbPath))
@@ -182,6 +206,9 @@ public partial class TransmorgerDatabase
         }
     }
 
+    /// <summary>Loads the Transmorger database from the specified local file path.</summary>
+    /// <param name="localDbPath">The path to the local database file.</param>
+    /// <returns></returns>
     internal static TransmorgerDatabase Load(string localDbPath)
     {
         if (File.Exists(localDbPath))
@@ -210,25 +237,50 @@ public partial class TransmorgerDatabase
 
     /* OLD STRUCTURE - START ======================================================================================== */
 
+    /// <summary>Returns a JSON string representation of the summary visit statistics if available.</summary>
+    /// <remarks>
+    /// This method checks for the presence of summary visit statistics before attempting
+    /// serialization. If the required data is missing, it returns an empty string instead of throwing an
+    /// exception.
+    /// </remarks>
+    /// <returns>A JSON string containing the visit statistics from the summary section.</returns>
     public string GetSummaryVisitStatsJson()
     {
         if (!_hasData)
+        {
             return string.Empty;
+        }
+
         if (!_jsonRoot.TryGetProperty("Summary", out var summary))
+        {
             return string.Empty;
+        }
+
         if (!summary.TryGetProperty("VisitStats", out var visit))
-            return string.Empty; // Check for VisitStats
+        {
+            return string.Empty;
+        }
+
         return JsonSerializer.Serialize(visit, JsonOptions);
     }
 
-    public string GetSummaryMessageFailureJson()
+    public string GetSummaryMessageFailureJson(string message)
     {
         if (!_hasData)
+        {
             return string.Empty;
+        }
+
         if (!_jsonRoot.TryGetProperty("Summary", out var summary))
+        {
             return string.Empty;
+        }
+
         if (!summary.TryGetProperty("MessageFailure", out var mf))
-            return string.Empty; // Check for MessageFailure
+        {
+            return string.Empty;
+        }
+
         return JsonSerializer.Serialize(mf, JsonOptions);
     }
 
@@ -237,13 +289,19 @@ public partial class TransmorgerDatabase
         var patients = new List<(string PatientName, string PatientId)>();
 
         if (!_hasData)
+        {
             return patients;
+        }
 
         if (!_jsonRoot.TryGetProperty("Patients", out var patientsArray))
+        {
             return patients;
+        }
 
         if (patientsArray.ValueKind != JsonValueKind.Array)
+        {
             return patients;
+        }
 
         foreach (var patient in patientsArray.EnumerateArray())
         {
@@ -264,13 +322,19 @@ public partial class TransmorgerDatabase
         var providers = new List<(string ProviderName, string ProviderId)>();
 
         if (!_hasData)
+        {
             return providers;
+        }
 
         if (!_jsonRoot.TryGetProperty("Providers", out var providersArray))
+        {
             return providers;
+        }
 
         if (providersArray.ValueKind != JsonValueKind.Array)
+        {
             return providers;
+        }
 
         foreach (var provider in providersArray.EnumerateArray())
         {
@@ -289,13 +353,19 @@ public partial class TransmorgerDatabase
     public JsonElement? GetPatientDetails(string patientName, string patientId)
     {
         if (!_hasData)
+        {
             return null;
+        }
 
         if (!_jsonRoot.TryGetProperty("Patients", out var patientsArray))
+        {
             return null;
+        }
 
         if (patientsArray.ValueKind != JsonValueKind.Array)
+        {
             return null;
+        }
 
         foreach (var patient in patientsArray.EnumerateArray())
         {
@@ -314,13 +384,19 @@ public partial class TransmorgerDatabase
     public JsonElement? GetProviderDetails(string providerName)
     {
         if (!_hasData)
+        {
             return null;
+        }
 
         if (!_jsonRoot.TryGetProperty("Providers", out var providersArray))
+        {
             return null;
+        }
 
         if (providersArray.ValueKind != JsonValueKind.Array)
+        {
             return null;
+        }
 
         foreach (var provider in providersArray.EnumerateArray())
         {
@@ -338,13 +414,19 @@ public partial class TransmorgerDatabase
     public JsonElement? GetMeetingDetail(string meetingId)
     {
         if (!_hasData)
+        {
             return null;
+        }
 
         if (!_jsonRoot.TryGetProperty("MeetingDetail", out var meetingDetailObj))
+        {
             return null;
+        }
 
         if (meetingDetailObj.ValueKind != JsonValueKind.Object)
+        {
             return null;
+        }
 
         if (meetingDetailObj.TryGetProperty(meetingId, out var meetingDetail))
         {
@@ -357,13 +439,19 @@ public partial class TransmorgerDatabase
     public bool HasMeetingError(string meetingId)
     {
         if (!_hasData || string.IsNullOrWhiteSpace(meetingId))
+        {
             return false;
+        }
 
         if (!_jsonRoot.TryGetProperty("MeetingError", out var meetingErrorObj))
+        {
             return false;
+        }
 
         if (meetingErrorObj.ValueKind != JsonValueKind.Object)
+        {
             return false;
+        }
 
         return meetingErrorObj.TryGetProperty(meetingId, out _);
     }
@@ -371,13 +459,19 @@ public partial class TransmorgerDatabase
     public JsonElement? GetMeetingError(string meetingId)
     {
         if (!_hasData || string.IsNullOrWhiteSpace(meetingId))
+        {
             return null;
+        }
 
         if (!_jsonRoot.TryGetProperty("MeetingError", out var meetingErrorObj))
+        {
             return null;
+        }
 
         if (meetingErrorObj.ValueKind != JsonValueKind.Object)
+        {
             return null;
+        }
 
         if (meetingErrorObj.TryGetProperty(meetingId, out var meetingError))
         {
@@ -506,15 +600,10 @@ public partial class TransmorgerDatabase
         }
 
         AddPhoneNumbersFromParticipantDetails(tmpDir, patientsByName, participantDetails);
-
         AddPhoneNumbersFromSmsStats(tmpDir, patientsByName);
-
         AddEmailAddressesFromEmailStats(tmpDir, patientsByName);
-
         AddDeliverySuccessFromMessageDeliveryStats(tmpDir, patientsByName, messageDeliveryStats);
-
         AddEmailDeliverySuccessFromMessageDeliveryStats(tmpDir, patientsByName, messageDeliveryStats);
-
         AddMeetingsFromParticipantDetails(tmpDir, patientsByName, participantDetails);
 
         var result = new List<Dictionary<string, object?>>(patientsByName.Count);
@@ -564,7 +653,6 @@ public partial class TransmorgerDatabase
         var providersByName = new Dictionary<string, Dictionary<string, object?>>(estimatedSize / 4, StringComparer.OrdinalIgnoreCase);
 
         AddProvidersFromParticipantDetails(providersByName, participantDetails);
-
         AddProviderDataFromMeetingDetails(tmpDir, providersByName, meetingDetails);
 
         // Step 4: Convert to list and return
@@ -584,6 +672,7 @@ public partial class TransmorgerDatabase
                 ["EmailAddresses"] = emailAddresses
             });
         }
+
         return result;
     }
 
@@ -603,7 +692,9 @@ public partial class TransmorgerDatabase
         {
             var name = GetStringValue(p, "PatientName");
             if (name != null)
+            {
                 patientNames.Add(name);
+            }
         }
 
         var providerNames = new HashSet<string>(providers.Count, StringComparer.OrdinalIgnoreCase);
@@ -611,7 +702,9 @@ public partial class TransmorgerDatabase
         {
             var name = GetStringValue(p, "ProviderName");
             if (name != null)
+            {
                 providerNames.Add(name);
+            }
         }
 
         foreach (var meeting in meetingDetails)
@@ -732,11 +825,18 @@ public partial class TransmorgerDatabase
         foreach (var p in patients)
         {
             var name = GetStringValue(p, "PatientName");
+
             if (name != null)
+            {
                 patientNames.Add(name);
+            }
+
             var id = GetStringValue(p, "PatientId");
+
             if (id != null)
+            {
                 patientIds.Add(id);
+            }
         }
 
         var providerNames = new HashSet<string>(providers.Count, StringComparer.OrdinalIgnoreCase);

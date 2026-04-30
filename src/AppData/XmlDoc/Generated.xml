@@ -319,10 +319,81 @@
             <param name="searchByName">If <see langword="true"/>, searches by name; otherwise searches by ID.</param>
             <returns>A list of matching entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
         </member>
+        <member name="T:TingenTransmorger.Database.TransmorgerDatabase">
+            <summary>Provides methods for building, loading, updating, and querying the Transmorger database.</summary>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase.JsonOptions">
+            <summary>Shared <see cref="T:System.Text.Json.JsonSerializerOptions"/> used for serializing database output files.</summary>
+            <remarks>Indented formatting is enabled, and <see cref="P:System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping"/> is used to preserve special characters such as <c>'</c> and <c>-</c>.</remarks>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase.EmailRegex">
+            <summary>Compiled regular expression used to validate email address format.</summary>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase._jsonRoot">
+            <summary>Stores the root JSON element of the loaded database.</summary>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase._hasData">
+            <summary>Indicates whether the database has been loaded and contains data.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabaseCheck(System.String,System.String,System.String,System.Windows.Window)">
+            <summary>Asks the user to confirm whether they want to rebuild the database.</summary>
+            <param name="importDir">The path to the directory containing report files to import.</param>
+            <param name="tmpDir">The path to the temporary working directory used during the rebuild process.</param>
+            <param name="masterDbDir">The path to the master database directory where the rebuilt database will be written.</param>
+            <param name="parentWindow">The parent <see cref="T:System.Windows.Window"/> used to position any dialogs shown during the rebuild.</param>
+            <returns>A boolean value indicating whether the rebuild was successful.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabase(System.String,System.String,System.String,System.Windows.Window)">
+            <summary>Initiates a database rebuild after prompting the user for confirmation.</summary>
+            <remarks>If the rebuild check returns <see langword="false"/>, the method returns early without loading the database or showing the main UI.</remarks>
+            <param name="reportsPath">The path to the directory containing report files to import.</param>
+            <param name="tmpPath">The path to the temporary working directory used during the rebuild process.</param>
+            <param name="masterDbPath">The path to the master database directory where the rebuilt database will be written.</param>
+            <param name="parentWindow">The parent <see cref="T:System.Windows.Window"/> used to position any dialogs shown during the rebuild.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.LocalDatabase(System.String)">
+            <summary>  Loads a local Transmorger database from the specified file path. </summary>
+            <remarks>If the database cannot be loaded, the application will display an error message and terminate.</remarks>
+            <param name="localDbPath">The file system path to the local database file to load. Must not be null or empty.</param>
+            <returns>A loaded instance of the TransmorgerDatabase corresponding to the specified file path.</returns>
+        </member>
         <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabasePrompt">
             <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
             <remarks>Uses message box content from <see cref="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
             <returns><see langword="true"/> if the user selects Yes; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.Rebuild(System.String,System.String,System.String,System.Windows.Window)">
+            <summary>Performs a full rebuild of the database.</summary>
+            <remarks>
+            This method displays a progress window to the user and processes multiple types of report
+            workbooks in sequence. It should be called from the UI thread. The rebuild operation runs asynchronously and
+            updates the UI with progress and status messages.
+            </remarks>
+            <param name="importDir">The directory containing the source report workbooks to be processed.</param>
+            <param name="tmpDir">The directory used for storing temporary files during the rebuild process.</param>
+            <param name="masterDbDir">The directory where the rebuilt master database will be created or updated.</param>
+            <param name="parentWindow">The parent window to which the rebuild progress window will be attached.</param>
+            <returns>True if the rebuild completes successfully.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.Update(System.String,System.String,System.Windows.Window)">
+            <summary>Updates the local database.</summary>
+            <param name="localDbPath">The path to the local database file.</param>
+            <param name="masterDbPath">The path to the master database file.</param>
+            <param name="mainWindow">The main window of the application.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.Load(System.String)">
+            <summary>Loads the Transmorger database from the specified local file path.</summary>
+            <param name="localDbPath">The path to the local database file.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetSummaryVisitStatsJson">
+            <summary>Returns a JSON string representation of the summary visit statistics if available.</summary>
+            <remarks>
+            This method checks for the presence of summary visit statistics before attempting
+            serialization. If the required data is missing, it returns an empty string instead of throwing an
+            exception.
+            </remarks>
+            <returns>A JSON string containing the visit statistics from the summary section.</returns>
         </member>
         <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetDatabaseDateRange">
             <summary>Determines the date range of the database by finding the earliest and latest scheduled meeting start dates.</summary>
@@ -561,7 +632,13 @@
         </member>
         <member name="M:TingenTransmorger.MainWindow.ClearUi">
             <summary>Clears the search box and results list, then resets all UI components.</summary>
-            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.ResetAllComponents"/> as part of the clear operation.</remarks>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.SetInitialUi(TingenTransmorger.Core.Configuration)">
+            <summary>Initializes the UI to its default state using the provided configuration.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.SetDatabaseDateRangeUi(TingenTransmorger.Database.TransmorgerDatabase)">
+            <summary>Display the date range of the data in the database in the window title, if available.</summary>
+            <param name="tmDb"></param>
         </member>
         <member name="M:TingenTransmorger.MainWindow.ResetAllComponents">
             <summary>Resets all UI component groups to their default visibility states.</summary>

@@ -1,8 +1,18 @@
 # Tingen Transmorger: Changelog
 
-## R26.4.0.0 - 4/17/2026
+## Version R26.4.0.0 (301242)- 4/17/2026
 
+> This release includes significant changes to the TingenTransmorger repository.
 
+* `ADDED` XML Documentation to more ns:Database classes
+* `ADDED` Button to the MainWindow that rebuilds the database
+* `ADDED` Button to the MainWindow that builds release notes (hidden in this version)
+* `ADDED` Database out-of-date status indicators
+* `MODIFIED` The `Configuration` object is now a property of the `MainWindow` class
+* `MODIFIED` Configuration file.
+* `REFACTORED` MainWindow.xaml.StartApp()
+* `FIXED` Database is now usable in the same session after being rebuilt
+* `REMOVED` MainWindow.AdminMode.cs
 
 ## 0.9.31.0 - 4/9/26
 
@@ -36,7 +46,7 @@
 - `MODIFIED` Background border (but needs more work)
 - `UPDATED` Fixed alignments
 - `UPDATED` Verified all controls are named correctly
-- `UPDATED` Commented all controls
+- `UPDATED` Commented all controls`
 - `FIXED` Admin mode background border color
 - `FIXED` Meeting participant names display
 - `FIXED` UI reset when changing search modes

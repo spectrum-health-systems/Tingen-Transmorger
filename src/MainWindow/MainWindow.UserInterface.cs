@@ -32,7 +32,10 @@ public partial class MainWindow : Window
         rbtnSearchByName.IsChecked     = true;
         rbtnSearchById.IsChecked       = false;
         btnRebuildDatabase.IsEnabled   = string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase);
-        btnBuildReleaseNotes.IsEnabled = true;
+
+        // Just for R26.4, since this functionality will be in R26.5
+        btnBuildReleaseNotes.Visibility = Visibility.Hidden;
+        //btnBuildReleaseNotes.IsEnabled = true;
     }
 
     /// <summary>Display the date range of the data in the database in the window title, if available.</summary>
