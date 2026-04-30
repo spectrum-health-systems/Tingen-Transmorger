@@ -38,7 +38,7 @@ not using the this section, comment this divider out.
 
   <h1>Tingen Transmorger Manual</h1>
 
-  ![RELEASE](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;
+  ![RELEASE](https://img.shields.io/badge/Version-R26.4-teal)&nbsp;
 
 </div>
 
