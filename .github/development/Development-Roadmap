@@ -1,0 +1,22 @@
+<div align="center">
+
+  <h1>Tingen Transmorger: Development - Roadmap</h1>
+
+</div>
+
+- Database refresh as admin after rebuilding
+- When the datbase is out of date, change the border color not the background color
+
+* `ADDED` Button to the MessageHistoryWindow that copies the opt-in message to the clipboard.
+*`REFACTORED` TransmorgerDatabase.cs
+DIFIED` If a database is out of date, the background is now red
+* `MODIFIED` If a database is out of date, a message is displayed in the title bar
+* Leading "0"s breaks search by ID
+* Minimize database
+* Refactor ns:Database
+
+***
+
+<br>
+
+<sub>Last updated: 260430</sub>

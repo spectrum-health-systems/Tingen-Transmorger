@@ -1,5 +1,5 @@
-﻿// 260227_code
-// 260227_documentation
+﻿// 260430_code
+// 260430_documentation
 
 using System.IO;
 using System.Windows;
@@ -9,18 +9,21 @@ using TingenTransmorger.Database;
 namespace TingenTransmorger;
 /// <summary>Entry class for Tingen Transmorger.</summary>
 /// <remarks>
-/// The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple partial
-/// classes. Initially this was done to keep the code organized and maintainable, but over time it has
-/// become somewhat of a monster. Eventually this class should be refactored to separate classes.<br/>
-/// <br/>
-/// The MainWindow.xaml.cs partial class is responsible for the main application flow.
+/// MainWindow.xaml.cs partial class is responsible for:
+/// <list type="bullet">
+/// <item>Initializing Transmorger</item>
+/// <item>Starting Transmorger</item>
+/// <item>Stopping Transmorger</item>
+/// </list>
+/// In addition, this partial class contains the event handlers for MainWindow.xaml.
 /// </remarks>
 public partial class MainWindow : Window
 {
-    /// <summary>The Transmorger database.</summary>
-    private TransmorgerDatabase _tmDb;
+    private TransmorgerDatabase? _tmDb;
+    private readonly Configuration? _config = Configuration.Load();
+    private const string _databaseName = "transmorger.db";
 
-    /// <summary>Entry method for Tingen Transmorger.</summary>
+    /// <summary>Transmorger entry method.</summary>
     public MainWindow()
     {
         InitializeComponent();
@@ -28,10 +31,23 @@ public partial class MainWindow : Window
         _ = StartApp();
     }
 
-    /// <summary>Stop the application.</summary>
+    /// <summary>Start Transmorger.</summary>
+    private async Task StartApp()
+    {
+        string localDbPath  = Path.Combine(_config.Directory["LocalDb"], _databaseName);
+        string masterDbPath = Path.Combine(_config.Directory["MasterDb"], _databaseName);
+
+        SetInitialUi(_config);
+        Framework.Verify(_config);
+        TransmorgerDatabase.Update(localDbPath, masterDbPath, this);
+        _tmDb = TransmorgerDatabase.LocalDatabase(localDbPath);
+        SetDatabaseDateRangeUi(_tmDb);
+    }
+
+    /// <summary>Stop Transmorger.</summary>
     /// <remarks>
     /// If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
-    /// before the application exits.<br/>
+    /// before Transmorger exits.<br/>
     /// <br/>
     /// This method is public because it is called from other methods outside the <see cref="MainWindow"/> class.
     /// </remarks>
@@ -46,60 +62,6 @@ public partial class MainWindow : Window
         Environment.Exit(0);
     }
 
-    /// <summary>Start the application.</summary>
-    private async Task StartApp()
-    {
-        Title = $"Tingen Transmorger v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
-
-        var config = Configuration.Load();
-
-        Framework.Verify(config);
-
-        /* If the mode is set to Admin...
-         */
-        if (string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            var flowControl = await EnterAdminMode(config.AdminDirectories["Import"], config.AdminDirectories["Tmp"], config.StandardDirectories["MasterDb"]);
-
-            /* If EnterAdminMode returns false, it means the user either failed to authenticate or chose to exit from
-             * the admin mode dialog. In that case, we should stop the app instead of continuing to load the database
-             * and show the main UI.
-             */
-            if (!flowControl)
-            {
-                return;
-            }
-        }
-
-        string localDbPath  = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
-        string masterDbPath = Path.Combine(config.StandardDirectories["MasterDb"], "transmorger.db");
-
-        TransmorgerDatabase.Update(localDbPath, masterDbPath);
-
-        try
-        {
-            _tmDb = TransmorgerDatabase.Load(localDbPath);
-        }
-        catch (Exception ex)
-        {
-            StopApp($"The database could not be loaded: {ex.Message}{Environment.NewLine}{Environment.NewLine}The application will now exit.");
-        }
-
-        if (_tmDb is null)
-        {
-            StopApp("The database could not be loaded. The application will now exit.");
-        }
-
-        var dateRange = _tmDb.GetDatabaseDateRange();
-
-        if (dateRange.HasValue)
-        {
-            Title += $" ({dateRange.Value.Start:MM/dd/yyyy} - {dateRange.Value.End:MM/dd/yyyy})";
-        }
-
-        SetInitialUi();
-    }
-
     /* EVENT HANDLERS */
     private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleUi();
     private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
@@ -112,4 +74,10 @@ public partial class MainWindow : Window
     private void btnCopyGeneralMeetingDetail_Click(object sender, RoutedEventArgs e) => CopyGeneralMeetingDetails();
     private void btnCopyPatientMeetingDetail_Click(object sender, RoutedEventArgs e) => CopyPatientMeetingDetails();
     private void btnCopyProviderMeetingDetail_Click(object sender, RoutedEventArgs e) => CopyProviderMeetingDetails();
+    private async void btnRebuildDatabase_Click(object sender, RoutedEventArgs e) => await TransmorgerDatabase.RebuildDatabaseCheck(_config.Directory["Reports"], _config.Directory["Tmp"], _config.Directory["MasterDb"], this);
+
+    private void btnBuildReleaseNotes_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

@@ -18,7 +18,7 @@
 
   <h1>Tingen Transmorger</h1>
 
-  A utility for parsing Netsmart AvatarNX TeleHealth reports.
+  Utilities for Netsmart's AvatarNX TeleHealth.
 
   ![RELEASE](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;
   ![STAGE](https://img.shields.io/badge/ALPHA/BETA-yellow)&nbsp; <!-- Alpha = Red, Beta = Yellow, Stable = Green -->

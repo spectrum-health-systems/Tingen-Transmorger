@@ -1,4 +1,4 @@
-﻿<!-- Last updated 260403 -->
+﻿﻿<!-- Last updated 260422 -->
 
 # Copilot Instructions (Repository Onboarding)
 
@@ -18,6 +18,8 @@ instructions first; perform searches only when the instructions are incomplete o
 - Follow existing C# and XAML styles used in the repo (indentation, naming). When in doubt, mimic nearby files.
 - Prefer `var` for local variable declarations when the initialized type is apparent or redundantly specified.
 - When there is a block of `something = somethingElse;` statements, align the equals signs vertically.
+- Code should be human-reaable and maintainable; prioritize clarity over cleverness or terseness.
+- Use descriptive names for variables, methods, and classes. Avoid abbreviations unless they are widely understood.
 
 ## XML documentation
 
@@ -135,13 +137,6 @@ Lint / format
 CI / workflows
 - No GitHub Actions workflows or other CI configuration were detected in the repository root. Assume the
   primary validation is that PRs must build cleanly with `dotnet build` on .NET 10.
-
-## Project layout & where to make changes
-
-- `MainWindow/MainWindow.xaml` / `MainWindow/MainWindow.xaml.cs` — application entry UI.
-- `Core/Framework.cs` — core framework utilities.
-- `Database/DatabaseMaintenanceWindow.xaml` / `Database/DatabaseMaintenanceWindow.xaml.cs` — database maintenance UI.
-- `ProjectInfo.cs` — project metadata (informational only, no executable code).
 
 ## Common pitfalls and helpful checks
 

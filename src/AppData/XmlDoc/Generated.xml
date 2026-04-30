@@ -77,17 +77,11 @@
             <summary>Gets or sets the application operating mode.</summary>
             <value>A string identifying the current mode (e.g., <c>Standard</c>).</value>
         </member>
-        <member name="P:TingenTransmorger.Core.Configuration.StandardDirectories">
-            <summary>Gets or sets the directory paths used in standard operating mode.</summary>
+        <member name="P:TingenTransmorger.Core.Configuration.Directory">
+            <summary>Gets or sets the directory paths used by the application.</summary>
             <value>
-            A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>) to their corresponding file system
-            paths.
-            </value>
-        </member>
-        <member name="P:TingenTransmorger.Core.Configuration.AdminDirectories">
-            <summary>Gets or sets the directory paths used in administrative operations.</summary>
-            <value>
-            A dictionary mapping directory keys (e.g., <c>Tmp</c>, <c>Import</c>) to their corresponding file system paths.
+            A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>, <c>Tmp</c>, <c>Import</c>) to their
+            corresponding file system paths.
             </value>
         </member>
         <member name="M:TingenTransmorger.Core.Configuration.WriteConfigFile(TingenTransmorger.Core.Configuration)">
@@ -110,7 +104,7 @@
         </member>
         <member name="M:TingenTransmorger.Core.Framework.Verify(TingenTransmorger.Core.Configuration)">
             <summary>Verifies that all directories defined in the configuration exist.</summary>
-            <remarks>Admin directories are also verified when <paramref name="config"/> has <c>Mode</c> set to <c>Admin</c>.</remarks>
+            <remarks>If a directory path is null, empty, or does not exist the user is prompted to create it or exit.</remarks>
             <param name="config">The application configuration containing the directories to verify.</param>
         </member>
         <member name="M:TingenTransmorger.Core.Framework.VerifyDirectories(System.Collections.Generic.Dictionary{System.String,System.String})">
@@ -325,6 +319,82 @@
             <param name="searchByName">If <see langword="true"/>, searches by name; otherwise searches by ID.</param>
             <returns>A list of matching entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
         </member>
+        <member name="T:TingenTransmorger.Database.TransmorgerDatabase">
+            <summary>Provides methods for building, loading, updating, and querying the Transmorger database.</summary>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase.JsonOptions">
+            <summary>Shared <see cref="T:System.Text.Json.JsonSerializerOptions"/> used for serializing database output files.</summary>
+            <remarks>Indented formatting is enabled, and <see cref="P:System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping"/> is used to preserve special characters such as <c>'</c> and <c>-</c>.</remarks>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase.EmailRegex">
+            <summary>Compiled regular expression used to validate email address format.</summary>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase._jsonRoot">
+            <summary>Stores the root JSON element of the loaded database.</summary>
+        </member>
+        <member name="F:TingenTransmorger.Database.TransmorgerDatabase._hasData">
+            <summary>Indicates whether the database has been loaded and contains data.</summary>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabaseCheck(System.String,System.String,System.String,System.Windows.Window)">
+            <summary>Asks the user to confirm whether they want to rebuild the database.</summary>
+            <param name="importDir">The path to the directory containing report files to import.</param>
+            <param name="tmpDir">The path to the temporary working directory used during the rebuild process.</param>
+            <param name="masterDbDir">The path to the master database directory where the rebuilt database will be written.</param>
+            <param name="parentWindow">The parent <see cref="T:System.Windows.Window"/> used to position any dialogs shown during the rebuild.</param>
+            <returns>A boolean value indicating whether the rebuild was successful.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabase(System.String,System.String,System.String,System.Windows.Window)">
+            <summary>Initiates a database rebuild after prompting the user for confirmation.</summary>
+            <remarks>If the rebuild check returns <see langword="false"/>, the method returns early without loading the database or showing the main UI.</remarks>
+            <param name="reportsPath">The path to the directory containing report files to import.</param>
+            <param name="tmpPath">The path to the temporary working directory used during the rebuild process.</param>
+            <param name="masterDbPath">The path to the master database directory where the rebuilt database will be written.</param>
+            <param name="parentWindow">The parent <see cref="T:System.Windows.Window"/> used to position any dialogs shown during the rebuild.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.LocalDatabase(System.String)">
+            <summary>  Loads a local Transmorger database from the specified file path. </summary>
+            <remarks>If the database cannot be loaded, the application will display an error message and terminate.</remarks>
+            <param name="localDbPath">The file system path to the local database file to load. Must not be null or empty.</param>
+            <returns>A loaded instance of the TransmorgerDatabase corresponding to the specified file path.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabasePrompt">
+            <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
+            <remarks>Uses message box content from <see cref="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
+            <returns><see langword="true"/> if the user selects Yes; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.Rebuild(System.String,System.String,System.String,System.Windows.Window)">
+            <summary>Performs a full rebuild of the database.</summary>
+            <remarks>
+            This method displays a progress window to the user and processes multiple types of report
+            workbooks in sequence. It should be called from the UI thread. The rebuild operation runs asynchronously and
+            updates the UI with progress and status messages.
+            </remarks>
+            <param name="importDir">The directory containing the source report workbooks to be processed.</param>
+            <param name="tmpDir">The directory used for storing temporary files during the rebuild process.</param>
+            <param name="masterDbDir">The directory where the rebuilt master database will be created or updated.</param>
+            <param name="parentWindow">The parent window to which the rebuild progress window will be attached.</param>
+            <returns>True if the rebuild completes successfully.</returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.Update(System.String,System.String,System.Windows.Window)">
+            <summary>Updates the local database.</summary>
+            <param name="localDbPath">The path to the local database file.</param>
+            <param name="masterDbPath">The path to the master database file.</param>
+            <param name="mainWindow">The main window of the application.</param>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.Load(System.String)">
+            <summary>Loads the Transmorger database from the specified local file path.</summary>
+            <param name="localDbPath">The path to the local database file.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetSummaryVisitStatsJson">
+            <summary>Returns a JSON string representation of the summary visit statistics if available.</summary>
+            <remarks>
+            This method checks for the presence of summary visit statistics before attempting
+            serialization. If the required data is missing, it returns an empty string instead of throwing an
+            exception.
+            </remarks>
+            <returns>A JSON string containing the visit statistics from the summary section.</returns>
+        </member>
         <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetDatabaseDateRange">
             <summary>Determines the date range of the database by finding the earliest and latest scheduled meeting start dates.</summary>
             <remarks>Returns null if the database has no data, the MeetingDetail section is missing, or no parseable dates exist.</remarks>
@@ -333,36 +403,17 @@
         <member name="T:TingenTransmorger.MainWindow">
             <summary>Entry class for Tingen Transmorger.</summary>
             <remarks>
-            The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple partial
-            classes. Initially this was done to keep the code organized and maintainable, but over time it has
-            become somewhat of a monster. Eventually this class should be refactored to separate classes.<br/>
-            <br/>
-            The MainWindow.xaml.cs partial class is responsible for the main application flow.
+            MainWindow.xaml.cs partial class is responsible for:
+            <list type="bullet">
+            <item>Initializing Transmorger</item>
+            <item>Starting Transmorger</item>
+            <item>Stopping Transmorger</item>
+            </list>
+            In addition, this partial class contains the event handlers for MainWindow.xaml.
             </remarks>
             <summary>
             MainWindow
             </summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.EnterAdminMode(System.String,System.String,System.String)">
-            <summary>Prompts for a database rebuild confirmation and stops the application if the user declines.</summary>
-            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.StopApp(System.String)"/> before returning if the user declines the rebuild prompt.</remarks>
-            <param name="importDir">Directory containing source Excel files to import.</param>
-            <param name="tmpDir">Temporary data directory.</param>
-            <param name="masterDbDir">Master database output directory.</param>
-            <returns><see langword="true"/> if the database was rebuilt successfully; otherwise, <see langword="false"/>.</returns>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.RebuildDatabase(System.String,System.String,System.String)">
-            <summary>Applies the admin mode theme, hides the main window, and rebuilds the database.</summary>
-            <remarks>The main window remains hidden for the duration of the rebuild operation.</remarks>
-            <param name="importDir">Directory containing source Excel files to import.</param>
-            <param name="tmpDir">Temporary data directory.</param>
-            <param name="masterDbDir">Master database output directory.</param>
-            <returns><see langword="true"/> if the rebuild completed successfully; otherwise, <see langword="false"/>.</returns>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.RebuildDatabasePrompt">
-            <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
-            <remarks>Uses message box content from <see cref="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
-            <returns><see langword="true"/> if the user selects Yes; otherwise, <see langword="false"/>.</returns>
         </member>
         <member name="M:TingenTransmorger.MainWindow.CopyGeneralMeetingDetails">
             <summary>Copies general meeting details from the UI to the clipboard as formatted text.</summary>
@@ -579,9 +630,15 @@
             <param name="selectedItem">The formatted search result string to parse.</param>
             <returns>A two-element array where index <c>0</c> is the name and index <c>1</c> is the ID.</returns>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.SetInitialUi">
-            <summary>Initializes the UI to its default state with patient search active.</summary>
-            <remarks>Sets the search toggle to 'Patient Search' and checks the search-by-name radio button.</remarks>
+        <member name="M:TingenTransmorger.MainWindow.ClearUi">
+            <summary>Clears the search box and results list, then resets all UI components.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.SetInitialUi(TingenTransmorger.Core.Configuration)">
+            <summary>Initializes the UI to its default state using the provided configuration.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.SetDatabaseDateRangeUi(TingenTransmorger.Database.TransmorgerDatabase)">
+            <summary>Display the date range of the data in the database in the window title, if available.</summary>
+            <param name="tmDb"></param>
         </member>
         <member name="M:TingenTransmorger.MainWindow.ResetAllComponents">
             <summary>Resets all UI component groups to their default visibility states.</summary>
@@ -607,11 +664,7 @@
             <summary>Resets the provider meeting detail panel visibility to its default state.</summary>
             <remarks>Shows the top and participant names panels; collapses the detail border.</remarks>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.SetAdminModeTheme">
-            <summary>Applies the admin mode visual theme to the main window.</summary>
-            <remarks>Sets the window border to purple and appends '- ADMIN MODE' to the window title.</remarks>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.SetOutOfDateDatabaseTheme">
+        <member name="M:TingenTransmorger.MainWindow.SetOutOfDateDatabaseTheme(System.Windows.Window)">
             <summary>Applies the out-of-date database visual theme to the main window.</summary>
             <remarks>Sets the window border to red and appends '- DATABASE IS OUT OF DATE' to the window title.</remarks>
         </member>
@@ -638,10 +691,6 @@
             <summary>Toggles the search type button between patient and provider search, then clears the UI.</summary>
             <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.ClearUi"/> after toggling to reset the search state.</remarks>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.ClearUi">
-            <summary>Clears the search box and results list, then resets all UI components.</summary>
-            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.ResetAllComponents"/> as part of the clear operation.</remarks>
-        </member>
         <member name="M:TingenTransmorger.MainWindow.UpdateDetailsButtonColor(System.Boolean,System.Boolean,System.Windows.Controls.Button)">
             <summary>Sets the color and enabled state of a message detail button based on failure and delivery data.</summary>
             <remarks>
@@ -656,24 +705,21 @@
             <param name="hasDeliveries">Whether the patient has message delivery records for this contact.</param>
             <param name="theButton">The button whose color and enabled state will be updated.</param>
         </member>
-        <member name="F:TingenTransmorger.MainWindow._tmDb">
-            <summary>The Transmorger database.</summary>
-        </member>
         <member name="M:TingenTransmorger.MainWindow.#ctor">
-            <summary>Entry method for Tingen Transmorger.</summary>
+            <summary>Transmorger entry method.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.StartApp">
+            <summary>Start Transmorger.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.StopApp(System.String)">
-            <summary>Stop the application.</summary>
+            <summary>Stop Transmorger.</summary>
             <remarks>
             If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
-            before the application exits.<br/>
+            before Transmorger exits.<br/>
             <br/>
             This method is public because it is called from other methods outside the <see cref="T:TingenTransmorger.MainWindow"/> class.
             </remarks>
             <param name="msgExit">Optional exit message to display.</param>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.StartApp">
-            <summary>Start the application.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.InitializeComponent">
             <summary>

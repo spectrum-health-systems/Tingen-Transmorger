@@ -1,4 +1,4 @@
-﻿// 260227_code
+﻿// 260430_code
 // 260311_documentation
 
 using System.Windows;
@@ -45,7 +45,6 @@ public partial class MainWindow : Window
     {
         int lastParenthesisIndex = selectedItem.LastIndexOf('(');
 
-        return [selectedItem.Substring(0, lastParenthesisIndex).Trim(),
-                selectedItem.Substring(lastParenthesisIndex + 1).TrimEnd(')').Trim()];
+        return [selectedItem.Substring(0, lastParenthesisIndex).Trim(), selectedItem.Substring(lastParenthesisIndex + 1).TrimEnd(')').Trim()];
     }
 }

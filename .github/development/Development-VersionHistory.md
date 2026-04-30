@@ -1,66 +1,25 @@
 <div align="center">
 
-  <h1>Tingen Transmorger: Development Notes
+  <h1>Tingen Transmorger: Development - Version History</h1>
 
 </div>
 
-#### CONTENTS
-
-* [Notes](#notes)
-* [Roadmap](#roadmap)
-* [Known Issues](#known-issues)
-* [Version History](#version-history)
-
-***
-
-# Notes
-
-* There isn't a way to easily match providers to their email addresses, so we aren't going to do that for now. Eventually we should, and this is (probably) where that logic should go. For now I've put the code I was working on in .github/development/old-src/ProviderEmailLogic.md.
-
-
-# Roadmap
-
-* `ADDED` Button to the MessageHistoryWindow that copies the opt-in message to the clipboard.
-*`REFACTORED` TransmorgerDatabase.cs
-DIFIED` If a database is out of date, the background is now red
-* `MODIFIED` If a database is out of date, a message is displayed in the title bar
-* Leading "0"s breaks search by ID
-* Minimize database
-* Refactor ns:Database
-
-***
-
-# Known Issues
-
-## Some providers have `null` or `{}` ID values
-
-This is caused when a meeting * any meeting * has multiple entries in `Provider/Staff Names`, even if the provider has
-meetings where they are the only entry in that field.
-
-The good news is that all of a provider's meetings are displayed, regardless of how many entries are
-in `Provider/Staff Names`.
-
-### Workaround
-
-The workaround is to search for providers by ID, and just ignore the `null` or `{}` ID value, if there is one. The data is still accurate.
-
-### Fix
-
-This is going to take some looking into, because looking at the original data in the Excel files, practitioners who have this issue are also doing some funky things with meetings, such as:
-
-* Non-standard meeting titles (e.g., "Dennis" instead of "TELEHEALTH")
-* Workflow is listed as "INSTANT" instead of "EHR"
-* No service codes associated with the meeting
-
-***
-
-# Version History
-
-## 0.9.32.0
+## R26.4.00
 
 > This release includes significant changes to the TingenTransmorger repository.
 
-* `ADDED` XML Documentation to ns:Database classes
+* `ADDED` XML Documentation to more ns:Database classes
+* `ADDED` Button to the MainWindow that rebuilds the database
+* `ADDED` Button to the MainWindow that builds release notes (hidden in this version)
+* `ADDED` Database out-of-date status indicators
+* `MODIFIED` The `Configuration` object is now a property of the `MainWindow` class, so it can be used with the Rebuild Database button.
+* `MODIFIED` Configuration file.
+  * Combined all directory paths under a single `Directories` object.
+  * Renamed "Import" to "Reports"
+  * Added "ReleaseNotes" directory path
+* `REFACTORED` MainWindow.xaml.StartApp(), moving some functionality to new methods and different classes
+* `FIXED` The database is now usable in the same session after being rebuilt, without needing to restart the application.
+* `REMOVED` MainWindow.AdminMode.cs, as the functionality has been moved to the Rebuild Database button.
 
 ## 0.9.31.0
 
@@ -190,4 +149,4 @@ This is going to take some looking into, because looking at the original data in
 
 <br>
 
-<sub>Last updated: 260415 </sub>
+<sub>Last updated: 260430</sub>

@@ -1,8 +1,12 @@
-﻿// 260227_code
-// 260311_documentation
+﻿// 260430_code
+// 260430_documentation
 
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using TingenTransmorger.Core;
+using TingenTransmorger.Database;
 
 namespace TingenTransmorger;
 
@@ -10,14 +14,40 @@ namespace TingenTransmorger;
  */
 public partial class MainWindow : Window
 {
-    /// <summary>Initializes the UI to its default state with patient search active.</summary>
-    /// <remarks>Sets the search toggle to 'Patient Search' and checks the search-by-name radio button.</remarks>
-    private void SetInitialUi()
+    /// <summary>Clears the search box and results list, then resets all UI components.</summary>
+    private void ClearUi()
+    {
+        txbxSearchBox.Text = string.Empty;
+        lstbxSearchResults.Items.Clear();
+        ResetAllComponents();
+    }
+
+    /// <summary>Initializes the UI to its default state using the provided configuration.</summary>
+    private void SetInitialUi(Configuration config)
     {
         ClearUi();
 
-        btnSearchToggle.Content    = "Patient Search";
-        rbtnSearchByName.IsChecked = true;
+        Title                          = $"Tingen Transmorger v{Assembly.GetExecutingAssembly().GetName().Version}";
+        btnSearchToggle.Content        = "Patient Search";
+        rbtnSearchByName.IsChecked     = true;
+        rbtnSearchById.IsChecked       = false;
+        btnRebuildDatabase.IsEnabled   = string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase);
+
+        // Just for R26.4, since this functionality will be in R26.5
+        btnBuildReleaseNotes.Visibility = Visibility.Hidden;
+        //btnBuildReleaseNotes.IsEnabled = true;
+    }
+
+    /// <summary>Display the date range of the data in the database in the window title, if available.</summary>
+    /// <param name="tmDb"></param>
+    private void SetDatabaseDateRangeUi(TransmorgerDatabase tmDb)
+    {
+        (DateTime Start, DateTime End)? dateRange = tmDb.GetDatabaseDateRange();
+
+        if (dateRange.HasValue)
+        {
+            Title += $" ({dateRange.Value.Start:MM/dd/yyyy} - {dateRange.Value.End:MM/dd/yyyy})";
+        }
     }
 
     /// <summary>Resets all UI component groups to their default visibility states.</summary>
@@ -83,22 +113,13 @@ public partial class MainWindow : Window
         brdrProviderMeetingDetail.Visibility    = Visibility.Collapsed;
     }
 
-    /// <summary>Applies the admin mode visual theme to the main window.</summary>
-    /// <remarks>Sets the window border to purple and appends '- ADMIN MODE' to the window title.</remarks>
-    private void SetAdminModeTheme()
-    {
-        brdrMainWindow.Background = System.Windows.Media.Brushes.Purple;
-        var currentTitle = Title;
-        Title = $"{currentTitle} - ADMIN MODE";
-    }
-
     /// <summary>Applies the out-of-date database visual theme to the main window.</summary>
     /// <remarks>Sets the window border to red and appends '- DATABASE IS OUT OF DATE' to the window title.</remarks>
-    public void SetOutOfDateDatabaseTheme()
+    public static void SetOutOfDateDatabaseTheme(Window mainWindow)
     {
-        brdrMainWindow.Background = System.Windows.Media.Brushes.Red;
-        var currentTitle = Title;
-        Title = $"{currentTitle} - DATABASE IS OUT OF DATE";
+        mainWindow.Background = Brushes.Red;
+        var currentTitle      = mainWindow.Title;
+        mainWindow.Title      = $"{currentTitle} - DATABASE IS OUT OF DATE";
     }
 
     /// <summary>Configures the UI layout for displaying patient details.</summary>
@@ -165,16 +186,6 @@ public partial class MainWindow : Window
         ClearUi();
     }
 
-    /// <summary>Clears the search box and results list, then resets all UI components.</summary>
-    /// <remarks>Calls <see cref="ResetAllComponents"/> as part of the clear operation.</remarks>
-    private void ClearUi()
-    {
-        txbxSearchBox.Text = string.Empty;
-        lstbxSearchResults.Items.Clear();
-
-        ResetAllComponents();
-    }
-
     /// <summary>Sets the color and enabled state of a message detail button based on failure and delivery data.</summary>
     /// <remarks>
     /// <list type="bullet">
@@ -193,20 +204,20 @@ public partial class MainWindow : Window
 
         if (hasFailures && hasDeliveries)
         {
-            theButton.Background = System.Windows.Media.Brushes.Yellow;
+            theButton.Background = Brushes.Yellow;
         }
         else if (hasDeliveries)
         {
-            theButton.Background = System.Windows.Media.Brushes.Green;
+            theButton.Background = Brushes.Green;
         }
         else if (hasFailures)
         {
-            theButton.Background = System.Windows.Media.Brushes.Red;
+            theButton.Background = Brushes.Red;
         }
         else
         {
             // No records: gray background, disabled
-            theButton.Background = System.Windows.Media.Brushes.Gray;
+            theButton.Background = Brushes.Gray;
             theButton.IsEnabled = false;
         }
     }
