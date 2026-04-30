@@ -1,5 +1,5 @@
-﻿// 260227_code
-// 260227_documentation
+﻿// 260430_code
+// 260430_documentation
 
 using System.IO;
 using System.Windows;
@@ -59,7 +59,7 @@ public partial class MainWindow : Window
          */
         if (string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase))
         {
-            var flowControl = await EnterAdminMode(config.AdminDirectories["Import"], config.AdminDirectories["Tmp"], config.StandardDirectories["MasterDb"]);
+            var flowControl = await EnterAdminMode(config.Directory["Reports"], config.Directory["Tmp"], config.Directory["MasterDb"]);
 
             /* If EnterAdminMode returns false, it means the user either failed to authenticate or chose to exit from
              * the admin mode dialog. In that case, we should stop the app instead of continuing to load the database
@@ -71,8 +71,8 @@ public partial class MainWindow : Window
             }
         }
 
-        string localDbPath  = Path.Combine(config.StandardDirectories["LocalDb"], "transmorger.db");
-        string masterDbPath = Path.Combine(config.StandardDirectories["MasterDb"], "transmorger.db");
+        string localDbPath  = Path.Combine(config.Directory["LocalDb"], "transmorger.db");
+        string masterDbPath = Path.Combine(config.Directory["MasterDb"], "transmorger.db");
 
         TransmorgerDatabase.Update(localDbPath, masterDbPath);
 

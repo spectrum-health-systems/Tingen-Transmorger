@@ -1,5 +1,5 @@
-﻿// 260204_code
-// 260311_documentation
+﻿// 260430_code
+// 260430_documentation
 
 using System.IO;
 using System.Windows;
@@ -10,16 +10,11 @@ namespace TingenTransmorger.Core;
 class Framework
 {
     /// <summary>Verifies that all directories defined in the configuration exist.</summary>
-    /// <remarks>Admin directories are also verified when <paramref name="config"/> has <c>Mode</c> set to <c>Admin</c>.</remarks>
+    /// <remarks>If a directory path is null, empty, or does not exist the user is prompted to create it or exit.</remarks>
     /// <param name="config">The application configuration containing the directories to verify.</param>
     internal static void Verify(Configuration config)
     {
-        VerifyDirectories(config.StandardDirectories);
-
-        if (config.Mode == "Admin")
-        {
-            VerifyDirectories(config.AdminDirectories);
-        }
+        VerifyDirectories(config.Directory);
     }
 
     /// <summary>Verifies that each directory in a collection exists, prompting or stopping the application as needed.</summary>

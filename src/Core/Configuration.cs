@@ -1,5 +1,5 @@
-﻿// 260204_code
-// 260311_documentation
+﻿// 260430_code
+// 260430_documentation
 
 using System.IO;
 using System.Text.Json;
@@ -17,24 +17,18 @@ class Configuration
     /// <value>A string identifying the current mode (e.g., <c>Standard</c>).</value>
     public string Mode { get; set; }
 
-    /// <summary>Gets or sets the directory paths used in standard operating mode.</summary>
+    /// <summary>Gets or sets the directory paths used by the application.</summary>
     /// <value>
-    /// A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>) to their corresponding file system
-    /// paths.
+    /// A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>, <c>Tmp</c>, <c>Import</c>) to their
+    /// corresponding file system paths.
     /// </value>
-    public Dictionary<string, string> StandardDirectories { get; set; }
-
-    /// <summary>Gets or sets the directory paths used in administrative operations.</summary>
-    /// <value>
-    /// A dictionary mapping directory keys (e.g., <c>Tmp</c>, <c>Import</c>) to their corresponding file system paths.
-    /// </value>
-    public Dictionary<string, string> AdminDirectories { get; set; }
+    public Dictionary<string, string> Directory { get; set; }
 
     /// <summary>Serializes a <see cref="Configuration"/> instance and writes it to the configuration file.</summary>
     /// <param name="config">The <see cref="Configuration"/> instance to serialize and persist.</param>
     public static void WriteConfigFile(Configuration config)
     {
-        var configFilePath = Path.Combine(Directory.GetCurrentDirectory(), "AppData", "Config", "transmorger.config");
+        var configFilePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "AppData", "Config", "transmorger.config");
 
         string configJson = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
 
@@ -47,13 +41,13 @@ class Configuration
     /// </returns>
     internal static Configuration Load()
     {
-        var appDataDirName = Path.Combine(Directory.GetCurrentDirectory(), "AppData");
-        var configFilePath = Path.Combine(Directory.GetCurrentDirectory(), appDataDirName, "Config", "transmorger.config");
+        var appDataDirName = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "AppData");
+        var configFilePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), appDataDirName, "Config", "transmorger.config");
 
         if (!File.Exists(configFilePath))
         {
             Configuration config = CreateDefault(appDataDirName);
-            Directory.CreateDirectory(Path.Combine(appDataDirName, "Config"));
+            System.IO.Directory.CreateDirectory(Path.Combine(appDataDirName, "Config"));
             WriteConfigFile(config);
         }
 
@@ -65,16 +59,14 @@ class Configuration
     /// <returns>A new <see cref="Configuration"/> instance populated with default values.</returns>
     private static Configuration CreateDefault(string appDataDirName) => new Configuration
     {
-        Mode                            = "Standard",
-        StandardDirectories             = new Dictionary<string, string>
+        Mode      = "Standard",
+        Directory = new Dictionary<string, string>
         {
             { "LocalDb", "AppData/Database" },
-            { "MasterDb", "" }
-        },
-        AdminDirectories                = new Dictionary<string, string>
-        {
+            { "MasterDb", "" },
             { "Tmp", "AppData/Tmp" },
-            { "Import", "" },
+            { "Reports", "" },
+            { "ReleaseNotes", "" }
         }
     };
 }

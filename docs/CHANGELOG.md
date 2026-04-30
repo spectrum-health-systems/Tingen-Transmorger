@@ -1,5 +1,9 @@
 # Tingen Transmorger: Changelog
 
+## R26.4.0.0 - 4/17/2026
+
+
+
 ## 0.9.31.0 - 4/9/26
 
 - `ADDED` Ability to copy the meeting list rows to the clipboard

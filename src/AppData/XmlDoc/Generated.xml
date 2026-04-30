@@ -77,17 +77,11 @@
             <summary>Gets or sets the application operating mode.</summary>
             <value>A string identifying the current mode (e.g., <c>Standard</c>).</value>
         </member>
-        <member name="P:TingenTransmorger.Core.Configuration.StandardDirectories">
-            <summary>Gets or sets the directory paths used in standard operating mode.</summary>
+        <member name="P:TingenTransmorger.Core.Configuration.Directory">
+            <summary>Gets or sets the directory paths used by the application.</summary>
             <value>
-            A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>) to their corresponding file system
-            paths.
-            </value>
-        </member>
-        <member name="P:TingenTransmorger.Core.Configuration.AdminDirectories">
-            <summary>Gets or sets the directory paths used in administrative operations.</summary>
-            <value>
-            A dictionary mapping directory keys (e.g., <c>Tmp</c>, <c>Import</c>) to their corresponding file system paths.
+            A dictionary mapping directory keys (e.g., <c>LocalDb</c>, <c>MasterDb</c>, <c>Tmp</c>, <c>Import</c>) to their
+            corresponding file system paths.
             </value>
         </member>
         <member name="M:TingenTransmorger.Core.Configuration.WriteConfigFile(TingenTransmorger.Core.Configuration)">
@@ -110,7 +104,7 @@
         </member>
         <member name="M:TingenTransmorger.Core.Framework.Verify(TingenTransmorger.Core.Configuration)">
             <summary>Verifies that all directories defined in the configuration exist.</summary>
-            <remarks>Admin directories are also verified when <paramref name="config"/> has <c>Mode</c> set to <c>Admin</c>.</remarks>
+            <remarks>If a directory path is null, empty, or does not exist the user is prompted to create it or exit.</remarks>
             <param name="config">The application configuration containing the directories to verify.</param>
         </member>
         <member name="M:TingenTransmorger.Core.Framework.VerifyDirectories(System.Collections.Generic.Dictionary{System.String,System.String})">
