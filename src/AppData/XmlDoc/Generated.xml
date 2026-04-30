@@ -332,23 +332,17 @@
         <member name="T:TingenTransmorger.MainWindow">
             <summary>Entry class for Tingen Transmorger.</summary>
             <remarks>
-            The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple partial
-            classes. Initially this was done to keep the code organized and maintainable, but over time it has
-            become somewhat of a monster. Eventually this class should be refactored to separate classes.<br/>
-            <br/>
-            The MainWindow.xaml.cs partial class is responsible for the main application flow.
+            MainWindow.xaml.cs partial class is responsible for:
+            <list type="bullet">
+            <item>Initializing Transmorger</item>
+            <item>Starting Transmorger</item>
+            <item>Stopping Transmorger</item>
+            </list>
+            In addition, this partial class contains the event handlers for MainWindow.xaml.
             </remarks>
             <summary>
             MainWindow
             </summary>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.RebuildDatabase(System.String,System.String,System.String)">
-            <summary>Applies the admin mode theme, hides the main window, and rebuilds the database.</summary>
-            <remarks>The main window remains hidden for the duration of the rebuild operation.</remarks>
-            <param name="importDir">Directory containing source Excel files to import.</param>
-            <param name="tmpDir">Temporary data directory.</param>
-            <param name="masterDbDir">Master database output directory.</param>
-            <returns><see langword="true"/> if the rebuild completed successfully; otherwise, <see langword="false"/>.</returns>
         </member>
         <member name="M:TingenTransmorger.MainWindow.CopyGeneralMeetingDetails">
             <summary>Copies general meeting details from the UI to the clipboard as formatted text.</summary>
@@ -565,9 +559,9 @@
             <param name="selectedItem">The formatted search result string to parse.</param>
             <returns>A two-element array where index <c>0</c> is the name and index <c>1</c> is the ID.</returns>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.SetInitialUi">
-            <summary>Initializes the UI to its default state with patient search active.</summary>
-            <remarks>Sets the search toggle to 'Patient Search' and checks the search-by-name radio button.</remarks>
+        <member name="M:TingenTransmorger.MainWindow.ClearUi">
+            <summary>Clears the search box and results list, then resets all UI components.</summary>
+            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.ResetAllComponents"/> as part of the clear operation.</remarks>
         </member>
         <member name="M:TingenTransmorger.MainWindow.ResetAllComponents">
             <summary>Resets all UI component groups to their default visibility states.</summary>
@@ -593,11 +587,7 @@
             <summary>Resets the provider meeting detail panel visibility to its default state.</summary>
             <remarks>Shows the top and participant names panels; collapses the detail border.</remarks>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.SetAdminModeTheme">
-            <summary>Applies the admin mode visual theme to the main window.</summary>
-            <remarks>Sets the window border to purple and appends '- ADMIN MODE' to the window title.</remarks>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.SetOutOfDateDatabaseTheme">
+        <member name="M:TingenTransmorger.MainWindow.SetOutOfDateDatabaseTheme(System.Windows.Window)">
             <summary>Applies the out-of-date database visual theme to the main window.</summary>
             <remarks>Sets the window border to red and appends '- DATABASE IS OUT OF DATE' to the window title.</remarks>
         </member>
@@ -623,10 +613,6 @@
         <member name="M:TingenTransmorger.MainWindow.SetSearchToggleUi">
             <summary>Toggles the search type button between patient and provider search, then clears the UI.</summary>
             <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.ClearUi"/> after toggling to reset the search state.</remarks>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.ClearUi">
-            <summary>Clears the search box and results list, then resets all UI components.</summary>
-            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.ResetAllComponents"/> as part of the clear operation.</remarks>
         </member>
         <member name="M:TingenTransmorger.MainWindow.UpdateDetailsButtonColor(System.Boolean,System.Boolean,System.Windows.Controls.Button)">
             <summary>Sets the color and enabled state of a message detail button based on failure and delivery data.</summary>

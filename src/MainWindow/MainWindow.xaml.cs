@@ -9,17 +9,19 @@ using TingenTransmorger.Database;
 namespace TingenTransmorger;
 /// <summary>Entry class for Tingen Transmorger.</summary>
 /// <remarks>
-/// The MainWindow class is the entry point for the Tingen Transmorger application, and is split into multiple partial
-/// classes. Initially this was done to keep the code organized and maintainable, but over time it has
-/// become somewhat of a monster. Eventually this class should be refactored to separate classes.<br/>
-/// <br/>
-/// The MainWindow.xaml.cs partial class is responsible for the main application flow.
+/// MainWindow.xaml.cs partial class is responsible for:
+/// <list type="bullet">
+/// <item>Initializing Transmorger</item>
+/// <item>Starting Transmorger</item>
+/// <item>Stopping Transmorger</item>
+/// </list>
+/// In addition, this partial class contains the event handlers for MainWindow.xaml.
 /// </remarks>
 public partial class MainWindow : Window
 {
     private TransmorgerDatabase? _tmDb;
     private readonly Configuration? _config = Configuration.Load();
-    private const string _databaseName      = "transmorger.db";
+    private const string _databaseName = "transmorger.db";
 
     /// <summary>Transmorger entry method.</summary>
     public MainWindow()
@@ -35,32 +37,11 @@ public partial class MainWindow : Window
         string localDbPath  = Path.Combine(_config.Directory["LocalDb"], _databaseName);
         string masterDbPath = Path.Combine(_config.Directory["MasterDb"], _databaseName);
 
-        SetUi(_config);
+        SetInitialUi(_config);
         Framework.Verify(_config);
-        TransmorgerDatabase.Update(localDbPath, masterDbPath);
-        _tmDb = LocalDatabase(localDbPath);
+        TransmorgerDatabase.Update(localDbPath, masterDbPath, this);
+        _tmDb = TransmorgerDatabase.LocalDatabase(localDbPath);
         SetDatabaseDateRangeUi(_tmDb);
-    }
-
-    private static TransmorgerDatabase LocalDatabase(string localDbPath)
-    {
-        var tmDb = new TransmorgerDatabase();
-
-        try
-        {
-            tmDb = TransmorgerDatabase.Load(localDbPath);
-        }
-        catch (Exception ex)
-        {
-            StopApp($"The database could not be loaded: {ex.Message}{Environment.NewLine}{Environment.NewLine}The application will now exit.");
-        }
-
-        if (tmDb is null)
-        {
-            StopApp("The database could not be loaded. The application will now exit.");
-        }
-
-        return tmDb;
     }
 
     /// <summary>Stop Transmorger.</summary>
@@ -81,20 +62,6 @@ public partial class MainWindow : Window
         Environment.Exit(0);
     }
 
-    private async Task RebuildDatabase()
-    {
-        var flowControl = await Database.TransmorgerDatabase.RebuildDatabaseCheck(_config.Directory["Reports"], _config.Directory["Tmp"], _config.Directory["MasterDb"], this);
-
-        /* If EnterAdminMode returns false, it means the user either failed to authenticate or chose to exit from
-         * the admin mode dialog. In that case, we should stop the app instead of continuing to load the database
-         * and show the main UI.
-         */
-        if (!flowControl)
-        {
-            return;
-        }
-    }
-
     /* EVENT HANDLERS */
     private void btnSearchToggle_Clicked(object? sender, RoutedEventArgs e) => SetSearchToggleUi();
     private void rbtnSearchBy_Checked(object sender, RoutedEventArgs e) => ClearUi();
@@ -107,7 +74,7 @@ public partial class MainWindow : Window
     private void btnCopyGeneralMeetingDetail_Click(object sender, RoutedEventArgs e) => CopyGeneralMeetingDetails();
     private void btnCopyPatientMeetingDetail_Click(object sender, RoutedEventArgs e) => CopyPatientMeetingDetails();
     private void btnCopyProviderMeetingDetail_Click(object sender, RoutedEventArgs e) => CopyProviderMeetingDetails();
-    private async void btnRebuildDatabase_Click(object sender, RoutedEventArgs e) => await RebuildDatabase();
+    private async void btnRebuildDatabase_Click(object sender, RoutedEventArgs e) => await TransmorgerDatabase.RebuildDatabaseCheck(_config.Directory["Reports"], _config.Directory["Tmp"], _config.Directory["MasterDb"], this);
 
     private void btnBuildReleaseNotes_Click(object sender, RoutedEventArgs e)
     {

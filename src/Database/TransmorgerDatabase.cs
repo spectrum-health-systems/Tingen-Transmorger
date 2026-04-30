@@ -50,7 +50,40 @@ public partial class TransmorgerDatabase
         return await TransmorgerDatabase.Rebuild(importDir, tmpDir, masterDbDir, parentWindow);
         //return await RebuildDatabase(importDir, tmpDir, masterDbDir);
     }
+    public async Task RebuildDatabase(string reportsPath, string tmpPath, string masterDbPath, Window parentWindow)
+    {
+        var flowControl = await Database.TransmorgerDatabase.RebuildDatabaseCheck(reportsPath, tmpPath, masterDbPath, parentWindow);
 
+        /* If EnterAdminMode returns false, it means the user either failed to authenticate or chose to exit from
+         * the admin mode dialog. In that case, we should stop the app instead of continuing to load the database
+         * and show the main UI.
+         */
+        if (!flowControl)
+        {
+            return;
+        }
+    }
+
+    internal static TransmorgerDatabase LocalDatabase(string localDbPath) // MOVE
+    {
+        var tmDb = new TransmorgerDatabase();
+
+        try
+        {
+            tmDb = TransmorgerDatabase.Load(localDbPath);
+        }
+        catch (Exception ex)
+        {
+            MainWindow.StopApp($"The database could not be loaded: {ex.Message}{Environment.NewLine}{Environment.NewLine}The application will now exit.");
+        }
+
+        if (tmDb is null)
+        {
+            MainWindow.StopApp("The database could not be loaded. The application will now exit.");
+        }
+
+        return tmDb!;
+    }
 
     /// <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
     /// <remarks>Uses message box content from <see cref="Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
@@ -101,7 +134,7 @@ public partial class TransmorgerDatabase
         return true;
     }
 
-    internal static void Update(string localDbPath, string masterDbPath)
+    internal static void Update(string localDbPath, string masterDbPath, Window mainWindow)
     {
         if (File.Exists(masterDbPath))
         {
@@ -139,9 +172,7 @@ public partial class TransmorgerDatabase
                 }
                 else
                 {
-                    /* TODO: Get this working.
-                     */
-                    //MainWindow.SetOutOfDateDatabaseTheme();
+                    MainWindow.SetOutOfDateDatabaseTheme(mainWindow);
                 }
             }
         }
