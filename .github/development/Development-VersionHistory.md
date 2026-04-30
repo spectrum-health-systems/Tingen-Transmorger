@@ -9,10 +9,15 @@
 > This release includes significant changes to the TingenTransmorger repository.
 
 * `ADDED` XML Documentation to all ns:Database classes
+* `ADDED` Button to the MainWindow that rebuilds the database
+* `ADDED` Button to the MainWindow that builds release notes
+* `REFACTORED` MainWindow.xaml.StartApp(), moving some functionality to new methods
+* `MODIFIED` The `Configuration` object is now a property of the `MainWindow` class, so it can be used with the Rebuild Database button.
 * `MODIFIED` Configuration file.
   * Combined all directory paths under a single `Directories` object.
   * Renamed "Import" to "Reports"
   * Added "ReleaseNotes" directory path
+* `REMOVED` MainWindow.AdminMode.cs, as the functionality has been moved to the Rebuild Database button.
 
 ## 0.9.31.0
 

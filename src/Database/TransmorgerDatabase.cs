@@ -39,6 +39,30 @@ public partial class TransmorgerDatabase
 
     private bool _hasData;
 
+    internal static async Task<bool> RebuildDatabaseCheck(string importDir, string tmpDir, string masterDbDir, Window parentWindow)
+    {
+        if (!RebuildDatabasePrompt())
+        {
+            return false;
+            //MainWindow.StopApp();
+        }
+
+        return await TransmorgerDatabase.Rebuild(importDir, tmpDir, masterDbDir, parentWindow);
+        //return await RebuildDatabase(importDir, tmpDir, masterDbDir);
+    }
+
+
+    /// <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
+    /// <remarks>Uses message box content from <see cref="Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
+    /// <returns><see langword="true"/> if the user selects Yes; otherwise, <see langword="false"/>.</returns>
+    private static bool RebuildDatabasePrompt()
+    {
+        var msgboxContent                = Catalog.msgbox_DatabaseRebuildCheck();
+        MessageBoxResult rebuildResponse = MessageBox.Show(msgboxContent[1], msgboxContent[0], MessageBoxButton.YesNo, MessageBoxImage.Error);
+
+        return rebuildResponse == MessageBoxResult.Yes;
+    }
+
     internal static async Task<bool> Rebuild(string importDir, string tmpDir, string masterDbDir, Window parentWindow)
     {
 

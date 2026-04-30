@@ -1,8 +1,10 @@
-﻿// 260227_code
-// 260311_documentation
+﻿// 260430_code
+// 260430_documentation
 
 using System.Windows;
 using System.Windows.Controls;
+using TingenTransmorger.Core;
+using TingenTransmorger.Database;
 
 namespace TingenTransmorger;
 
@@ -208,6 +210,29 @@ public partial class MainWindow : Window
             // No records: gray background, disabled
             theButton.Background = System.Windows.Media.Brushes.Gray;
             theButton.IsEnabled = false;
+        }
+    }
+
+    private void SetUi(Configuration config)
+    {
+        Title = $"Tingen Transmorger v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
+
+        btnSearchToggle.Content        = "Patient Search";
+        rbtnSearchByName.IsChecked     = true;
+        rbtnSearchById.IsChecked       = false;
+        txbxSearchBox.Text             = string.Empty;
+        btnRebuildDatabase.IsEnabled   = string.Equals(config.Mode.Trim(), "admin", StringComparison.OrdinalIgnoreCase);
+        btnBuildReleaseNotes.IsEnabled = true;
+
+    }
+
+    private void SetDatabaseDateRangeUi(TransmorgerDatabase tmDb)
+    {
+        var dateRange = tmDb.GetDatabaseDateRange();
+
+        if (dateRange.HasValue)
+        {
+            Title += $" ({dateRange.Value.Start:MM/dd/yyyy} - {dateRange.Value.End:MM/dd/yyyy})";
         }
     }
 }

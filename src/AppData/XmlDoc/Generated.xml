@@ -319,6 +319,11 @@
             <param name="searchByName">If <see langword="true"/>, searches by name; otherwise searches by ID.</param>
             <returns>A list of matching entries formatted as <c>Name (Id)</c>, sorted by name.</returns>
         </member>
+        <member name="M:TingenTransmorger.Database.TransmorgerDatabase.RebuildDatabasePrompt">
+            <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
+            <remarks>Uses message box content from <see cref="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
+            <returns><see langword="true"/> if the user selects Yes; otherwise, <see langword="false"/>.</returns>
+        </member>
         <member name="M:TingenTransmorger.Database.TransmorgerDatabase.GetDatabaseDateRange">
             <summary>Determines the date range of the database by finding the earliest and latest scheduled meeting start dates.</summary>
             <remarks>Returns null if the database has no data, the MeetingDetail section is missing, or no parseable dates exist.</remarks>
@@ -337,14 +342,6 @@
             MainWindow
             </summary>
         </member>
-        <member name="M:TingenTransmorger.MainWindow.EnterAdminMode(System.String,System.String,System.String)">
-            <summary>Prompts for a database rebuild confirmation and stops the application if the user declines.</summary>
-            <remarks>Calls <see cref="M:TingenTransmorger.MainWindow.StopApp(System.String)"/> before returning if the user declines the rebuild prompt.</remarks>
-            <param name="importDir">Directory containing source Excel files to import.</param>
-            <param name="tmpDir">Temporary data directory.</param>
-            <param name="masterDbDir">Master database output directory.</param>
-            <returns><see langword="true"/> if the database was rebuilt successfully; otherwise, <see langword="false"/>.</returns>
-        </member>
         <member name="M:TingenTransmorger.MainWindow.RebuildDatabase(System.String,System.String,System.String)">
             <summary>Applies the admin mode theme, hides the main window, and rebuilds the database.</summary>
             <remarks>The main window remains hidden for the duration of the rebuild operation.</remarks>
@@ -352,11 +349,6 @@
             <param name="tmpDir">Temporary data directory.</param>
             <param name="masterDbDir">Master database output directory.</param>
             <returns><see langword="true"/> if the rebuild completed successfully; otherwise, <see langword="false"/>.</returns>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.RebuildDatabasePrompt">
-            <summary>Displays a confirmation message box asking whether to rebuild the database.</summary>
-            <remarks>Uses message box content from <see cref="M:TingenTransmorger.Core.Catalog.msgbox_DatabaseRebuildCheck"/>.</remarks>
-            <returns><see langword="true"/> if the user selects Yes; otherwise, <see langword="false"/>.</returns>
         </member>
         <member name="M:TingenTransmorger.MainWindow.CopyGeneralMeetingDetails">
             <summary>Copies general meeting details from the UI to the clipboard as formatted text.</summary>
@@ -650,24 +642,21 @@
             <param name="hasDeliveries">Whether the patient has message delivery records for this contact.</param>
             <param name="theButton">The button whose color and enabled state will be updated.</param>
         </member>
-        <member name="F:TingenTransmorger.MainWindow._tmDb">
-            <summary>The Transmorger database.</summary>
-        </member>
         <member name="M:TingenTransmorger.MainWindow.#ctor">
-            <summary>Entry method for Tingen Transmorger.</summary>
+            <summary>Transmorger entry method.</summary>
+        </member>
+        <member name="M:TingenTransmorger.MainWindow.StartApp">
+            <summary>Start Transmorger.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.StopApp(System.String)">
-            <summary>Stop the application.</summary>
+            <summary>Stop Transmorger.</summary>
             <remarks>
             If you pass a message to <paramref name="msgExit"/>, it will be displayed to the user in a MessageBox
-            before the application exits.<br/>
+            before Transmorger exits.<br/>
             <br/>
             This method is public because it is called from other methods outside the <see cref="T:TingenTransmorger.MainWindow"/> class.
             </remarks>
             <param name="msgExit">Optional exit message to display.</param>
-        </member>
-        <member name="M:TingenTransmorger.MainWindow.StartApp">
-            <summary>Start the application.</summary>
         </member>
         <member name="M:TingenTransmorger.MainWindow.InitializeComponent">
             <summary>
