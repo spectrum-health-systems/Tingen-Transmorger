@@ -20,8 +20,8 @@
 
   Utilities for Netsmart's AvatarNX TeleHealth.
 
-  ![RELEASE](https://img.shields.io/badge/Version-0.9.31.0-teal)&nbsp;
-  ![STAGE](https://img.shields.io/badge/ALPHA/BETA-yellow)&nbsp; <!-- Alpha = Red, Beta = Yellow, Stable = Green -->
+  ![RELEASE](https://img.shields.io/badge/Release-26.4-teal)&nbsp;
+  ![STAGE](https://img.shields.io/badge/BETA-yellow)&nbsp; <!-- Alpha = Red, Beta = Yellow, Stable = Green -->
   ![LICENSE](https://img.shields.io/badge/license-apache-blue)&nbsp;
   ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)&nbsp;
 
