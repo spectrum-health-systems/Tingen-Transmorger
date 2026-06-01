@@ -1,6 +1,6 @@
 # Tingen Transmorger: Changelog
 
-## Version R26.4.0.0 (301242)- 4/17/2026
+## 26.4.0.0 (301242)- 4/17/2026
 
 > This release includes significant changes to the TingenTransmorger repository.
 
