@@ -2,6 +2,7 @@
 
 ## Misc
 
+- Things won't work if the slashes are the wrong way in the config file.
 - Create an Tingen Transmorger icon (currently it's the default, boring application icon)
 
 ## Updated/modified functionality
