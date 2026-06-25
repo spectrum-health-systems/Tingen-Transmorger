@@ -1,3 +1,0 @@
-# Tingen Transmorger: Roadmap
-
-***
